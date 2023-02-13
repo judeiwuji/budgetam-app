@@ -1,1 +1,151 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  background-color: #fdfdfd;
+}
+
+/* Logo */
+.logo {
+  font-family: "Titan One", cursive;
+}
+/* Logo */
+
+/* Btn */
+.btn-full {
+  background-color: #eb2f06;
+  color: #ffffff;
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.btn-full:hover {
+  background-color: #eb2f06 !important;
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+.btn-circle {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eb2f06;
+  color: #ffffff;
+  padding: 0;
+}
+/* Btn */
+
+.app-wrapper {
+  min-height: 80vh;
+}
+
+/* Account Form */
+.account-form-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.account-form-card {
+  width: 30em;
+  border-radius: 10px;
+}
+/* Account form */
+
+/* Error Border */
+input.error {
+  border-color: red !important;
+}
+/* Error Border */
+
+.dark-nav {
+  background-color: #000000 !important;
+}
+
+/* Switch slider */
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 3em;
+  height: 1.4em;
+  margin: 0 !important;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cccccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.2em;
+  width: 1.2em;
+  left: 1px;
+  bottom: 1.5px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #4606e9;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4606e9;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(1.67em);
+  -ms-transform: translateX(1.67em);
+  transform: translateX(1.67em);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+/* Switch slider */
+
+@media screen and (max-width: 767px) {
+  .account-form-wrapper > div {
+    width: 100%;
+  }
+
+  .account-form-wrapper {
+    display: block;
+    padding: 1em 0;
+  }
+
+  .form-text-content {
+    margin-bottom: 3.5em;
+  }
+}
+
+/* Account Form */
