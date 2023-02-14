@@ -3,8 +3,9 @@
   color: #404040;
 }
 
-.balance-container {
-  padding: 2.5rem 0;
+.balance-card {
+  border-radius: 10px;
+  margin: 1.2rem 0;
 }
 
 .balance-currency {
@@ -21,4 +22,16 @@
 .balance-title {
   font-size: 1.2rem;
   font-weight: 400;
+}
+
+.transaction-summary-header {
+  margin-bottom: 1.75rem;
+}
+
+.transaction-summary-header h4 {
+  font-size: 1.2rem;
+}
+
+.transaction-summary-card {
+  border-radius: 10px;
 }

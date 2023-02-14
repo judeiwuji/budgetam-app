@@ -1,0 +1,43 @@
+<div class="d-flex">
+    <button class="btn-transaction">
+        <div class="d-flex align-items-center">
+            <!-- Icon -->
+            <div class="me-3">
+                <span class="category-icon">
+                    🥘
+                </span>
+            </div>
+            <!-- Icon -->
+
+            <!-- Details -->
+            <div>
+                <p>Groceries</p>
+                <p class="small text-muted">02/02/2023</p>
+            </div>
+            <!-- Details -->
+        </div>
+
+        <!-- Amount -->
+        <span>{{10000 | number}}</span>
+        <!-- Amount -->
+    </button>
+
+    <!-- Hamburger Menu -->
+    <div class="dropdown align-self-start ms-2" ngbDropdown>
+        <button class="btn btn-sm p-0" ngbDropdownToggle>
+            <i class="fas fa-ellipsis-h"></i>
+        </button>
+
+        <div ngbDropdownMenu class="dropdown-right">
+            <a href="" ngbDropdownItem>
+                <i class="fas fa-edit"></i>
+                <span>Edit</span>
+            </a>
+            <a href="" ngbDropdownItem>
+                <i class="fas fa-trash-alt"></i>
+                <span>Delete</span>
+            </a>
+        </div>
+    </div>
+    <!-- Hamburger Menu -->
+</div>

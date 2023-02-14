@@ -3,42 +3,72 @@
         <h1 class="username-text">hi {{user.username}}</h1>
 
         <div>
-            <button type="button" aria-roledescription="Create new transaction" class="btn btn-full">
+            <button type="button" aria-roledescription="Create new transaction" class="btn btn-full"
+                (click)="createTransaction()">
                 <span class="d-none d-md-inline-block">Create Transaction</span>
                 <i class="fas fa-plus d-md-none"></i>
             </button>
         </div>
     </div>
+</div>
 
+<div class="container">
     <!-- Balance -->
-    <div class="balance-container">
-        <div class="d-flex justify-content-between">
-            <ng-container>
-                <h4 class="balance-title">Expenses</h4>
-            </ng-container>
+    <div class="card balance-card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <ng-container>
+                    <h4 class="balance-title">Expenses</h4>
+                </ng-container>
 
-            <label class="switch">
-                <input type="checkbox">
-                <span class="slider round"></span>
-            </label>
-        </div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
 
-        <div class="text-center py-4">
-            <h4 class="balance-currency text-muted">{{currency}}</h4>
-            <p class="balance-amount">{{balance.expenses | number}}</p>
+            <div class="text-center py-4">
+                <h4 class="balance-currency text-muted">{{currency}}</h4>
+                <p class="balance-amount">{{balance.expenses | number}}</p>
+            </div>
         </div>
     </div>
     <!-- Balance -->
 
     <!-- Transaction summary -->
-    <div class="transaction-summary">
+    <div class="transaction-summary-header">
         <div class="d-flex justify-content-between align-items-center">
             <h4>Transactions</h4>
 
-            <a href="">see all</a>
+            <button (click)="allTransactions()" class="btn btn-sm">see all</button>
+        </div>
+    </div>
+
+    <!-- Transaction Filters -->
+    <div class="pb-3 d-flex justify-content-around">
+        <button class="btn btn-full">
+            Daily
+        </button>
+        <button class="btn btn-full">
+            Weekly
+        </button>
+        <button class="btn btn-full">
+            Monthly
+        </button>
+    </div>
+    <!-- Transaction Filters -->
+
+    <div class="card transaction-summary-card">
+        <div class="card-body">
+            <div class="mb-2">
+                <app-transaction-category></app-transaction-category>
+            </div>
+            <div class="mb-2">
+                <app-transaction-category></app-transaction-category>
+            </div>
         </div>
     </div>
     <!-- Transaction summary -->
 </div>
 
-<app-auth-navbar></app-auth-navbar>
+<app-auth-navbar [currentPage]="'home'"></app-auth-navbar>

@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <!-- Mobile -->
+    <button class="btn d-md-none" (click)="close()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <!-- Mobile -->
+
+    <!-- Title -->
+    <h5 class="mx-auto">Transactions</h5>
+    <!-- Title -->
+
+    <!-- Desktop -->
+    <button class="btn d-none d-md-inline-block" (click)="close()">
+        <i class="fas fa-times"></i>
+    </button>
+    <!-- Desktop -->
+</div>
+
+<div class="modal-body">
+    <!-- Transaction Filters -->
+    <div class="pb-3 d-flex justify-content-around">
+        <button class="btn btn-full">
+            Daily
+        </button>
+        <button class="btn btn-light">
+            Weekly
+        </button>
+        <button class="btn btn-light">
+            Monthly
+        </button>
+    </div>
+    <!-- Transaction Filters -->
+
+    <div class="card transaction-summary-card">
+        <div class="card-body">
+            <div class="mb-2">
+                <app-transaction-category></app-transaction-category>
+            </div>
+            <div class="mb-2">
+                <app-transaction-category></app-transaction-category>
+            </div>
+        </div>
+    </div>
+</div>

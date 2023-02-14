@@ -1,0 +1,86 @@
+<div class="modal-header">
+    <!-- Mobile -->
+    <button class="btn d-md-none" (click)="close()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <!-- Mobile -->
+
+    <!-- Title -->
+    <h5 class="mx-auto">Transaction</h5>
+    <!-- Title -->
+
+    <!-- Desktop -->
+    <button class="btn d-none d-md-inline-block" (click)="close()">
+        <i class="fas fa-times"></i>
+    </button>
+    <!-- Desktop -->
+</div>
+<div class="modal-body">
+    <form [formGroup]="transactionForm" (ngSubmit)="save()" class="transaction-form">
+        <!-- Amount -->
+        <div class="amount-container">
+            <label for="amount" class="text-muted">
+                &#8358;
+            </label>
+            <input type="text" id="amount" value="0" autofocus="true"
+                [style]="{width: (fc['amount'].value.length * 2.1) + 'rem'}" formControlName="amount"
+                autocomplete="off">
+        </div>
+        <!-- Amount -->
+
+        <!-- Categories -->
+        <div class="transaction-form-group">
+            <label for="category" class="small text-muted">
+                Category
+            </label>
+            <div class="d-flex align-items-center">
+                <div class="me-2">
+                    <span class="category-icon"></span>
+                </div>
+                <div ngbDropdown class="w-100">
+                    <button type="button" class="btn btn-light category-btn" ngbDropdownToggle>
+                        Groceries
+                    </button>
+
+                    <!-- Categories -->
+                    <div ngbDropdownMenu>
+                        <button type="button" ngbDropdownItem>
+                            <div class="d-flex">
+                                <span class="icon"></span>
+                                <span>Groceries</span>
+                            </div>
+                        </button>
+                    </div>
+                    <!-- Categories -->
+                </div>
+            </div>
+        </div>
+        <!-- Categories -->
+
+        <!-- Note -->
+        <div class="transaction-form-group">
+            <label for="note" class="small text-muted">
+                Note
+            </label>
+
+            <textarea id="note" class="form-control" rows="3" placeholder="Write a note"></textarea>
+        </div>
+        <!-- Note -->
+
+        <!-- Date -->
+        <div class="transaction-form-group">
+            <label for="date" class="small text-muted">
+                Date
+            </label>
+
+            <input type="text" id="date" ngbDatepicker class="form-control">
+        </div>
+        <!-- Date -->
+
+        <div class="text-center">
+            <button class="btn btn-full w-100" type="submit" aria-label="save transaction">
+                Save
+            </button>
+        </div>
+    </form>
+</div>

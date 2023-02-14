@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <!-- Mobile -->
+    <button class="btn d-md-none" (click)="close()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <!-- Mobile -->
+
+    <!-- Title -->
+    <h5 class="mx-auto">Groceries</h5>
+    <!-- Title -->
+
+    <!-- Desktop -->
+    <button class="btn d-none d-md-inline-block" (click)="close()">
+        <i class="fas fa-times"></i>
+    </button>
+    <!-- Desktop -->
+</div>
+
+<div class="modal-body">
+    <div class="mb-2">
+        <app-transaction></app-transaction>
+    </div>
+</div>

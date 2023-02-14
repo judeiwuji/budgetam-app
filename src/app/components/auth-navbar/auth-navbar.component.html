@@ -1,28 +1,32 @@
+<div class="padded"></div>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom dark-nav">
     <div class="container-fluid">
         <ul class="navbar-nav justify-content-between w-100 flex-row">
             <li class="nav-item">
-                <a class="nav-link" routerLink="/dashboard">
+                <a class="nav-link" routerLink="/dashboard"
+                    [ngClass]="{'active': currentPage && currentPage === 'home'}">
                     <span class="nav-icon">
                         <i class="fas fa-home"></i>
                     </span>
-                    Home
+                    <span class="d-none d-sm-block">Home</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="/transactions/report">
+                <a class="nav-link" routerLink="/report"
+                    [ngClass]="{'active': currentPage && currentPage === 'report'}">
                     <span class="nav-icon">
                         <i class="fa fa-pie-chart"></i>
                     </span>
-                    Report
+                    <span class="d-none d-sm-block">Report</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="/user/profile">
+                <a class="nav-link" routerLink="/profile"
+                    [ngClass]="{'active': currentPage && currentPage === 'profile'}">
                     <span class="nav-icon">
                         <i class="fas fa-user-alt"></i>
                     </span>
-                    Profile
+                    <span class="d-none d-sm-block">Profile</span>
                 </a>
             </li>
         </ul>

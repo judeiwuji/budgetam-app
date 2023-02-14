@@ -6,7 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReportComponent } from './report/report.component';
-import { TransactionsComponent } from './transactions/transactions.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -19,10 +19,8 @@ const routes: Routes = [
   },
   { path: 'signup', component: SignupComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'transactions', component: TransactionsComponent },
-  { path: 'transactions/create', component: TransactionsComponent },
-  { path: 'transactions/edit/:id', component: TransactionsComponent },
-  { path: 'transaction/report', component: ReportComponent },
+  { path: 'report', component: ReportComponent },
+  { path: 'profile', component: ProfileComponent },
 ];
 @NgModule({
   declarations: [],
