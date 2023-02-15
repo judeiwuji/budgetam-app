@@ -19,6 +19,7 @@ import { CategoryTransactionsComponent } from './modals/category-transactions/ca
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { TransactionFormComponent } from './modals/transaction-form/transaction-form.component';
 import { TransactionsComponent } from './modals/transactions/transactions.component';
+import { ChangePasswordComponent } from './modals/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { TransactionsComponent } from './modals/transactions/transactions.compon
     TransactionComponent,
     TransactionFormComponent,
     TransactionsComponent,
+    ChangePasswordComponent,
   ],
   imports: [BrowserModule, NgbModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],

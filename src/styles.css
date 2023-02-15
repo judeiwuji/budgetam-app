@@ -27,13 +27,13 @@ body {
 }
 
 .btn-circle {
-  width: 1.5em;
-  height: 1.5em;
+  width: 2.5em;
+  height: 2.5em;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #eb2f06;
+  background-color: #000000b6;
   color: #ffffff;
   padding: 0;
 }
@@ -191,3 +191,11 @@ input:checked + .slider:before {
 .dropdown-toggle::after {
   display: none;
 }
+
+/* Alignment */
+.static-align-bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+/* Alignment */
