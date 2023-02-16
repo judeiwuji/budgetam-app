@@ -149,6 +149,7 @@ input:checked + .slider:before {
   color: #404040;
 }
 
+/* Transaction Btn */
 .btn-transaction {
   display: flex;
   display: -webkit-flex;
@@ -159,18 +160,63 @@ input:checked + .slider:before {
   background-color: transparent;
   width: 100%;
 }
+
+.btn-transaction .title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+/* Transaction Btn */
+
 .category-icon {
   display: inline-block;
-  width: 1.5em;
-  height: 1.5em;
+  width: 1.8em;
+  height: 1.8em;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f3f3f3;
   border-radius: 50%;
-  font-size: 2.5rem;
+  font-size: 1.2rem;
+  padding: 0.95rem;
+}
+/* Account Form */
+
+.dropdown-toggle::after {
+  display: none;
 }
 
+/* Alignment */
+.static-align-bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+/* Alignment */
+
+/* Sized Btn */
+.btn-sized {
+  min-width: 5em;
+  border-radius: 10px;
+}
+/* Sized Btn */
+
+/* Icon */
+.icon {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0.75rem;
+  font: 0.8rem;
+  background-color: #f3f3f3;
+  border-radius: 50%;
+}
+/* Icon */
+
+/* Media Queries */
 @media screen and (max-width: 767px) {
   .account-form-wrapper > div {
     width: 100%;
@@ -185,17 +231,4 @@ input:checked + .slider:before {
     margin-bottom: 3.5em;
   }
 }
-
-/* Account Form */
-
-.dropdown-toggle::after {
-  display: none;
-}
-
-/* Alignment */
-.static-align-bottom-right {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
-/* Alignment */
+/* Media Queries */

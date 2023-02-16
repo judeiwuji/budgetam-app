@@ -13,30 +13,10 @@
 </div>
 
 <div class="container">
-    <!-- Balance -->
-    <div class="card balance-card">
-        <div class="card-body">
-            <div class="d-flex justify-content-between">
-                <ng-container>
-                    <h4 class="balance-title">Expenses</h4>
-                </ng-container>
+    <app-balance-card></app-balance-card>
 
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-
-            <div class="text-center py-4">
-                <h4 class="balance-currency text-muted">{{currency}}</h4>
-                <p class="balance-amount">{{balance.expenses | number}}</p>
-            </div>
-        </div>
-    </div>
-    <!-- Balance -->
-
-    <!-- Transaction summary -->
-    <div class="transaction-summary-header">
+    <!-- Transactions -->
+    <div class="transaction-header">
         <div class="d-flex justify-content-between align-items-center">
             <h4>Transactions</h4>
 
@@ -44,31 +24,8 @@
         </div>
     </div>
 
-    <!-- Transaction Filters -->
-    <div class="pb-3 d-flex justify-content-around">
-        <button class="btn btn-full">
-            Daily
-        </button>
-        <button class="btn btn-full">
-            Weekly
-        </button>
-        <button class="btn btn-full">
-            Monthly
-        </button>
-    </div>
-    <!-- Transaction Filters -->
-
-    <div class="card transaction-summary-card">
-        <div class="card-body">
-            <div class="mb-2">
-                <app-transaction-category></app-transaction-category>
-            </div>
-            <div class="mb-2">
-                <app-transaction-category></app-transaction-category>
-            </div>
-        </div>
-    </div>
-    <!-- Transaction summary -->
+    <app-transaction-list [addTransaction]="addTransactionSubject.asObservable()"></app-transaction-list>
+    <!-- Transactions -->
 </div>
 
 <app-auth-navbar [currentPage]="'home'"></app-auth-navbar>

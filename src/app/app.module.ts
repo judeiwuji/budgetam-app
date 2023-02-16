@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrModule } from 'ngx-toastr';
 import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainNavbarComponent } from './components/main-navbar/main-navbar.component';
@@ -20,6 +22,8 @@ import { TransactionComponent } from './components/transaction/transaction.compo
 import { TransactionFormComponent } from './modals/transaction-form/transaction-form.component';
 import { TransactionsComponent } from './modals/transactions/transactions.component';
 import { ChangePasswordComponent } from './modals/change-password/change-password.component';
+import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
+import { BalanceCardComponent } from './components/balance-card/balance-card.component';
 
 @NgModule({
   declarations: [
@@ -40,8 +44,18 @@ import { ChangePasswordComponent } from './modals/change-password/change-passwor
     TransactionFormComponent,
     TransactionsComponent,
     ChangePasswordComponent,
+    TransactionListComponent,
+    BalanceCardComponent,
   ],
-  imports: [BrowserModule, NgbModule, AppRoutingModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    NgbModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ToastrModule.forRoot(),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

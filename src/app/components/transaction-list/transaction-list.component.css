@@ -1,0 +1,11 @@
+.transaction-header {
+  margin-bottom: 1.75rem;
+}
+
+.transaction-header h4 {
+  font-size: 1.2rem;
+}
+
+.transaction-card {
+  border-radius: 10px;
+}

@@ -1,0 +1,21 @@
+<!-- Balance -->
+<div class="card balance-card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <ng-container>
+                <h4 class="balance-title">Expenses</h4>
+            </ng-container>
+
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="text-center py-4">
+            <h4 class="balance-currency text-muted">{{currency}}</h4>
+            <p class="balance-amount">{{balance.expenses | number}}</p>
+        </div>
+    </div>
+</div>
+<!-- Balance -->

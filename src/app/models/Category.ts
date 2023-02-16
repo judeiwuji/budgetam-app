@@ -1,1 +1,6 @@
-export default class Category {}
+export default class Category {
+  public id!: string;
+  public name!: string;
+  public icon!: string;
+  public isExpense = true;
+}

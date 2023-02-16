@@ -1,22 +1,27 @@
 <button class="btn-transaction" (click)="showTransactions()">
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center w-100">
         <!-- Icon -->
         <div class="me-3">
             <span class="category-icon">
-                🥘
+                {{transaction.category.icon}}
             </span>
         </div>
         <!-- Icon -->
 
         <!-- Details -->
-        <div>
-            <p>Groceries</p>
-            <p class="small text-muted">02/02/2023</p>
+        <div class="text-start">
+            <h5 class="title">{{transaction.category.name}}</h5>
+            <p class="small text-muted">
+                {{transaction.count | number}} items
+            </p>
         </div>
         <!-- Details -->
     </div>
 
     <!-- Amount -->
-    <span>{{10000 | number}}</span>
+    <span class="fw-bold">
+        <span>&#8358;</span>
+        <span>{{transaction.amount | number}}</span>
+    </span>
     <!-- Amount -->
 </button>

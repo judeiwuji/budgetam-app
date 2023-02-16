@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject } from 'rxjs';
 import { TransactionFormComponent } from '../modals/transaction-form/transaction-form.component';
 import { TransactionsComponent } from '../modals/transactions/transactions.component';
+import Transaction from '../models/Transaction';
 import User from '../models/User';
 
 @Component({
@@ -11,19 +13,25 @@ import User from '../models/User';
 })
 export class DashboardComponent implements OnInit {
   public user = new User('judoski');
-  public currency = 'NGN';
-  public balance = {
-    expenses: 100000,
-    income: 250000,
-  };
+  public addTransactionSubject = new Subject<Transaction>();
+
   constructor(private readonly modal: NgbModal) {}
 
   ngOnInit(): void {}
 
   createTransaction() {
-    this.modal.open(TransactionFormComponent, {
+    const modalInstance = this.modal.open(TransactionFormComponent, {
       fullscreen: true,
       backdrop: 'static',
+    });
+
+    const newTransactionSubject = new Subject<Transaction>();
+    modalInstance.componentInstance.onCreate = newTransactionSubject;
+    modalInstance.result.then(() => {
+      newTransactionSubject.unsubscribe();
+    });
+    newTransactionSubject.subscribe((transaction) => {
+      this.addTransactionSubject.next(transaction);
     });
   }
 
