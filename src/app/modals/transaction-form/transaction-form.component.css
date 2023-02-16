@@ -14,7 +14,7 @@
   height: 2px;
   background-color: #eeeeee;
   position: absolute;
-  bottom: 11.5px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
@@ -33,7 +33,7 @@
   font-weight: 700;
   display: inline-block;
   width: 2.1rem;
-  max-width: 7rem;
+  max-width: 10rem;
 }
 
 .category-btn {

@@ -23,8 +23,8 @@
                 &#8358;
             </label>
             <input type="text" id="amount" value="0" autofocus="true"
-                [style]="{width: (fc['amount'].value.length * 2.1) + 'rem'}" formControlName="amount"
-                autocomplete="off">
+                [style]="{width: (fc['amount'].value.length * 2.1) + 'rem'}" formControlName="amount" autocomplete="off"
+                (click)="selectAll($event)">
         </div>
         <!-- Amount -->
 
@@ -35,21 +35,29 @@
             </label>
             <div class="d-flex align-items-center">
                 <div class="me-2">
-                    <span class="category-icon"></span>
+                    <span class="category-icon">
+                        {{selectedCategory.icon}}
+                    </span>
                 </div>
                 <div ngbDropdown class="w-100">
                     <button type="button" class="btn btn-light category-btn" ngbDropdownToggle>
-                        Groceries
+                        {{selectedCategory.name}}
                     </button>
 
                     <!-- Categories -->
                     <div ngbDropdownMenu>
-                        <button type="button" ngbDropdownItem>
-                            <div class="d-flex">
-                                <span class="icon"></span>
-                                <span>Groceries</span>
-                            </div>
-                        </button>
+                        <ng-container *ngFor="let category of categories">
+                            <button type="button" ngbDropdownItem (click)="selectCategory(category)">
+                                <div class="d-flex align-items-center">
+                                    <span class="icon me-2">
+                                        {{category.icon}}
+                                    </span>
+                                    <span class="small text-muted">
+                                        {{category.name}}
+                                    </span>
+                                </div>
+                            </button>
+                        </ng-container>
                     </div>
                     <!-- Categories -->
                 </div>
@@ -63,7 +71,8 @@
                 Note
             </label>
 
-            <textarea id="note" class="form-control" rows="3" placeholder="Write a note"></textarea>
+            <textarea id="note" class="form-control" rows="3" placeholder="Write a note"
+                formControlName="note"></textarea>
         </div>
         <!-- Note -->
 
@@ -72,8 +81,8 @@
             <label for="date" class="small text-muted">
                 Date
             </label>
-
-            <input type="text" id="date" ngbDatepicker class="form-control">
+            <input type="text" id="date" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()"
+                formControlName="date" readonly>
         </div>
         <!-- Date -->
 
