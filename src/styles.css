@@ -216,6 +216,25 @@ input:checked + .slider:before {
 }
 /* Icon */
 
+/* Avatar */
+.user-avatar {
+  width: 3em;
+  height: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid #404040;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.user-avatar img {
+  object-fit: cover;
+  object-position: center;
+}
+/* Avatar */
+
 /* Media Queries */
 @media screen and (max-width: 767px) {
   .account-form-wrapper > div {

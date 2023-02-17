@@ -8,7 +8,7 @@
                     <span class="nav-icon">
                         <i class="fas fa-home"></i>
                     </span>
-                    <span class="d-none d-sm-block">Home</span>
+                    <span class="d-none d-sm-block small">Home</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -17,16 +17,16 @@
                     <span class="nav-icon">
                         <i class="fa fa-pie-chart"></i>
                     </span>
-                    <span class="d-none d-sm-block">Report</span>
+                    <span class="d-none d-sm-block small">Report</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="/profile"
-                    [ngClass]="{'active': currentPage && currentPage === 'profile'}">
+                <a class="nav-link" routerLink="/settings"
+                    [ngClass]="{'active': currentPage && currentPage === 'settings'}">
                     <span class="nav-icon">
-                        <i class="fas fa-user-alt"></i>
+                        <i class="fas fa-cog"></i>
                     </span>
-                    <span class="d-none d-sm-block">Profile</span>
+                    <span class="d-none d-sm-block small">Settings</span>
                 </a>
             </li>
         </ul>
