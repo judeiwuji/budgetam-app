@@ -96,6 +96,7 @@ export class TransactionFormComponent implements OnInit {
     transaction.note = this.fc['note'].value;
     transaction.categoryId = this.selectedCategory.id;
     transaction.date = `${date.year}-${date.month}-${date.day}`;
+    transaction.category = this.selectedCategory;
 
     this.onCreate.next(transaction);
     this.toastrService.success('Saved');

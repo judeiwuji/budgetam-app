@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { TransactionFormComponent } from '../modals/transaction-form/transaction-form.component';
@@ -11,9 +11,10 @@ import User from '../models/User';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   public user = new User('judoski');
   public addTransactionSubject = new Subject<Transaction>();
+  public deleteTransactionSubject = new Subject<Transaction>();
 
   constructor(private readonly modal: NgbModal) {}
 
@@ -40,5 +41,10 @@ export class DashboardComponent implements OnInit {
       fullscreen: true,
       backdrop: 'static',
     });
+  }
+
+  ngOnDestroy(): void {
+    this.addTransactionSubject.unsubscribe();
+    this.deleteTransactionSubject.unsubscribe();
   }
 }
