@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgChartsModule } from 'ng2-charts';
 
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -24,6 +25,8 @@ import { TransactionsComponent } from './modals/transactions/transactions.compon
 import { ChangePasswordComponent } from './modals/change-password/change-password.component';
 import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
 import { BalanceCardComponent } from './components/balance-card/balance-card.component';
+import { BarChartComponent } from './charts/bar-chart/bar-chart.component';
+import { TransactionReportComponent } from './components/transaction-report/transaction-report.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,8 @@ import { BalanceCardComponent } from './components/balance-card/balance-card.com
     ChangePasswordComponent,
     TransactionListComponent,
     BalanceCardComponent,
+    BarChartComponent,
+    TransactionReportComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +60,7 @@ import { BalanceCardComponent } from './components/balance-card/balance-card.com
     ReactiveFormsModule,
     FormsModule,
     ToastrModule.forRoot(),
+    NgChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
