@@ -13,7 +13,8 @@
 </div>
 
 <div class="container">
-    <app-balance-card></app-balance-card>
+    <app-balance-card [addTransaction]="addTransactionSubject.asObservable()"
+        [deleteTransaction]="deleteTransactionSubject.asObservable()"></app-balance-card>
 
     <!-- Transactions -->
     <div class="transaction-header">
