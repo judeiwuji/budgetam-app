@@ -10,7 +10,7 @@
             <!-- Icon -->
 
             <!-- Details -->
-            <div>
+            <div class="text-start">
                 <p>
                     <ng-container *ngIf="transaction.note">
                         {{transaction.note}}
@@ -19,7 +19,9 @@
                         {{transaction.category.name}}
                     </ng-container>
                 </p>
-                <p class="small text-muted">{{transaction.createdAt}}</p>
+                <p class="small text-muted">
+                    {{transaction.date}}
+                </p>
             </div>
             <!-- Details -->
         </div>
@@ -45,7 +47,7 @@
                 </button>
             </li>
             <li>
-                <button ngbDropdownItem>
+                <button ngbDropdownItem (click)="deleteTransaction()">
                     <i class="fas fa-trash-alt me-2"></i>
                     <span>Delete</span>
                 </button>

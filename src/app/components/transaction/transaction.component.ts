@@ -3,6 +3,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TransactionFormComponent } from 'src/app/modals/transaction-form/transaction-form.component';
 import Transaction from 'src/app/models/Transaction';
+import TransactionProvider from 'src/app/providers/TransactionProvider';
+import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
   selector: 'app-transaction',
@@ -12,10 +14,12 @@ import Transaction from 'src/app/models/Transaction';
 export class TransactionComponent implements OnInit {
   @Input()
   public transaction!: Transaction;
+  private transactionProvider = TransactionProvider.getInstance();
 
   constructor(
     private readonly modal: NgbModal,
-    private readonly deviceService: DeviceDetectorService
+    private readonly deviceService: DeviceDetectorService,
+    private readonly transactionService: TransactionService
   ) {}
 
   ngOnInit(): void {}
@@ -29,5 +33,20 @@ export class TransactionComponent implements OnInit {
     });
 
     modalInstance.componentInstance.transaction = this.transaction;
+    modalInstance.result.then((transaction) => {
+      if (transaction) {
+        this.transaction = transaction;
+      }
+    });
+  }
+
+  deleteTransaction() {
+    this.transactionService
+      .deleteTransaction(this.transaction)
+      .subscribe((response) => {
+        if (response) {
+          this.transactionProvider.deleteTransaction(this.transaction);
+        }
+      });
   }
 }

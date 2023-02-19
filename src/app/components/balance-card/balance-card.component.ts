@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
 import Transaction from 'src/app/models/Transaction';
+import TransactionProvider from 'src/app/providers/TransactionProvider';
 import { CategoryService } from 'src/app/services/category.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 import Balance from '../../models/Balance';
@@ -14,14 +15,9 @@ import Balance from '../../models/Balance';
 export class BalanceCardComponent implements OnInit, OnDestroy {
   public currency = 'NGN';
   public balance = new Balance();
-
-  @Input()
-  addTransaction!: Observable<Transaction>;
-
-  @Input()
-  deleteTransaction!: Observable<Transaction>;
-
+  public transactionProvider = TransactionProvider.getInstance();
   private addTransactionSubscription!: Subscription;
+  private editTransactionSubscription!: Subscription;
   private deleteTransactionSubscription!: Subscription;
   public isIncomeView = false;
 
@@ -32,32 +28,35 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.addTransactionSubscription = this.addTransaction.subscribe(
-      (transaction) => {
+    this.addTransactionSubscription =
+      this.transactionProvider.onCreateTransaction((transaction) => {
         if (transaction.category.isExpense) {
           this.balance.expenses += transaction.amount;
         } else {
           this.balance.income += transaction.amount;
         }
-      }
-    );
+      });
 
-    this.deleteTransactionSubscription = this.deleteTransaction.subscribe(
-      (transaction) => {
+    this.editTransactionSubscription =
+      this.transactionProvider.onEditTransaction((edited) => {
+        if (edited.newTransaction.category.isExpense) {
+          this.balance.expenses -= edited.oldTransaction.amount;
+          this.balance.expenses += edited.newTransaction.amount;
+        } else {
+          this.balance.income -= edited.oldTransaction.amount;
+          this.balance.income += edited.newTransaction.amount;
+        }
+      });
+
+    this.deleteTransactionSubscription =
+      this.transactionProvider.onDeleteTransaction((transaction) => {
         if (transaction.category.isExpense) {
           this.balance.expenses -= transaction.amount;
         } else {
           this.balance.income -= transaction.amount;
         }
-      }
-    );
-
+      });
     this.getBalance();
-  }
-
-  ngOnDestroy(): void {
-    this.addTransactionSubscription.unsubscribe();
-    this.deleteTransactionSubscription.unsubscribe();
   }
 
   getBalance() {
@@ -66,7 +65,6 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
         if (balance) {
           this.balance = balance;
         }
-        console.log(balance);
       },
       error: (err) => {
         this.toastrService.warning(
@@ -74,5 +72,11 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
         );
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.addTransactionSubscription.unsubscribe();
+    this.editTransactionSubscription.unsubscribe();
+    this.deleteTransactionSubscription.unsubscribe();
   }
 }

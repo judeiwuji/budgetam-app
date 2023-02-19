@@ -51,7 +51,7 @@ const dbConfig: DBConfig = {
       storeSchema: [
         { name: 'amount', keypath: 'amount', options: { unique: false } },
         { name: 'note', keypath: 'note', options: { unique: false } },
-        { name: 'date', keypath: 'date', options: { unique: false } },
+        { name: 'createdAt', keypath: 'createdAt', options: { unique: false } },
         {
           name: 'categoryId',
           keypath: 'categoryId',

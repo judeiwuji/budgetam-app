@@ -79,14 +79,18 @@ export class TransactionService {
     return this.http.post<Transaction>('', transaction);
   }
 
-  updateTransaction() {
+  updateTransaction(transaction: Transaction) {
     if (this.authService.isGuest()) {
+      return this.updateGuestTransaction(transaction);
     }
+    return this.http.put<boolean>(this.api, transaction);
   }
 
-  deleteTransaction() {
+  deleteTransaction(transaction: Transaction) {
     if (this.authService.isGuest()) {
+      return this.deleteGuestTransaction(transaction);
     }
+    return this.http.delete(this.api);
   }
 
   private getGuestBalance() {
@@ -164,7 +168,7 @@ export class TransactionService {
   private dailyTransactionFilter(transactions: Transaction[]) {
     return transactions.filter((transaction) => {
       const today = moment();
-      const transactionDate = moment(transaction.createdAt);
+      const transactionDate = moment(new Date(transaction.date));
       const hours = today.diff(transactionDate, 'hours');
       return hours <= 23;
     });
@@ -173,7 +177,7 @@ export class TransactionService {
   private weeklyTransactionFilter(transactions: Transaction[]) {
     return transactions.filter((transaction) => {
       const today = moment();
-      const transactionDate = moment(transaction.createdAt);
+      const transactionDate = moment(new Date(transaction.date));
       const weeks = today.diff(transactionDate, 'weeks');
       return weeks <= 7;
     });
@@ -182,7 +186,7 @@ export class TransactionService {
   private monthlyTransactionFilter(transactions: Transaction[]) {
     return transactions.filter((transaction) => {
       const today = moment();
-      const transactionDate = moment(transaction.createdAt);
+      const transactionDate = moment(new Date(transaction.date));
       const months = today.diff(transactionDate, 'months');
       return months <= 1;
     });
@@ -236,7 +240,13 @@ export class TransactionService {
     );
   }
 
-  private updateGuestTransaction() {}
+  private updateGuestTransaction(transaction: Transaction) {
+    return this.dbService
+      .update<Transaction>(this.store, transaction)
+      .pipe(map((updated) => !!updated));
+  }
 
-  private deleteGuestTransaction() {}
+  private deleteGuestTransaction(transaction: Transaction) {
+    return this.dbService.deleteByKey(this.store, transaction.id);
+  }
 }

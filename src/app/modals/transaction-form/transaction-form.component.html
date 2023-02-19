@@ -22,8 +22,7 @@
             <label for="amount" class="text-muted">
                 &#8358;
             </label>
-            <input type="text" id="amount" value="0" autofocus="true"
-                [style]="{width: (fc['amount'].value.length * 2.1) + 'rem'}" formControlName="amount" autocomplete="off"
+            <input type="text" id="amount" value="0" autofocus="true" formControlName="amount" autocomplete="off"
                 (click)="selectAll($event)">
         </div>
         <!-- Amount -->
@@ -87,7 +86,9 @@
             <label for="date" class="small text-muted">
                 Date
             </label>
-            <input type="text" id="date" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()"
+            <input type="button" (click)="d.toggle()" [value]="dateFormat()"
+                class="btn btn-light transaction-date-picker-btn">
+            <input id="date" class="form-control transaction-date-picker" ngbDatepicker #d="ngbDatepicker"
                 formControlName="date" readonly>
         </div>
         <!-- Date -->

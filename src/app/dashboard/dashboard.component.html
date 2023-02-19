@@ -11,8 +11,7 @@
 <div class="container">
     <!-- Balance -->
     <div class="mb-5">
-        <app-balance-card [addTransaction]="addTransactionSubject.asObservable()"
-            [deleteTransaction]="deleteTransactionSubject.asObservable()"></app-balance-card>
+        <app-balance-card></app-balance-card>
     </div>
     <!-- Balance -->
 
@@ -25,7 +24,7 @@
         </div>
     </div>
 
-    <app-transaction-list [addTransaction]="addTransactionSubject.asObservable()"></app-transaction-list>
+    <app-transaction-list></app-transaction-list>
     <!-- Transactions -->
 </div>
 
