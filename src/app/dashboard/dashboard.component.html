@@ -9,13 +9,17 @@
 </div>
 
 <div class="container">
-    <app-balance-card [addTransaction]="addTransactionSubject.asObservable()"
-        [deleteTransaction]="deleteTransactionSubject.asObservable()"></app-balance-card>
+    <!-- Balance -->
+    <div class="mb-5">
+        <app-balance-card [addTransaction]="addTransactionSubject.asObservable()"
+            [deleteTransaction]="deleteTransactionSubject.asObservable()"></app-balance-card>
+    </div>
+    <!-- Balance -->
 
     <!-- Transactions -->
     <div class="transaction-header">
         <div class="d-flex justify-content-between align-items-center">
-            <h4>Transactions</h4>
+            <h4 class="title-text">Transactions</h4>
 
             <button (click)="allTransactions()" class="btn btn-sm">see all</button>
         </div>

@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import Category from 'src/app/models/Category';
 import Transaction from 'src/app/models/Transaction';
+import { CategoryService } from 'src/app/services/category.service';
+import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
   selector: 'app-transaction-form',
@@ -13,34 +15,18 @@ import Transaction from 'src/app/models/Transaction';
 })
 export class TransactionFormComponent implements OnInit {
   public transactionForm!: FormGroup;
-  public categories: Category[] = [
-    { id: '1', name: 'Food', icon: '🥘', isExpense: true },
-    {
-      id: '2',
-      name: 'Airtime & Subscription',
-      icon: '📱',
-      isExpense: true,
-    },
-    {
-      id: '3',
-      name: 'Utility bills',
-      icon: '📜',
-      isExpense: true,
-    },
-    {
-      id: '4',
-      name: 'Income & Earnings',
-      icon: '💰',
-      isExpense: false,
-    },
-  ];
+  public categories: Category[] = [];
   public selectedCategory!: Category;
+  public processing = false;
+
   @Input()
   onCreate!: Subject<Transaction>;
 
   constructor(
     private readonly activeModal: NgbActiveModal,
-    private readonly toastrService: ToastrService
+    private readonly toastrService: ToastrService,
+    private readonly categoryService: CategoryService,
+    private readonly transactionService: TransactionService
   ) {
     const transactionDate = this.getDate();
     this.transactionForm = new FormGroup({
@@ -51,7 +37,7 @@ export class TransactionFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectedCategory = this.categories[0];
+    this.getCategories();
   }
 
   get fc() {
@@ -90,18 +76,39 @@ export class TransactionFormComponent implements OnInit {
   }
 
   create() {
-    const transaction = new Transaction();
-    const date: NgbDateStruct = this.fc['date'].value;
-    transaction.amount = Number(this.fc['amount'].value);
-    transaction.note = this.fc['note'].value;
-    transaction.categoryId = this.selectedCategory.id;
-    transaction.date = `${date.year}-${date.month}-${date.day}`;
-    transaction.category = this.selectedCategory;
+    if (this.processing) return;
+    this.processing = true;
 
-    this.onCreate.next(transaction);
-    this.toastrService.success('Saved');
-    this.resetForm();
+    const newTransaction = new Transaction();
+    const date: NgbDateStruct = this.fc['date'].value;
+    newTransaction.amount = Number(this.fc['amount'].value);
+    newTransaction.note = this.fc['note'].value;
+    newTransaction.categoryId = this.selectedCategory.id as string;
+    newTransaction.date = `${date.year}-${date.month}-${date.day}`;
+
+    this.transactionService
+      .createTransaction(newTransaction)
+      .subscribe((response) => {
+        this.processing = false;
+        if (response) {
+          this.onCreate.next(response);
+          this.toastrService.success('Saved');
+          this.resetForm();
+        }
+      });
   }
 
   update() {}
+
+  getCategories() {
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        if (categories) {
+          this.categories = categories;
+          this.selectedCategory = this.categories[0];
+        }
+      },
+      error: (err) => {},
+    });
+  }
 }

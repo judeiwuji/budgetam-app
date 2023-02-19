@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgChartsModule } from 'ng2-charts';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -29,6 +30,7 @@ import { BalanceCardComponent } from './components/balance-card/balance-card.com
 import { BarChartComponent } from './charts/bar-chart/bar-chart.component';
 import { TransactionReportComponent } from './components/transaction-report/transaction-report.component';
 import { SettingsComponent } from './settings/settings.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const dbConfig: DBConfig = {
   name: 'BudgetamDB',
@@ -70,14 +72,6 @@ const dbConfig: DBConfig = {
         { name: 'avatar', keypath: 'avatar', options: { unique: false } },
       ],
     },
-    {
-      store: 'session',
-      storeConfig: { keyPath: 'id', autoIncrement: true },
-      storeSchema: [
-        { name: 'token', keypath: 'token', options: { unique: false } },
-        { name: 'isGuest', keypath: 'isGuest', options: { unique: false } },
-      ],
-    },
   ],
 };
 
@@ -116,8 +110,9 @@ const dbConfig: DBConfig = {
     ToastrModule.forRoot(),
     NgChartsModule,
     NgxIndexedDBModule.forRoot(dbConfig),
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

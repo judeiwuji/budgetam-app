@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ChangePasswordComponent } from '../modals/change-password/change-password.component';
 import { ProfileComponent } from '../modals/profile/profile.component';
 import User from '../models/User';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +17,9 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private readonly modal: NgbModal,
-    private deviceService: DeviceDetectorService
+    private readonly deviceService: DeviceDetectorService,
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {}
   ngOnInit(): void {}
 
@@ -37,5 +41,9 @@ export class SettingsComponent implements OnInit {
       centered: true,
       backdrop: 'static',
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

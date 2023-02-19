@@ -1,6 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
 import Transaction from 'src/app/models/Transaction';
+import { CategoryService } from 'src/app/services/category.service';
+import { TransactionService } from 'src/app/services/transaction.service';
 import Balance from '../../models/Balance';
 
 @Component({
@@ -10,10 +13,7 @@ import Balance from '../../models/Balance';
 })
 export class BalanceCardComponent implements OnInit, OnDestroy {
   public currency = 'NGN';
-  public balance: Balance = {
-    expenses: 100000,
-    income: 250000,
-  };
+  public balance = new Balance();
 
   @Input()
   addTransaction!: Observable<Transaction>;
@@ -25,7 +25,11 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
   private deleteTransactionSubscription!: Subscription;
   public isIncomeView = false;
 
-  constructor() {}
+  constructor(
+    private readonly transactionService: TransactionService,
+    private readonly toastrService: ToastrService,
+    private readonly categoryService: CategoryService
+  ) {}
 
   ngOnInit(): void {
     this.addTransactionSubscription = this.addTransaction.subscribe(
@@ -47,10 +51,28 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.getBalance();
   }
 
   ngOnDestroy(): void {
     this.addTransactionSubscription.unsubscribe();
     this.deleteTransactionSubscription.unsubscribe();
+  }
+
+  getBalance() {
+    this.transactionService.getBalance().subscribe({
+      next: (balance) => {
+        if (balance) {
+          this.balance = balance;
+        }
+        console.log(balance);
+      },
+      error: (err) => {
+        this.toastrService.warning(
+          'Sorry, we were unable to complete your request'
+        );
+      },
+    });
   }
 }

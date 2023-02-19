@@ -79,10 +79,11 @@ export class TransactionReportComponent implements OnInit {
           transactionCategory.count++;
           transactionCategory.amount += transaction.amount;
         } else {
-          transactionCategory = new TransactionCategory();
-          transactionCategory.amount = transaction.amount;
-          transactionCategory.count = 1;
-          transactionCategory.category = transaction.category;
+          transactionCategory = new TransactionCategory(
+            transaction.category,
+            transaction.amount,
+            1
+          );
         }
       });
     }

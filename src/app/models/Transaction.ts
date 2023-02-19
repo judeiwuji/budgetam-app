@@ -7,4 +7,5 @@ export default class Transaction {
   public note!: string;
   public date!: string;
   public category!: Category;
+  public createdAt!: string;
 }

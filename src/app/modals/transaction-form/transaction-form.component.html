@@ -36,29 +36,35 @@
             <div class="d-flex align-items-center">
                 <div class="me-2">
                     <span class="category-icon">
-                        {{selectedCategory.icon}}
+                        <ng-container *ngIf="selectedCategory">
+                            {{selectedCategory.icon}}
+                        </ng-container>
                     </span>
                 </div>
                 <div ngbDropdown class="w-100">
                     <button type="button" class="btn btn-light category-btn" ngbDropdownToggle>
-                        {{selectedCategory.name}}
+                        <ng-container *ngIf="selectedCategory">
+                            {{selectedCategory.name}}
+                        </ng-container>
                     </button>
 
                     <!-- Categories -->
-                    <div ngbDropdownMenu>
+                    <ul ngbDropdownMenu>
                         <ng-container *ngFor="let category of categories">
-                            <button type="button" ngbDropdownItem (click)="selectCategory(category)">
-                                <div class="d-flex align-items-center">
-                                    <span class="icon me-2">
-                                        {{category.icon}}
-                                    </span>
-                                    <span class="small text-muted">
-                                        {{category.name}}
-                                    </span>
-                                </div>
-                            </button>
+                            <li>
+                                <button type="button" ngbDropdownItem (click)="selectCategory(category)">
+                                    <div class="d-flex align-items-center">
+                                        <span class="icon me-2">
+                                            {{category.icon}}
+                                        </span>
+                                        <span class="small text-muted">
+                                            {{category.name}}
+                                        </span>
+                                    </div>
+                                </button>
+                            </li>
                         </ng-container>
-                    </div>
+                    </ul>
                     <!-- Categories -->
                 </div>
             </div>
@@ -87,7 +93,7 @@
         <!-- Date -->
 
         <div class="text-center">
-            <button class="btn btn-full w-100" type="submit" aria-label="save transaction">
+            <button class="btn btn-full w-100" type="submit" aria-label="save transaction" [disabled]="processing">
                 Save
             </button>
         </div>
