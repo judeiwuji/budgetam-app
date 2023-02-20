@@ -1,0 +1,37 @@
+signup a user by collecting credentials and saving it to the database
+---
+tags:
+  - Users
+  - signup
+responses:
+  200:
+    description: the user is signed up successfully
+parameters:
+  - username:
+    in: body
+    type: string
+    required: true
+    description: unique username for the user
+  - email:
+    in: body
+    type: string
+    required: true
+    description: unique email for the user
+  - password:
+    in: body
+    type: string
+    required: true
+    description: unique email for the user
+responses:
+  201:
+    description: request executed successfully
+    schema:
+      message:
+        type: string
+        description: "user created successful"
+  401:
+    description: either username or email has being used before
+    schema:
+      error: 
+        type: string
+        description: "the username or email has been used before"
