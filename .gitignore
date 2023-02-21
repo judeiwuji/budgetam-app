@@ -40,3 +40,10 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+
+backend/flask_web_app/__pycache__/
+backend/flask_web_app/*/__pycache__/
+backend/flask_web_app/*/*/__pycache__/
+backend/flask_web_app/*/*/*/__pycache__/
+backend/flask_web_app/Dockerfile
