@@ -5,6 +5,7 @@ import { TransactionFormComponent } from 'src/app/modals/transaction-form/transa
 import Transaction from 'src/app/models/Transaction';
 import TransactionProvider from 'src/app/providers/TransactionProvider';
 import { TransactionService } from 'src/app/services/transaction.service';
+import { Formats } from 'src/app/utils/formats';
 
 @Component({
   selector: 'app-transaction',
@@ -48,5 +49,9 @@ export class TransactionComponent implements OnInit {
           this.transactionProvider.deleteTransaction(this.transaction);
         }
       });
+  }
+
+  dateFormat() {
+    return Formats.date(this.transaction.date);
   }
 }

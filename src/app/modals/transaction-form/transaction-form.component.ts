@@ -9,6 +9,7 @@ import Transaction, { EditedTransaction } from 'src/app/models/Transaction';
 import TransactionProvider from 'src/app/providers/TransactionProvider';
 import { CategoryService } from 'src/app/services/category.service';
 import { TransactionService } from 'src/app/services/transaction.service';
+import { Formats } from 'src/app/utils/formats';
 
 @Component({
   selector: 'app-transaction-form',
@@ -160,8 +161,6 @@ export class TransactionFormComponent implements OnInit {
 
   dateFormat() {
     const date: NgbDateStruct = this.fc['date'].value;
-    return moment(new Date(`${date.year}-${date.month}-${date.day}`)).format(
-      'MMM Do YYYY'
-    );
+    return Formats.date(`${date.year}-${date.month}-${date.day}`);
   }
 }

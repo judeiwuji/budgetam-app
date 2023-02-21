@@ -94,20 +94,16 @@ export class TransactionService {
   }
 
   private getGuestBalance() {
-    return this.dbService.getAll<Transaction>(this.store).pipe(
+    return this.getGuestTransactions().pipe(
       map((transactions) => {
         const balance = new Balance();
 
-        for (const transaction of transactions) {
-          this.dbService
-            .getByID<Category>('categories', transaction.categoryId)
-            .subscribe((category) => {
-              if (category && category.isExpense) {
-                balance.expenses += transaction.amount;
-              } else {
-                balance.income += transaction.amount;
-              }
-            });
+        for (const transaction of this.monthlyTransactionFilter(transactions)) {
+          if (transaction.category.isExpense) {
+            balance.expenses += transaction.amount;
+          } else {
+            balance.income += transaction.amount;
+          }
         }
         return balance;
       })
@@ -176,19 +172,32 @@ export class TransactionService {
 
   private weeklyTransactionFilter(transactions: Transaction[]) {
     return transactions.filter((transaction) => {
-      const today = moment();
+      const now = moment();
+      const sunday = now.clone().weekday(0);
+      const saturday = now.clone().weekday(6);
       const transactionDate = moment(new Date(transaction.date));
-      const weeks = today.diff(transactionDate, 'weeks');
-      return weeks <= 7;
+      return transactionDate.isBetween(sunday, saturday, 'dates', '[]');
     });
   }
 
   private monthlyTransactionFilter(transactions: Transaction[]) {
     return transactions.filter((transaction) => {
       const today = moment();
+      const totalDays = today.daysInMonth();
+      const firstDayOfMonth = moment(
+        new Date(`${today.year()}/${today.month() + 1}/1`)
+      );
+      const lastDayOfMonth = moment(
+        new Date(`${today.year()}-${today.month() + 1}-${totalDays}`)
+      );
       const transactionDate = moment(new Date(transaction.date));
-      const months = today.diff(transactionDate, 'months');
-      return months <= 1;
+
+      return transactionDate.isBetween(
+        firstDayOfMonth,
+        lastDayOfMonth,
+        'dates',
+        '[]'
+      );
     });
   }
 
