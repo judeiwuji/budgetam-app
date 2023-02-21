@@ -12,7 +12,7 @@ from flasgger.utils import swag_from
 from math import ceil
 
 
-def sub_delete_update(data: dict, transac_id: str, username: str):
+def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 
     # check if data was sent through json
     if not data:
@@ -21,38 +21,31 @@ def sub_delete_update(data: dict, transac_id: str, username: str):
         return jsonify({"error": "data incomplete"}), 401
 
      # check if the transaction id is of uuid
-    try:
-        if UUID(transac_id).version != 4:
-            raise ValueError
-    except ValueError:
-        return jsonify({"error": "something wrong with the transaction ID"}), 401
-
-    # check if the transaction id is in database
-    if transac_id == "":
+    transac_obj = None
+    if transac_id:
         try:
-            transac_obj = storage.get(Transactions, transac_id)
-        except:
-            return jsonify({"error": "an error occured while reading the database"}), 500
+            if UUID(transac_id).version != 4:
+                raise ValueError
+        except ValueError:
+            return jsonify({"error": "something wrong with the transaction ID"}), 401
+
+        # check if the transaction id is in database
+
+        transac_obj = storage.get(Transactions, transac_id)
         if not transac_obj:
             return jsonify({"error": "sorry the transaction ID is not in the database"}), 401
 
-    title, catId, userId, amount, note = data.get("title"), data.get("catId"), \
+    date, catId, userId, amount, note = data.get("date"), data.get("catId"), \
         data.get("userId"), data.get("amount"), data.get("note")
 
     # check for optional and required
-    if not title:
-        return jsonify({"error": "sorry the title not found in the json"}), 401
     if not catId:
         return jsonify({"error": "sorry the category ID not found in the json"}), 401
     if not userId:
         return jsonify({"error": "sorry the user ID not found in the json"}), 401
-    if not amount:
-        amount = None
-    if not note:
-        note = None
 
     # checks if the user is trying to edit his record
-    if not username == userId:
+    if userId_obj != userId:
         return jsonify({"error": "sorry you can create only your transaction"}), 401
 
     # tests the category ID if it matches a UUID
@@ -74,7 +67,7 @@ def sub_delete_update(data: dict, transac_id: str, username: str):
         return jsonify({"error": "sorry the category ID is not in the database"}), 401
 
     # check if the user ID is in database
-    if not storage.get(Users, catId):
+    if not storage.get(Users, userId):
         return jsonify({"error": "sorry the user ID is not in the database"}), 401
 
     # check if the amount is an integer
@@ -85,10 +78,10 @@ def sub_delete_update(data: dict, transac_id: str, username: str):
             return jsonify({"error": "sorry the amount is not an integer"}), 402
 
     # check if the title is more than 50 characters
-    if len(title) > 50:
-        return jsonify({"error": "sorry the title is greater than 50 characters"}), 402
+    # if len(title) > 50:
+    #     return jsonify({"error": "sorry the title is greater than 50 characters"}), 402
 
-    return title, catId, userId, amount, note, transac_obj
+    return date, catId, userId, amount, note, transac_obj
 
 
 @app_views.route('/transactions', methods=['GET'], strict_slashes=False)
@@ -96,7 +89,7 @@ def sub_delete_update(data: dict, transac_id: str, username: str):
 @token_required
 def all_transactions(user_data):
     args = request.args
-    all_data = storage.filter(Transactions, **{'username': user_data.username})
+    all_data = storage.filter(Transactions, **{'userId': user_data.id})
     result = []
     page = args.get('page', 1, type=int) - 1
     perPage = args.get('perPage', 10, type=int)
@@ -136,7 +129,7 @@ def view_transaction(*user_data, **app_views_kwargs):
     return jsonify(data)
 
 
-@app_views.route('/transactions', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/transactions', methods=['POST'], strict_slashes=False)
 @swag_from('documentation/users/create_transaction.yml', methods=['GET'])
 @token_required
 def create_transaction(token_user_obj):
@@ -144,15 +137,15 @@ def create_transaction(token_user_obj):
 
     result_sub = sub_delete_update(
         request.get_json(silent=True),
-        "",
-        token_user_obj.to_dict()['username'])
+        None,
+        token_user_obj.id)
     if len(result_sub) == 2:
         return result_sub
 
-    title, catId, userId, amount, note, _ = result_sub
+    date, catId, userId, amount, note, _ = result_sub
 
     transac_data = Transactions(**{
-        "title": title,
+        "date": date,
         "catId": catId,
         "userId": userId,
         "amount": amount,
@@ -165,42 +158,44 @@ def create_transaction(token_user_obj):
 @app_views.route('/transactions/<transac_id>', methods=['PATCH'], strict_slashes=False)
 @swag_from('documentation/users/update_transaction.yml', methods=['GET'])
 @token_required
-def update_transaction(token_user_obj, transac_id):
+def update_transaction(user_data, *_, **app_views_kwargs):
     """Creates a new transaction"""
+    transac_id = app_views_kwargs['transac_id']
 
     result_sub = sub_delete_update(
         request.get_json(silent=True),
         transac_id,
-        token_user_obj.to_dict()['username'])
+        user_data.id)
     if len(result_sub) == 2:
         return result_sub
 
-    title, catId, userId, amount, note, transac_obj = result_sub
-
-    transac_data = transac_obj(**{
-        "title": title,
-        "catId": catId,
-        "userId": userId,
-        "amount": amount,
-        "note": note
-    })
-    transac_data.save()
-    return jsonify({"message": transac_data.to_dict()}), 201     # created
+    date, catId, userId, amount, note, transac_obj = result_sub
+    if not transac_obj:
+        return jsonify({"error": "sorry something failed"}), 401
+    try:
+        for key, value in {
+                "date": date, "catId": catId, "userId": userId,
+                "amount": amount, "note": note}.items():
+            setattr(transac_obj, key, value)
+        storage.save()
+    except:
+        return jsonify({"error": "error occured while saving data in database"}), 501
+    return jsonify({"message": transac_obj.to_dict()}), 201     # created
 
 
 @app_views.route('/transactions/<transac_id>', methods=['DELETE'], strict_slashes=False)
 @swag_from('documentation/users/delete_transactions.yml', methods=['GET'])
 @token_required
-def delete_transaction(token_user_obj, transac_id):
+def delete_transaction(user_data, *_, **app_views_kwargs):
     """deletes a transaction"""
-
+    transac_id = app_views_kwargs['transac_id']
     result_sub = sub_delete_update(
         request.get_json(silent=True),
         transac_id,
-        token_user_obj.to_dict()['username'])
+        user_data.id)
     if len(result_sub) == 2:
         return result_sub
-    _, _, _, _, _, transac_obj = sub_delete_update
+    _, _, _, _, _, transac_obj = result_sub
 
     storage.delete(transac_obj)
     return jsonify({}), 201
@@ -217,13 +212,14 @@ def get_balance(token_object):
 
     transac_obj = storage.get_param(Transactions, **{'username': username})
     if transac_obj:
-        transac_list, expenses, income = [item.to_dict() for item in transac_obj], 0, 0
+        transac_list, expenses, income = [
+            item.to_dict() for item in transac_obj], 0, 0
         for item in transac_list:
             if item['isExpense'] == 'false':
                 expenses += item['amount']
             if item['isExpense'] == 'true':
                 income += item['amount']
         return jsonify({
-            'expenses':expenses,
+            'expenses': expenses,
             'income': income
         })

@@ -9,4 +9,4 @@ time = "%Y-%m-%dT%H:%M:%S.%f"
 from api.v0.views.categories import *
 from api.v0.views.index import *
 from api.v0.views.users import *
-# from api.v0.views.transactions import *
+from api.v0.views.transactions import *

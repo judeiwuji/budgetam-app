@@ -2,13 +2,13 @@
 """ holds class users"""
 from models import storage_t
 from models.base_model import Base, BaseModel
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
-
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
+from datetime import datetime
 
 class Transactions(BaseModel, Base):
     __tablename__ = 'transactions'
     if storage_t == 'db':
-        title = Column(String(50), nullable=False)
+        date = Column(DateTime, default=datetime.utcnow())
         catId = Column(String(60), ForeignKey('categories.id'))
         userId = Column(String(60), ForeignKey('users.id'))
         amount = Column(Integer)
