@@ -3,7 +3,9 @@
         <h1 class="username-text">hi {{user.username}}</h1>
 
         <button class="btn" (click)="editProfile()">
-            <span class="user-avatar"></span>
+            <span class="user-avatar">
+                <img [src]="user.avatar? user.avatar : '/assets/imgs/avatar.svg'" alt="avatar">
+            </span>
         </button>
     </div>
 </div>

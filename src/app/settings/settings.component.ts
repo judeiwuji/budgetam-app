@@ -6,6 +6,7 @@ import { ChangePasswordComponent } from '../modals/change-password/change-passwo
 import { ProfileComponent } from '../modals/profile/profile.component';
 import User from '../models/User';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -13,23 +14,34 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./settings.component.css'],
 })
 export class SettingsComponent implements OnInit {
-  public user: User = new User('judoski');
+  public user: User = new User('');
 
   constructor(
     private readonly modal: NgbModal,
     private readonly deviceService: DeviceDetectorService,
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly userService: UserService
   ) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userService.getCurrentUser().subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   editProfile() {
-    this.modal.open(ProfileComponent, {
+    const modalInstance = this.modal.open(ProfileComponent, {
       size: 'md',
       fullscreen: this.deviceService.isMobile(),
       scrollable: true,
       centered: true,
       backdrop: 'static',
+    });
+
+    modalInstance.componentInstance.user = this.user;
+    modalInstance.result.then((user) => {
+      if (user) {
+        this.user = user;
+      }
     });
   }
 

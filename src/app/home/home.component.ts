@@ -24,13 +24,13 @@ export class HomeComponent implements OnInit {
   }
 
   tryDemo() {
-    const sub = this.userService.createGuestUser().subscribe((userId) => {
-      const token = `${Date.now()}.${Math.floor(
-        Math.random() * 1000
-      )}|guest|${userId}`;
+    // this.authService.logout();
+    this.userService.createGuestUser().subscribe((user) => {
+      const token = `${Date.now()}.${Math.floor(Math.random() * 1000)}|guest|${
+        user.id
+      }`;
       this.authService.login(token);
       this.categoryService.createGuestCategories();
-      sub.unsubscribe();
     });
   }
 }

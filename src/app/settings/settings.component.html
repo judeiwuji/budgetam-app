@@ -10,7 +10,9 @@
     <ul class="settings-nav">
         <li>
             <button (click)="editProfile()">
-                <span class="user-avatar me-2"></span>
+                <span class="user-avatar me-2">
+                    <img [src]="user.avatar? user.avatar : '/assets/imgs/avatar.svg'" alt="avatar">
+                </span>
                 <h5>{{user.username}}</h5>
             </button>
         </li>

@@ -30,7 +30,6 @@ export class AuthService {
   }
 
   login(token: string) {
-    this.logout();
     this.cookieService.set(this.AUTH_KEY, token);
     this.router.navigate(['/dashboard']);
   }
