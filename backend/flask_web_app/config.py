@@ -1,0 +1,2 @@
+SECRET_KEY="zSO$$FiT26!2GvcVGUGga9*#p16Rp9L4*p9v3vYDdyVgdApaqh"
+DEBUG=False
