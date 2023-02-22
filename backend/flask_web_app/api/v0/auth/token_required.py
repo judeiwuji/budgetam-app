@@ -1,7 +1,6 @@
 from functools import wraps
-from flask import jsonify, request
+from flask import current_app, jsonify, request
 from jwt import decode, encode
-from api.v0 import app
 from api.v0.views import time
 from models import storage
 from models.users import Users
@@ -24,7 +23,7 @@ def token_required(f):
         if not user_data:
             return jsonify({'message': 'user does not exist or token incorrect'}), 401
         
-        expires = decode(token, app.secret_key, algorithms="HS256")['expireAt']
+        expires = decode(token, current_app.config['SECRET_KEY'], algorithms="HS256")['expireAt']
         if datetime.strptime(expires, time) <= datetime.utcnow() and f.__name__ != 'refresh':
             return jsonify({'message': 'sorry your token has expired please refresh it'}), 401
         return  f(user_data, *args, **kwargs)
