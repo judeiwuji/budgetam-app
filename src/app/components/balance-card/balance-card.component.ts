@@ -16,7 +16,7 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
   public currency = 'NGN';
   public balance = new Balance();
   public transactionProvider = TransactionProvider.getInstance();
-  private addTransactionSubscription!: Subscription;
+  private createTransactionSubscription!: Subscription;
   private editTransactionSubscription!: Subscription;
   private deleteTransactionSubscription!: Subscription;
   public isIncomeView = false;
@@ -28,7 +28,7 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.addTransactionSubscription =
+    this.createTransactionSubscription =
       this.transactionProvider.onCreateTransaction((transaction) => {
         if (transaction.category.isExpense) {
           this.balance.expenses += transaction.amount;
@@ -75,7 +75,7 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.addTransactionSubscription.unsubscribe();
+    this.createTransactionSubscription.unsubscribe();
     this.editTransactionSubscription.unsubscribe();
     this.deleteTransactionSubscription.unsubscribe();
   }

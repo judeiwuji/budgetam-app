@@ -19,7 +19,7 @@
 </div>
 
 <div class="modal-body">
-    <ng-container *ngFor="let transaction of transactions">
+    <ng-container *ngFor="let transaction of category?.transactions">
         <div class="mb-3">
             <app-transaction [transaction]="transaction"></app-transaction>
         </div>

@@ -42,34 +42,34 @@ export class TransactionCategoryComponent implements OnInit {
     modalInstance.componentInstance.onDeleteTransaction =
       this.onDeleteTransaction;
 
-    switch (this.currentView) {
-      case TransactionSummaryView.daily:
-        this.transactionService
-          .getDailyTransactions(this.transaction.category.id as string)
-          .subscribe({
-            next: (transactions) => {
-              modalInstance.componentInstance.transactions = transactions;
-            },
-          });
-        break;
-      case TransactionSummaryView.weekly:
-        this.transactionService
-          .getWeeklyTransactions(this.transaction.category.id as string)
-          .subscribe({
-            next: (transactions) => {
-              modalInstance.componentInstance.transactions = transactions;
-            },
-          });
-        break;
-      case TransactionSummaryView.monthly:
-        this.transactionService
-          .getMonthlyTransactions(this.transaction.category.id as string)
-          .subscribe({
-            next: (transactions) => {
-              modalInstance.componentInstance.transactions = transactions;
-            },
-          });
-    }
+    // switch (this.currentView) {
+    //   case TransactionSummaryView.daily:
+    //     this.transactionService
+    //       .getDailyTransactions(this.transaction.category.id as string)
+    //       .subscribe({
+    //         next: (transactions) => {
+    //           modalInstance.componentInstance.transactions = transactions;
+    //         },
+    //       });
+    //     break;
+    //   case TransactionSummaryView.weekly:
+    //     this.transactionService
+    //       .getWeeklyTransactions(this.transaction.category.id as string)
+    //       .subscribe({
+    //         next: (transactions) => {
+    //           modalInstance.componentInstance.transactions = transactions;
+    //         },
+    //       });
+    //     break;
+    //   case TransactionSummaryView.monthly:
+    //     this.transactionService
+    //       .getMonthlyTransactions(this.transaction.category.id as string)
+    //       .subscribe({
+    //         next: (transactions) => {
+    //           modalInstance.componentInstance.transactions = transactions;
+    //         },
+    //       });
+    // }
   }
 
   ngOnInit(): void {}

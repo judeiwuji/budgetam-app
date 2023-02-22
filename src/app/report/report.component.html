@@ -8,13 +8,13 @@
 
     <!-- Chart -->
     <div class="chart-container py-3">
-        <app-bar-chart></app-bar-chart>
+        <app-bar-chart [barChartData]="chartData"></app-bar-chart>
     </div>
     <!-- Chart -->
 
     <!-- Transactions -->
     <div class="py-3">
-        <app-transaction-report></app-transaction-report>
+        <app-transaction-report (onChangeView)="onChangeView($event)"></app-transaction-report>
     </div>
     <!-- Transactions -->
 

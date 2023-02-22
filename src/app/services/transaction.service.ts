@@ -51,26 +51,26 @@ export class TransactionService {
     return this.http.get<TransactionCategory[]>(this.api);
   }
 
-  getDailyTransactions(categoryId: string | number) {
-    if (this.authService.isGuest()) {
-      return this.getGuestDailyTransactions(categoryId);
-    }
-    return this.http.get<Transaction[]>(this.api);
-  }
+  // getDailyTransactions(categoryId: string | number) {
+  //   if (this.authService.isGuest()) {
+  //     return this.getGuestDailyTransactions(categoryId);
+  //   }
+  //   return this.http.get<Transaction[]>(this.api);
+  // }
 
-  getWeeklyTransactions(categoryId: string | number) {
-    if (this.authService.isGuest()) {
-      return this.getGuestWeeklyTransactions(categoryId);
-    }
-    return this.http.get<Transaction[]>(this.api);
-  }
+  // getWeeklyTransactions(categoryId: string | number) {
+  //   if (this.authService.isGuest()) {
+  //     return this.getGuestWeeklyTransactions(categoryId);
+  //   }
+  //   return this.http.get<Transaction[]>(this.api);
+  // }
 
-  getMonthlyTransactions(categoryId: string | number) {
-    if (this.authService.isGuest()) {
-      return this.getGuestMonthlyTransactions(categoryId);
-    }
-    return this.http.get<Transaction[]>(this.api);
-  }
+  // getMonthlyTransactions(categoryId: string | number) {
+  //   if (this.authService.isGuest()) {
+  //     return this.getGuestMonthlyTransactions(categoryId);
+  //   }
+  //   return this.http.get<Transaction[]>(this.api);
+  // }
 
   createTransaction(transaction: Transaction) {
     if (this.authService.isGuest()) {
@@ -143,24 +143,6 @@ export class TransactionService {
     );
   }
 
-  private groupTransactions(transactions: Transaction[]) {
-    const transactionCategories: any = {};
-    for (const transaction of transactions) {
-      if (transactionCategories[transaction.categoryId]) {
-        transactionCategories[transaction.categoryId].amount +=
-          transaction.amount;
-        ++transactionCategories[transaction.categoryId].count;
-      } else {
-        transactionCategories[transaction.categoryId] = new TransactionCategory(
-          transaction.category,
-          transaction.amount,
-          1
-        );
-      }
-    }
-    return Object.values(transactionCategories) as TransactionCategory[];
-  }
-
   private dailyTransactionFilter(transactions: Transaction[]) {
     return transactions.filter((transaction) => {
       const today = moment();
@@ -201,53 +183,87 @@ export class TransactionService {
     });
   }
 
-  private getGuestDailyCategorizeTransactions() {
-    return this.getGuestTransactions().pipe(
-      map(this.dailyTransactionFilter),
-      map(this.groupTransactions)
+  categoriseTransactions(
+    filter: (transaction: Transaction[]) => Transaction[]
+  ) {
+    return this.categoryService.getCategories().pipe(
+      switchMap((categories) => {
+        return this.dbService.getAll<Transaction>(this.store).pipe(
+          map((transactions) => ({
+            transactions: filter(transactions),
+            categories,
+          }))
+        );
+      }),
+      map((data) => {
+        const categories: any = {};
+
+        for (const transaction of data.transactions) {
+          const category = data.categories.find(
+            (d) => d.id === transaction.categoryId
+          );
+
+          if (category) {
+            const item = categories[category.id as string];
+
+            transaction.category = category;
+            if (item) {
+              item.category.transactions.push(transaction);
+              item.amount += transaction.amount;
+              ++item.count;
+            } else {
+              category.transactions = [transaction];
+              categories[category.id as string] = new TransactionCategory(
+                category,
+                transaction.amount,
+                1
+              );
+            }
+          }
+        }
+        return Object.values(categories) as TransactionCategory[];
+      })
     );
+  }
+
+  private getGuestDailyCategorizeTransactions() {
+    return this.categoriseTransactions(this.dailyTransactionFilter);
   }
 
   private getGuestWeeklyCategorizeTransactions() {
-    return this.getGuestTransactions().pipe(
-      map(this.weeklyTransactionFilter),
-      map(this.groupTransactions)
-    );
+    return this.categoriseTransactions(this.weeklyTransactionFilter);
   }
 
   private getGuestMonthlyCategorizeTransactions() {
-    return this.getGuestTransactions().pipe(
-      map(this.monthlyTransactionFilter),
-      map(this.groupTransactions)
-    );
+    return this.categoriseTransactions(this.monthlyTransactionFilter);
   }
 
-  private getGuestDailyTransactions(categoryId: string | number) {
-    return this.getGuestTransactions().pipe(
-      map(this.dailyTransactionFilter),
-      map((transactions) =>
-        transactions.filter((d) => d.categoryId === categoryId)
-      )
-    );
-  }
+  // private getGuestDailyTransactions(categoryId: string | number) {
+  //   return this.getGuestTransactions().pipe(
+  //     map(this.dailyTransactionFilter),
+  //     map((transactions) =>
+  //       transactions.filter((d) => d.categoryId === categoryId)
+  //     )
+  //   );
+  // }
 
-  private getGuestWeeklyTransactions(categoryId: string | number) {
-    return this.getGuestTransactions().pipe(
-      map(this.weeklyTransactionFilter),
-      map((transactions) =>
-        transactions.filter((d) => d.categoryId === categoryId)
-      )
-    );
-  }
+  // private getGuestWeeklyTransactions(categoryId: string | number) {
+  //   return this.getGuestTransactions().pipe(
+  //     map(this.weeklyTransactionFilter),
+  //     map((transactions) =>
+  //       transactions.filter((d) => d.categoryId === categoryId)
+  //     )
+  //   );
+  // }
 
-  private getGuestMonthlyTransactions(categoryId: string | number) {
-    return this.getGuestTransactions().pipe(
-      map(this.monthlyTransactionFilter),
-      map((transactions) =>
-        transactions.filter((d) => d.categoryId === categoryId)
-      )
-    );
-  }
+  // private getGuestMonthlyTransactions(categoryId: string | number) {
+  //   return this.getGuestTransactions().pipe(
+  //     map(this.monthlyTransactionFilter),
+  //     map((transactions) =>
+  //       transactions.filter((d) => d.categoryId === categoryId)
+  //     )
+  //   );
+  // }
 
   private updateGuestTransaction(transaction: Transaction) {
     return this.dbService
