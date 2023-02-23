@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """handles all request to the user"""
-from flask import jsonify, request
-from api.v0 import app
+from flask import current_app, jsonify, request
 from api.v0.views import app_views, time
 from api.v0.auth.token_required import token_required
 from models.users import Users
@@ -81,7 +80,7 @@ def login():
     expires = datetime.utcnow() - timedelta(minutes=20)
     user_token = user_data.token
     if user_token:
-        expires = datetime.strptime(decode(user_token, app.secret_key, algorithms="HS256")['expireAt'], time)
+        expires = datetime.strptime(decode(user_token, current_app.config['SECRET_KEY'], algorithms="HS256")['expireAt'], time)
     
     if not user_token or expires < datetime.utcnow():         # token expired
 
@@ -89,7 +88,7 @@ def login():
         user_data.token = encode({
             'username': username,
             'expireAt': datetime.strftime(expires, time)
-        }, app.secret_key)
+        }, current_app.config['SECRET_KEY'])
         user_data.save()
 
     return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 201
@@ -107,13 +106,13 @@ def logout(user_data):
 @token_required
 def refresh(user_data):
     """for refreshing the tokens"""
-    token = decode(user_data.token, app.secret_key, algorithms="HS256")
+    token = decode(user_data.token, current_app.config['SECRET_KEY'], algorithms="HS256")
     expires = datetime.strptime(token['expireAt'], time)
     if expires <= datetime.utcnow():         # token expired
         expires = datetime.utcnow() + timedelta(minutes=20)
         user_data.token = encode({
             'username': token['username'],
             'expireAt': datetime.strftime(expires, time)
-        }, app.secret_key)
+        }, current_app.config['SECRET_KEY'])
         user_data.save()
     return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 201

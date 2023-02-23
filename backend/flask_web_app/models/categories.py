@@ -13,7 +13,7 @@ class Categories(BaseModel, Base):
         name = Column(String(30), nullable=False)
         icon = Column(String(255), default='https://robohash.org/odioexpeditapraesentium.png?size=50x50&set=set1')
         isExpense = Column(Boolean, default=False)
-        transactions = relationship('Transactions')
+        transactions = relationship('Transactions', backref='categories')
     else:
         name = ""
 
