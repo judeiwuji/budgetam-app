@@ -52,6 +52,9 @@
                     <div class="text-center">
                         <button type="submit" class="btn btn-block btn-full">
                             Create Account
+                            <ng-container *ngIf="processing">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </ng-container>
                         </button>
                     </div>
                 </form>

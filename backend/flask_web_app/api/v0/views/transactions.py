@@ -134,6 +134,8 @@ def view_transaction(*user_data, **app_views_kwargs):
 @token_required
 def create_transaction(token_user_obj):
     """Creates a new transaction"""
+    from sys import stdout
+    print(token_user_obj, file=stdout)
 
     result_sub = sub_delete_update(
         request.get_json(silent=True),
@@ -152,6 +154,7 @@ def create_transaction(token_user_obj):
         "note": note
     })
     transac_data.save()
+    print(transac_data.category)
     return jsonify({"message": transac_data.to_dict()}), 201     # created
 
 
@@ -205,7 +208,9 @@ def delete_transaction(user_data, *_, **app_views_kwargs):
 @swag_from('documentation/users/get_balance.yml', methods=['GET'])
 @token_required
 def get_balance(token_object):
-    pass
+    from sys import stdout;
+    print(token_object, file=stdout)
+
     username = token_object.username
 
     # check if the transaction id is of uuid

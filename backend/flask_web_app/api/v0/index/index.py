@@ -2,11 +2,13 @@
 """ Index """
 from api.v0.index import index_views
 from flask import jsonify
+import uuid
+
 
 @index_views.route('/', methods=['GET'], strict_slashes=False)
 def root():
     """Index of API"""
-    return jsonify({"message": "welcome home"})
+    return jsonify({"message": "welcome home {}".format(uuid.uuid4())})
 
 @index_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():

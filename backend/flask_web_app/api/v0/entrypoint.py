@@ -29,6 +29,7 @@ from api.v0.index import index_views
 
 def create_flask_app(config_filename):
     app = Flask("Budgetam API")
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.config.from_pyfile(config_filename)
 
     app.register_blueprint(index_views)
@@ -44,7 +45,7 @@ def main():
     if not host:
         host = '0.0.0.0'
     if not port:
-        port = '5000'
+        port = '5002'
     create_flask_app('config.py').run(host=host, port=port, threaded=True)
 
 if __name__ == "__main__":
