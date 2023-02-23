@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import current_app, jsonify, request
 from jwt import decode, encode
-from api.v0.views import time
+from api import time
 from models import storage
 from models.users import Users
 from datetime import datetime, timedelta
@@ -19,6 +19,7 @@ def token_required(f):
         token = request.headers['Authorization']
         if not token:
             return jsonify({'message' : 'token is invalid !!'}), 401
+        
         user_data = storage.get_param(Users, **{'token': token})
         if not user_data:
             return jsonify({'message': 'user does not exist or token incorrect'}), 401

@@ -3,11 +3,10 @@
 Contains class BaseModel
 """
 import models
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, String, DateTime
 from datetime import datetime
 import uuid
-from werkzeug.security import generate_password_hash
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 classes = ["Categories","Transactions","Users","Tokens"]

@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """handles all request to the user"""
 from flask import current_app, jsonify, request
-from api.v0.views import app_views, time
+from api.v0.views import app_views
+from api import time
 from api.v0.auth.token_required import token_required
 from models.users import Users
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -13,7 +14,7 @@ from flasgger.utils import swag_from
 
 
 @app_views.route('/signup', methods=['GET', 'POST', 'PUT'], strict_slashes=False)
-@swag_from('documentation/users/signup.yml')
+# @swag_from('documentation/users/signup.yml')
 def signup():
     """For signing up a user"""
     if request.method != 'PUT':
@@ -29,6 +30,9 @@ def signup():
         return jsonify({"error": "data incomplete"}), 401
     username, email, password = data.get('username'), data.get(
         'email'), data.get('password')
+    
+    if not username or not password:
+        return jsonify({"error": "sorry could not handle that, check data."}), 401
 
     # check the email to ensure it's validated
     try:
@@ -68,14 +72,14 @@ def login():
     username, password = data.get('username'), data.get('password')
 
     if not username or not password:
-        return jsonify({"error": "sorry couldn't handle that, check data."})
+        return jsonify({"error": "sorry could not handle that, check data."}), 401
 
     user_data = storage.get_param(Users, **{'username': username})
     if not user_data:
         return jsonify({"error": "sorry you need to create an account"}), 401
     
     if not check_password_hash(user_data.password, password):
-        return jsonify({"error": "sorry your password is not correct"})
+        return jsonify({"error": "sorry your password is not correct"}), 401
 
     expires = datetime.utcnow() - timedelta(minutes=20)
     user_token = user_data.token
@@ -94,7 +98,7 @@ def login():
     return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 201
 
 
-@app_views.route('/logout', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/logout', methods=['GET'], strict_slashes=False)
 @token_required
 def logout(user_data):
     """for loging out a user"""
@@ -116,3 +120,13 @@ def refresh(user_data):
         }, current_app.config['SECRET_KEY'])
         user_data.save()
     return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 201
+
+@app_views.route('/delete_user', methods=['DELETE'], strict_slashes=True)
+@token_required
+def delete_user(user_data):
+    """for deleting a user"""
+    try:
+        storage.delete(user_data)
+    except:
+        return jsonify({"error": "an error occured while deleting from the database"}), 500
+    return jsonify({}), 201

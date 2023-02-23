@@ -1,9 +1,0 @@
-#!/usr/bin/bash
-
-export MYSQL_USER=budgetam_backend_user \
-    MYSQL_PWD=helloworld2024 \
-    MYSQL_HOST=127.0.0.1 \
-    MYSQL_DB=budgetam_db \
-    TYPE_STORAGE=db
-
-python -m api.v0.entrypoint

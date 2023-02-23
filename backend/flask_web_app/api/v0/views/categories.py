@@ -30,11 +30,14 @@ def sub_create_update(data):
             jsonify({"error": "isExpense is not a boolean"}), 401
     return name, icon, is_expense
 
+# @swagger.validate('Product')
+
 
 @app_views.route('/categories', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/categories/all_categories.yml', endpoint='with_user_name', methods=['GET'])
+#   ('documentation/categories/all_categories.yml', methods=['GET'])
 def all_categories():
-    """Retrieves the list of all Categories object"""
+    """"""
+   
     # if ?filter=(id='abc')
     args = request.args
     all_data = storage.all(Categories)
@@ -72,6 +75,9 @@ def view_category(category_id):
 @app_views.route('/categories', methods=['PUT'], strict_slashes=False)
 @token_required
 def create_category(_):
+    """
+    file:documentation\categories\all_categories.yml
+    """
     result = sub_create_update(request.get_json(silent=True))
     if len(result) == 2:
         return result
@@ -110,7 +116,7 @@ def update_category(*_, **app_views_kwargs):
         for key, value in {
             "name": name,
             "icon": (icon if icon else instance.icon),
-            "isExpense": (is_expense if is_expense else instance.isExpense)}.items():
+                "isExpense": (is_expense if is_expense else instance.isExpense)}.items():
             setattr(instance, key, value)
         storage.save()
     except:

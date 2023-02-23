@@ -85,9 +85,37 @@ def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 
 
 @app_views.route('/transactions', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/users/all_transactions.yml', methods=['GET'])
+# @swag_from('documentation\transactions\all_transactions.yml', methods=['GET'])
 @token_required
 def all_transactions(user_data):
+    """Example endpoint returning a list of colors by palette
+    This is using docstrings for specifications.
+    ---
+    parameters:
+      - name: palette
+        in: path
+        type: string
+        enum: ['all', 'rgb', 'cmyk']
+        required: true
+        default: all
+    definitions:
+      Palette:
+        type: object
+        properties:
+          palette_name:
+            type: array
+            items:
+              $ref: '#/definitions/Color'
+      Color:
+        type: string
+    responses:
+      200:
+        description: A list of colors (may be filtered by palette)
+        schema:
+          $ref: '#/definitions/Palette'
+        examples:
+          rgb: ['red', 'green', 'blue']
+    """
     args = request.args
     all_data = storage.filter(Transactions, **{'userId': user_data.id})
     result = []
@@ -114,7 +142,7 @@ def all_transactions(user_data):
 
 
 @app_views.route('/transactions/<transac_id>', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/users/view_transactions.yml', methods=['GET'])
+# @swag_from('documentation/users/view_transactions.yml', methods=['GET'])
 @token_required
 def view_transaction(*user_data, **app_views_kwargs):
     """Retrieves the transaction of a given id"""
@@ -130,7 +158,7 @@ def view_transaction(*user_data, **app_views_kwargs):
 
 
 @app_views.route('/transactions', methods=['POST'], strict_slashes=False)
-@swag_from('documentation/users/create_transaction.yml', methods=['GET'])
+# @swag_from('documentation/users/create_transaction.yml', methods=['GET'])
 @token_required
 def create_transaction(token_user_obj):
     """Creates a new transaction"""
@@ -156,7 +184,7 @@ def create_transaction(token_user_obj):
 
 
 @app_views.route('/transactions/<transac_id>', methods=['PATCH'], strict_slashes=False)
-@swag_from('documentation/users/update_transaction.yml', methods=['GET'])
+# @swag_from('documentation/users/update_transaction.yml', methods=['GET'])
 @token_required
 def update_transaction(user_data, *_, **app_views_kwargs):
     """Creates a new transaction"""
@@ -184,7 +212,7 @@ def update_transaction(user_data, *_, **app_views_kwargs):
 
 
 @app_views.route('/transactions/<transac_id>', methods=['DELETE'], strict_slashes=False)
-@swag_from('documentation/users/delete_transactions.yml', methods=['GET'])
+# @swag_from('documentation/users/delete_transactions.yml', methods=['GET'])
 @token_required
 def delete_transaction(user_data, *_, **app_views_kwargs):
     """deletes a transaction"""
@@ -202,7 +230,7 @@ def delete_transaction(user_data, *_, **app_views_kwargs):
 
 
 @app_views.route('/balance', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/users/get_balance.yml', methods=['GET'])
+# @swag_from('documentation/users/get_balance.yml', methods=['GET'])
 @token_required
 def get_balance(token_object):
     pass

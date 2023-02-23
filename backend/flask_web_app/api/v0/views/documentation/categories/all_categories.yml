@@ -1,6 +1,38 @@
 get all categories in the database
 ---
-tags:
-  - Categories
-
-    
+parameters:
+  - filter:
+    in: path
+    type: string
+    required: false
+    default: null
+  - perPage:
+    in: path
+    type: integer
+    required: false
+    default: 0
+  - page:
+    in: path
+    type: integer
+    required: false
+    default: 10
+# definitions:
+#   Categories: 
+#     type: object
+#     properties:
+#       categories_items:
+#         type: array
+#         items: 
+#           $ref: '#/definitions/Filter'
+          
+#   Filter:
+#     type: string
+#   PerPage:
+#     type: integer
+#   Page:
+#     type: integer
+# responses:
+#   200:
+#     description: list successful
+#     schema:
+#       $ref: '#/definitions/Categories'

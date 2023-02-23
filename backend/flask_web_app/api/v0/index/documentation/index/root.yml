@@ -1,0 +1,9 @@
+Endpoint returning a message that says welcome home
+    in the root url
+---
+responses:
+  200:
+    get:
+      description: simple welcome message
+      examples:
+        message": welcome home
