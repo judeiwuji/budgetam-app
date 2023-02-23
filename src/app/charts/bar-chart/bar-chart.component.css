@@ -5,3 +5,7 @@
   display: flex;
   justify-content: center;
 }
+
+.chart-wrapper canvas {
+  width: 100%;
+}

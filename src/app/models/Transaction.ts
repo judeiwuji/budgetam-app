@@ -8,3 +8,10 @@ export default class Transaction {
   public date!: string;
   public category!: Category;
 }
+
+export class EditedTransaction {
+  constructor(
+    public oldTransaction: Transaction,
+    public newTransaction: Transaction
+  ) {}
+}

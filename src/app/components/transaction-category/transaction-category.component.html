@@ -19,7 +19,7 @@
     </div>
 
     <!-- Amount -->
-    <span class="fw-bold">
+    <span class="fw-bold text-success" [ngClass]="{'text-danger': transaction.category.isExpense}">
         <span>&#8358;</span>
         <span>{{transaction.amount | number}}</span>
     </span>

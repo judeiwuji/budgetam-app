@@ -32,8 +32,9 @@
   font-size: 3rem;
   font-weight: 700;
   display: inline-block;
-  width: 2.1rem;
+  width: 10rem;
   max-width: 10rem;
+  text-align: center;
 }
 
 .category-btn {
@@ -44,4 +45,17 @@
 
 .transaction-form-group {
   margin-bottom: 2em;
+}
+
+.transaction-date-picker {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  padding: 0;
+}
+
+.transaction-date-picker-btn {
+  display: block;
+  width: 100%;
+  text-align: left !important;
 }

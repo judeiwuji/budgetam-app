@@ -13,11 +13,15 @@ body {
 /* Logo */
 
 /* Btn */
+.btn-full,
+.btn-rounded {
+  border-radius: 10px;
+}
+
 .btn-full {
   background-color: #eb2f06;
   color: #ffffff;
   transition: all 0.3s ease-in-out;
-  border-radius: 10px;
 }
 
 .btn-full:hover {
@@ -36,6 +40,7 @@ body {
   background-color: #000000b6;
   color: #ffffff;
   padding: 0;
+  cursor: pointer;
 }
 /* Btn */
 
@@ -215,6 +220,27 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 /* Icon */
+
+/* Avatar */
+.user-avatar {
+  width: 3em;
+  height: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid #404040;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.user-avatar img {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+}
+/* Avatar */
 
 /* Media Queries */
 @media screen and (max-width: 767px) {
