@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """handles all request to the transactions"""
+from datetime import datetime, timedelta, date
 from uuid import UUID
 from flask import jsonify, request
+from models.transaction_category import TransactionCategory
 from models import storage
 from api.v0.auth.token_required import token_required
 from api.v0.views import app_views, query_params
@@ -10,15 +12,16 @@ from models.users import Users
 from models.transactions import Transactions
 from flasgger.utils import swag_from
 from math import ceil
+from calendar import monthrange
 
 
 def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 
     # check if data was sent through json
     if not data:
-        return jsonify({"error": "not a json"}), 401
+        return jsonify({"error": "not a json"}), 400
     if len(data) < 3 or len(data) > 5:
-        return jsonify({"error": "data incomplete"}), 401
+        return jsonify({"error": "data incomplete"}), 400
 
      # check if the transaction id is of uuid
     transac_obj = None
@@ -27,60 +30,61 @@ def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
             if UUID(transac_id).version != 4:
                 raise ValueError
         except ValueError:
-            return jsonify({"error": "something wrong with the transaction ID"}), 401
+            return jsonify({"error": "something wrong with the transaction ID"}), 400
 
         # check if the transaction id is in database
 
         transac_obj = storage.get(Transactions, transac_id)
         if not transac_obj:
-            return jsonify({"error": "sorry the transaction ID is not in the database"}), 401
+            return jsonify({"error": "sorry the transaction ID is not in the database"}), 400
 
     date, catId, userId, amount, note = data.get("date"), data.get("catId"), \
         data.get("userId"), data.get("amount"), data.get("note")
 
     # check for optional and required
     if not catId:
-        return jsonify({"error": "sorry the category ID not found in the json"}), 401
-    if not userId:
-        return jsonify({"error": "sorry the user ID not found in the json"}), 401
+        return jsonify({"error": "sorry the category ID not found in the json"}), 400
+    if transac_id and not userId:
+        return jsonify({"error": "sorry the user ID not found in the json"}), 400
 
     # checks if the user is trying to edit his record
-    if userId_obj != userId:
-        return jsonify({"error": "sorry you can create only your transaction"}), 401
+    if transac_id and userId_obj != userId:
+        return jsonify({"error": "sorry you can create only your transaction"}), 400
 
     # tests the category ID if it matches a UUID
     try:
         if UUID(catId).version != 4:
             raise ValueError
     except ValueError:
-        return jsonify({"error": "something wrong with the category ID"}), 401
+        return jsonify({"error": "something wrong with the category ID"}), 400
 
     # tests the user ID if it matches a UUID
     try:
-        if UUID(userId).version != 4:
+        if transac_id and UUID(userId).version != 4:
             raise ValueError
     except ValueError:
-        return jsonify({"error": "something wrong with the user ID"}), 401
+        return jsonify({"error": "something wrong with the user ID"}), 400
 
     # check if the category ID is in database
     if not storage.get(Categories, catId):
-        return jsonify({"error": "sorry the category ID is not in the database"}), 401
+        return jsonify({"error": "sorry the category ID is not in the database"}), 400
 
     # check if the user ID is in database
-    if not storage.get(Users, userId):
-        return jsonify({"error": "sorry the user ID is not in the database"}), 401
+    if transac_id and not storage.get(Users, userId):
+        return jsonify({"error": "sorry the user ID is not in the database"}), 400
 
     # check if the amount is an integer
     if amount:
         try:
-            amount = int(amount)
+            amount = float(amount)
         except ValueError:
-            return jsonify({"error": "sorry the amount is not an integer"}), 402
+            return jsonify({"error": "sorry the amount is not an integer"}), 400
 
     # check if the title is more than 50 characters
     # if len(title) > 50:
     #     return jsonify({"error": "sorry the title is greater than 50 characters"}), 402
-
+    if not userId:
+        userId = userId_obj
     return date, catId, userId, amount, note, transac_obj
 
 
@@ -132,15 +136,15 @@ def view_transaction(*user_data, **app_views_kwargs):
 @app_views.route('/transactions', methods=['POST'], strict_slashes=False)
 @swag_from('documentation/users/create_transaction.yml', methods=['GET'])
 @token_required
-def create_transaction(token_user_obj):
+def create_transaction(user_data):
     """Creates a new transaction"""
-    from sys import stdout
-    print(token_user_obj, file=stdout)
+    # from sys import stdout
+    # print(user_data, file=stdout)
 
     result_sub = sub_delete_update(
         request.get_json(silent=True),
         None,
-        token_user_obj.id)
+        user_data.id)
     if len(result_sub) == 2:
         return result_sub
 
@@ -154,8 +158,8 @@ def create_transaction(token_user_obj):
         "note": note
     })
     transac_data.save()
-    print(transac_data.category)
-    return jsonify({"message": transac_data.to_dict()}), 201     # created
+    # print(transac_data.category)
+    return jsonify(transac_data.to_dict()), 201     # created
 
 
 @app_views.route('/transactions/<transac_id>', methods=['PATCH'], strict_slashes=False)
@@ -207,24 +211,97 @@ def delete_transaction(user_data, *_, **app_views_kwargs):
 @app_views.route('/balance', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/users/get_balance.yml', methods=['GET'])
 @token_required
-def get_balance(token_object):
-    from sys import stdout;
-    print(token_object, file=stdout)
+def get_balance(user_data):
+    # from sys import stdout
 
-    username = token_object.username
+    expenses = 0
+    income = 0
+    now = datetime.today()
+    month, totalDays = monthrange(now.year, now.month)
+    firstDayOfMonth = datetime(year=now.year, month=now.month, day=1)
+    lastDayOfMonth = datetime(year=now.year, month=now.month, day=totalDays)
+    # retrieve all user transactions for this monthly
+    transactions = storage.query(Transactions).\
+        filter(Transactions.userId == user_data.id,
+               Transactions.date >= firstDayOfMonth,
+               Transactions.date <= lastDayOfMonth)
 
-    # check if the transaction id is of uuid
+    if transactions is not None:
+        for item in transactions:
+            # print(item, file=stdout)
+            if item.category.isExpense:
+                expenses += item.amount
+            else:
+                income += item.amount
+    return jsonify({
+        'expenses': expenses,
+        'income': income
+    })
 
-    transac_obj = storage.get_param(Transactions, **{'username': username})
-    if transac_obj:
-        transac_list, expenses, income = [
-            item.to_dict() for item in transac_obj], 0, 0
-        for item in transac_list:
-            if item['isExpense'] == 'false':
-                expenses += item['amount']
-            if item['isExpense'] == 'true':
-                income += item['amount']
-        return jsonify({
-            'expenses': expenses,
-            'income': income
-        })
+
+def categorize_transactions(all_data):
+    categories = []
+    for category in all_data:
+        amount = sum(
+            [transaction.amount for transaction in category.transactions])
+        count = len(category.transactions)
+        categorize = TransactionCategory(category=category,
+                                         amount=amount, count=count)
+        categories.append(categorize)
+    return categories
+
+
+@app_views.route('/daily/transactions', methods=['GET'], strict_slashes=False)
+@token_required
+def daily_transactions(user_data):
+    now = datetime.today()
+    today = datetime(year=now.year, month=now.month, day=now.day)
+    all_data = storage.query(Categories).join(Transactions).filter(
+        Transactions.userId == user_data.id,
+        Transactions.date == today).order_by(Categories.name).all()
+    categories = categorize_transactions(all_data)
+    return jsonify([item.to_dict() for item in categories])
+
+
+@app_views.route('/weekly/transactions', methods=['GET'], strict_slashes=False)
+@token_required
+def weekly_transactions(user_data):
+    today = date.today()
+    weekstart = today - timedelta(days=today.weekday())
+    weekend = weekstart + timedelta(days=6)
+
+    all_data = storage.query(Categories).join(Transactions).filter(
+        Transactions.userId == user_data.id, Transactions.date >= weekstart,
+        Transactions.date <= weekend).order_by(Categories.name).all()
+    categories = categorize_transactions(all_data)
+    return jsonify([item.to_dict() for item in categories])
+
+
+@app_views.route('/monthly/transactions', methods=['GET'], strict_slashes=False)
+@token_required
+def monthly_transactions(user_data):
+    now = datetime.today()
+    month, totalDays = monthrange(now.year, now.month)
+    firstDayOfMonth = datetime(year=now.year, month=now.month, day=1)
+    lastDayOfMonth = datetime(year=now.year, month=now.month, day=totalDays)
+
+    all_data = storage.query(Categories).join(Transactions).filter(
+        Transactions.userId == user_data.id, Transactions.date >= firstDayOfMonth,
+        Transactions.date <= lastDayOfMonth).order_by(Categories.name).all()
+
+    categories = categorize_transactions(all_data)
+    return jsonify([item.to_dict() for item in categories])
+
+
+@app_views.route('/yearly/transactions', methods=['GET'], strict_slashes=False)
+@token_required
+def yearly_transactions(user_data):
+    today = date.today()
+    lastTwoYears = date(year=today.year, month=today.month, day=today.day)
+
+    all_data = storage.query(Categories).join(Transactions).filter(
+        Transactions.userId == user_data.id, Transactions.date >= lastTwoYears,
+        Transactions.date <= today).order_by(Categories.name).all()
+
+    categories = categorize_transactions(all_data)
+    return jsonify([item.to_dict() for item in categories])
