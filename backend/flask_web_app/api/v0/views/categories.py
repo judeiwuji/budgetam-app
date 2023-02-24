@@ -11,7 +11,7 @@ from math import ceil
 
 def sub_create_update(data):
     if not data:
-        return jsonify({"error": "sorry no data passed"}), 401
+        return jsonify({"error": "not a json"}), 401
     if len(data) < 1 or len(data) > 3:
         return jsonify({"error", "sorry the data passed is incomplete"}), 401
     name, icon, is_expense = data.get('name'), \
@@ -34,9 +34,8 @@ def sub_create_update(data):
 
 
 @app_views.route('/categories', methods=['GET'], strict_slashes=False)
-#   ('documentation/categories/all_categories.yml', methods=['GET'])
+@swag_from('documentation/categories/all_categories.yml', methods=['GET'])
 def all_categories():
-    """"""
    
     # if ?filter=(id='abc')
     args = request.args
@@ -64,6 +63,7 @@ def all_categories():
 
 
 @app_views.route('/categories/<category_id>', methods=['GET'], strict_slashes=False)
+@swag_from('documentation/categories/view_category.yml', methods=['GET'])
 def view_category(category_id):
     """Fetch a single categories record."""
     category = storage.get(Categories, category_id)
@@ -73,11 +73,10 @@ def view_category(category_id):
 
 
 @app_views.route('/categories', methods=['PUT'], strict_slashes=False)
+@swag_from('documentation/categories/create_category.yml', methods=['GET'])
 @token_required
-def create_category(_):
-    """
-    file:documentation\categories\all_categories.yml
-    """
+def create_category(user_obj):
+    
     result = sub_create_update(request.get_json(silent=True))
     if len(result) == 2:
         return result

@@ -85,37 +85,10 @@ def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 
 
 @app_views.route('/transactions', methods=['GET'], strict_slashes=False)
-# @swag_from('documentation\transactions\all_transactions.yml', methods=['GET'])
+@swag_from('documentation\transactions\all_transactions.yml', methods=['GET'])
 @token_required
 def all_transactions(user_data):
-    """Example endpoint returning a list of colors by palette
-    This is using docstrings for specifications.
-    ---
-    parameters:
-      - name: palette
-        in: path
-        type: string
-        enum: ['all', 'rgb', 'cmyk']
-        required: true
-        default: all
-    definitions:
-      Palette:
-        type: object
-        properties:
-          palette_name:
-            type: array
-            items:
-              $ref: '#/definitions/Color'
-      Color:
-        type: string
-    responses:
-      200:
-        description: A list of colors (may be filtered by palette)
-        schema:
-          $ref: '#/definitions/Palette'
-        examples:
-          rgb: ['red', 'green', 'blue']
-    """
+    
     args = request.args
     all_data = storage.filter(Transactions, **{'userId': user_data.id})
     result = []

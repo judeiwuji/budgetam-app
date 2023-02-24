@@ -13,16 +13,10 @@ from datetime import datetime, timedelta
 from flasgger.utils import swag_from
 
 
-@app_views.route('/signup', methods=['GET', 'POST', 'PUT'], strict_slashes=False)
-# @swag_from('documentation/users/signup.yml')
+@app_views.route('/signup', methods=['PUT'], strict_slashes=False)
+@swag_from('documentation/users/signup.yml', methods=['GET'])
 def signup():
     """For signing up a user"""
-    if request.method != 'PUT':
-        return jsonify({"accepts": {
-            "username": "required",
-            "email": "required",
-            "password": "required"
-        }})
     data = request.get_json(silent=True)
     if not data:
         return jsonify({"error": "not a json"}), 401
@@ -56,14 +50,10 @@ def signup():
     return jsonify({"message": "user created successful"}), 201     # created
 
 
-@app_views.route('/login', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/login', methods=['POST'], strict_slashes=False)
+@swag_from('documentation/users/login.yml', methods=['GET'])
 def login():
     """For logging in a user"""
-    if request.method == 'GET':
-        return jsonify({"accepts": {
-            "username": "required",
-            "password": "required"
-        }})
     data = request.get_json(silent=True)
     if not data:
         return jsonify({"error": "not a json"}), 401
@@ -95,10 +85,17 @@ def login():
         }, current_app.config['SECRET_KEY'])
         user_data.save()
 
-    return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 201
+    return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 200
 
+@app_views.route('/profile', methods=['GET'], strict_slashes=False)
+# @swag_from('documentation/users/profile.yml', methods=['GET'])  
+@token_required
+def profile(user_data):
+    """the profile of the user"""
+    return jsonify(user_data.to_dict())
 
 @app_views.route('/logout', methods=['GET'], strict_slashes=False)
+# @swag_from('documentation/users/logout.yml', methods=['GET'])  
 @token_required
 def logout(user_data):
     """for loging out a user"""

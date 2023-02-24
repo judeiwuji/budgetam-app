@@ -7,11 +7,6 @@ from api.v0.index import index_views
 from api.v0.views import app_views
 
 
-# app.config['SWAGGER'] = {
-#     'title': 'Budgetam API Backend Infrastructure',
-#     'uiversion': '0.1.0'
-# }
-
 def create_flask_app(config):
     from flask import Flask
 
@@ -19,7 +14,7 @@ def create_flask_app(config):
     app.config.from_pyfile(config)
 
 # cors = CORS(app, resources={r"/*": {"origins": "*"}})
-    swagger = Swagger(app)
+    Swagger(app)
 
     app.register_blueprint(index_views, url_prefix='/')
     app.register_blueprint(app_views, url_prefix='/api')

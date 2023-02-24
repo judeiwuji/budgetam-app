@@ -58,8 +58,11 @@ def test_signup(test_client):
     assert 401 == response.status_code
     assert b'{"error":"email not valid"}\n' == response.data
 
-    # testing the email validator by sending a wrong email
+    # testing with a correct data
     response = test_client.put(path=url, json=test_user_signup)
+    if 401 == response.status_code:
+        response = log_in_token('api/delete_user', 'delete', test_client)
+        response = test_client.put(path=url, json=test_user_signup)
     print(response.data)
     assert 201 == response.status_code
     assert b'{"message":"user created successful"}\n' == response.data
