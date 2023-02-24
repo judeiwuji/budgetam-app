@@ -44,7 +44,7 @@ export class TransactionListComponent implements OnInit, OnDestroy {
       this.transactionProvider.onCreateTransaction((transaction) => {
         const transactions = this.transactionDB[this.currentView];
         let transactionCategory = transactions.find(
-          (d) => d.category.id === transaction.categoryId
+          (d) => d.category.id === transaction.catId
         );
         if (transactionCategory) {
           transactionCategory.count++;
@@ -70,17 +70,17 @@ export class TransactionListComponent implements OnInit, OnDestroy {
       this.transactionProvider.onEditTransaction((edited) => {
         const transactions = this.transactionDB[this.currentView];
         let transactionCategory = transactions.find(
-          (d) => d.category.id === edited.oldTransaction.categoryId
+          (d) => d.category.id === edited.oldTransaction.catId
         );
 
         if (
           transactionCategory &&
-          transactionCategory.category.id !== edited.newTransaction.categoryId
+          transactionCategory.category.id !== edited.newTransaction.catId
         ) {
           --transactionCategory.count;
           transactionCategory.amount -= edited.oldTransaction.amount;
           transactionCategory = transactions.find(
-            (d) => d.category.id === edited.newTransaction.categoryId
+            (d) => d.category.id === edited.newTransaction.catId
           );
 
           if (transactionCategory) {
@@ -106,7 +106,7 @@ export class TransactionListComponent implements OnInit, OnDestroy {
       this.transactionProvider.onDeleteTransaction((transaction) => {
         const transactions = this.transactionDB[this.currentView];
         let transactionCategory = transactions.find(
-          (d) => d.category.id === transaction.categoryId
+          (d) => d.category.id === transaction.catId
         );
 
         if (transactionCategory) {

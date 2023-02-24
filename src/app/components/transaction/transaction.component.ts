@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ToastrService } from 'ngx-toastr';
 import { TransactionFormComponent } from 'src/app/modals/transaction-form/transaction-form.component';
 import Transaction from 'src/app/models/Transaction';
 import TransactionProvider from 'src/app/providers/TransactionProvider';
@@ -20,7 +21,8 @@ export class TransactionComponent implements OnInit {
   constructor(
     private readonly modal: NgbModal,
     private readonly deviceService: DeviceDetectorService,
-    private readonly transactionService: TransactionService
+    private readonly transactionService: TransactionService,
+    private readonly toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {}
@@ -42,13 +44,17 @@ export class TransactionComponent implements OnInit {
   }
 
   deleteTransaction() {
-    this.transactionService
-      .deleteTransaction(this.transaction)
-      .subscribe((response) => {
-        if (response) {
-          this.transactionProvider.deleteTransaction(this.transaction);
-        }
-      });
+    this.transactionService.deleteTransaction(this.transaction).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.transactionProvider.deleteTransaction(this.transaction);
+      },
+      error: (response) => {
+        this.toastrService.warning(
+          'Sorry, we were unable to complete your request'
+        );
+      },
+    });
   }
 
   dateFormat() {

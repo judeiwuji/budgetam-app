@@ -20,7 +20,7 @@ def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
     # check if data was sent through json
     if not data:
         return jsonify({"error": "not a json"}), 400
-    if len(data) < 3 or len(data) > 5:
+    if len(data) < 3:
         return jsonify({"error": "data incomplete"}), 400
 
      # check if the transaction id is of uuid
@@ -149,7 +149,6 @@ def create_transaction(user_data):
         return result_sub
 
     date, catId, userId, amount, note, _ = result_sub
-
     transac_data = Transactions(**{
         "date": date,
         "catId": catId,
@@ -158,11 +157,11 @@ def create_transaction(user_data):
         "note": note
     })
     transac_data.save()
-    # print(transac_data.category)
+    transac_data.category  # lazy load category
     return jsonify(transac_data.to_dict()), 201     # created
 
 
-@app_views.route('/transactions/<transac_id>', methods=['PATCH'], strict_slashes=False)
+@app_views.route('/transactions/<transac_id>', methods=['PUT'], strict_slashes=False)
 @swag_from('documentation/users/update_transaction.yml', methods=['GET'])
 @token_required
 def update_transaction(user_data, *_, **app_views_kwargs):
@@ -196,16 +195,11 @@ def update_transaction(user_data, *_, **app_views_kwargs):
 def delete_transaction(user_data, *_, **app_views_kwargs):
     """deletes a transaction"""
     transac_id = app_views_kwargs['transac_id']
-    result_sub = sub_delete_update(
-        request.get_json(silent=True),
-        transac_id,
-        user_data.id)
-    if len(result_sub) == 2:
-        return result_sub
-    _, _, _, _, _, transac_obj = result_sub
-
-    storage.delete(transac_obj)
-    return jsonify({}), 201
+    transaction = storage.get(Transactions, transac_id)
+    if not transaction:
+        return jsonify({}), 404
+    storage.delete(transaction)
+    return jsonify({})
 
 
 @app_views.route('/balance', methods=['GET'], strict_slashes=False)
@@ -254,8 +248,7 @@ def categorize_transactions(all_data):
 @app_views.route('/daily/transactions', methods=['GET'], strict_slashes=False)
 @token_required
 def daily_transactions(user_data):
-    now = datetime.today()
-    today = datetime(year=now.year, month=now.month, day=now.day)
+    today = date.today()
     all_data = storage.query(Categories).join(Transactions).filter(
         Transactions.userId == user_data.id,
         Transactions.date == today).order_by(Categories.name).all()
@@ -297,7 +290,7 @@ def monthly_transactions(user_data):
 @token_required
 def yearly_transactions(user_data):
     today = date.today()
-    lastTwoYears = date(year=today.year, month=today.month, day=today.day)
+    lastTwoYears = date(year=today.year - 2, month=1, day=1)
 
     all_data = storage.query(Categories).join(Transactions).filter(
         Transactions.userId == user_data.id, Transactions.date >= lastTwoYears,

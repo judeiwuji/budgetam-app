@@ -54,8 +54,8 @@ const dbConfig: DBConfig = {
         { name: 'note', keypath: 'note', options: { unique: false } },
         { name: 'date', keypath: 'date', options: { unique: false } },
         {
-          name: 'categoryId',
-          keypath: 'categoryId',
+          name: 'catId',
+          keypath: 'catId',
           options: { unique: false },
         },
         {

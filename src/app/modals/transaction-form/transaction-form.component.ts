@@ -103,19 +103,25 @@ export class TransactionFormComponent implements OnInit {
     const date: NgbDateStruct = this.fc['date'].value;
     newTransaction.amount = Number(this.fc['amount'].value);
     newTransaction.note = this.fc['note'].value;
-    newTransaction.categoryId = this.selectedCategory.id as string;
+    newTransaction.catId = this.selectedCategory.id as string;
     newTransaction.date = `${date.year}-${date.month}-${date.day}`;
 
-    this.transactionService
-      .createTransaction(newTransaction)
-      .subscribe((response) => {
-        this.processing = false;
+    this.transactionService.createTransaction(newTransaction).subscribe({
+      next: (response) => {
         if (response) {
           this.transactionProvider.createTransaction(response);
           this.toastrService.success('Saved');
           this.resetForm();
         }
-      });
+      },
+      error: (error) => {
+        this.processing = false;
+        this.toastrService.error(error.message);
+      },
+      complete: () => {
+        this.processing = false;
+      },
+    });
   }
 
   update() {
@@ -126,22 +132,29 @@ export class TransactionFormComponent implements OnInit {
     const date: NgbDateStruct = this.fc['date'].value;
     update.amount = Number(this.fc['amount'].value);
     update.note = this.fc['note'].value;
-    update.categoryId = this.selectedCategory.id as string;
+    update.catId = this.selectedCategory.id as string;
     update.date = `${date.year}-${date.month}-${date.day}`;
     update.id = this.transaction?.id as string;
+    update.userId = this.transaction?.userId as string;
 
-    this.transactionService.updateTransaction(update).subscribe((response) => {
-      this.processing = false;
-      if (response) {
-        this.toastrService.success('Updated');
-        update.category = this.selectedCategory;
-        const edited = new EditedTransaction(
-          this.transaction as Transaction,
-          update
-        );
-        this.transactionProvider.editTransaction(edited);
-        this.activeModal.close(update);
-      }
+    this.transactionService.updateTransaction(update).subscribe({
+      next: (response) => {
+        this.processing = false;
+        if (response) {
+          this.toastrService.success('Updated');
+          update.category = this.selectedCategory;
+          const edited = new EditedTransaction(
+            this.transaction as Transaction,
+            update
+          );
+          this.transactionProvider.editTransaction(edited);
+          this.activeModal.close(update);
+        }
+      },
+      error: (response) => {
+        this.processing = false;
+        this.toastrService.warning(response.error.message);
+      },
     });
   }
 

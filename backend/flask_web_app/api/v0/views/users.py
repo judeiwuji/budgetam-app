@@ -109,3 +109,10 @@ def refresh(user_data):
         }, current_app.config['SECRET_KEY'])
         user_data.save()
     return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 200
+
+@app_views.route('/current/user', methods=['GET'], strict_slashes=False)
+@token_required
+def current_user(user_data):
+    """returns the current logged in user"""
+
+    return jsonify(user_data.to_dict()), 200
