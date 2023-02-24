@@ -12,21 +12,15 @@ from datetime import datetime, timedelta
 from flasgger.utils import swag_from
 
 
-@app_views.route('/signup', methods=['GET', 'POST', 'PUT'], strict_slashes=False)
+@app_views.route('/signup', methods=['POST'], strict_slashes=False)
 @swag_from('documentation/users/signup.yml')
 def signup():
     """For signing up a user"""
-    if request.method != 'PUT':
-        return jsonify({"accepts": {
-            "username": "required",
-            "email": "required",
-            "password": "required"
-        }})
     data = request.get_json(silent=True)
     if not data:
-        return jsonify({"error": "not a json"}), 401
+        return jsonify({"error": "not a json"}), 400
     if len(data) != 3:
-        return jsonify({"error": "data incomplete"}), 401
+        return jsonify({"error": "data incomplete"}), 400
     username, email, password = data.get('username'), data.get(
         'email'), data.get('password')
 
@@ -35,13 +29,13 @@ def signup():
         validation = validate_email(email)
         email = validation.email
     except EmailNotValidError:
-        return jsonify({"error": "email not valid"}), 401
+        return jsonify({"error": "email not valid"}), 400
 
     # gets all the users to check for someone who has already signed up
-    username_check = storage.get_param(Users, **{'username': username})
+    # username_check = storage.get_param(Users, **{'username': username})
     email_check = storage.get_param(Users, **{'email': email})
-    if username_check or email_check:
-        return jsonify({"error": "the username or email has been used before"}), 401
+    if email_check:
+        return jsonify({"error": "email has been used before"}), 400
     instance = Users(**{
         "username": username,
         "email": email,
@@ -52,67 +46,73 @@ def signup():
     return jsonify({"message": "user created successful"}), 201     # created
 
 
-@app_views.route('/login', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/login', methods=['POST'], strict_slashes=False)
 def login():
     """For logging in a user"""
-    if request.method == 'GET':
-        return jsonify({"accepts": {
-            "username": "required",
-            "password": "required"
-        }})
     data = request.get_json(silent=True)
     if not data:
         return jsonify({"error": "not a json"}), 401
     if len(data) != 2:
         return jsonify({"error": "data incomplete"}), 401
-    username, password = data.get('username'), data.get('password')
+    email, password = data.get('email'), data.get('password')
 
-    if not username or not password:
+    if not email or not password:
         return jsonify({"error": "sorry couldn't handle that, check data."})
 
-    user_data = storage.get_param(Users, **{'username': username})
+    user_data = storage.get_param(Users, **{'email': email})
     if not user_data:
         return jsonify({"error": "sorry you need to create an account"}), 401
-    
+
     if not check_password_hash(user_data.password, password):
         return jsonify({"error": "sorry your password is not correct"})
 
     expires = datetime.utcnow() - timedelta(minutes=20)
     user_token = user_data.token
     if user_token:
-        expires = datetime.strptime(decode(user_token, current_app.config['SECRET_KEY'], algorithms="HS256")['expireAt'], time)
-    
+        expires = datetime.strptime(decode(
+            user_token, current_app.config['SECRET_KEY'], algorithms="HS256")['expireAt'], time)
+
     if not user_token or expires < datetime.utcnow():         # token expired
 
-        expires = datetime.utcnow() + timedelta(minutes=20)
+        expires = datetime.utcnow() + timedelta(hours=24)
         user_data.token = encode({
-            'username': username,
+            'id': user_data.id,
             'expireAt': datetime.strftime(expires, time)
         }, current_app.config['SECRET_KEY'])
         user_data.save()
 
-    return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 201
+    return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 200
 
 
 @app_views.route('/logout', methods=['GET', 'POST'], strict_slashes=False)
 @token_required
 def logout(user_data):
     """for loging out a user"""
+
     user_data.token = None
     user_data.save()
-    return jsonify({'message': 'successfully logged out'}), 201
+    return jsonify({'message': 'successfully logged out'}), 200
+
 
 @app_views.route('/refresh', methods=['GET', 'POST'], strict_slashes=False)
 @token_required
 def refresh(user_data):
     """for refreshing the tokens"""
-    token = decode(user_data.token, current_app.config['SECRET_KEY'], algorithms="HS256")
+    token = decode(user_data.token,
+                   current_app.config['SECRET_KEY'], algorithms="HS256")
     expires = datetime.strptime(token['expireAt'], time)
     if expires <= datetime.utcnow():         # token expired
         expires = datetime.utcnow() + timedelta(minutes=20)
         user_data.token = encode({
-            'username': token['username'],
+            'id': token['id'],
             'expireAt': datetime.strftime(expires, time)
         }, current_app.config['SECRET_KEY'])
         user_data.save()
-    return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 201
+    return jsonify({"token": user_data.token, "expiresAt": str(expires)}), 200
+
+@app_views.route('/current/user', methods=['GET'], strict_slashes=False)
+@token_required
+def current_user(user_data):
+    """returns the current logged in user"""
+
+    return jsonify(user_data.to_dict()), 200

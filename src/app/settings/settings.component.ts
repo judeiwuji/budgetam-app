@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ToastrService } from 'ngx-toastr';
 import { ChangePasswordComponent } from '../modals/change-password/change-password.component';
 import { ProfileComponent } from '../modals/profile/profile.component';
 import User from '../models/User';
@@ -20,7 +21,8 @@ export class SettingsComponent implements OnInit {
     private readonly modal: NgbModal,
     private readonly deviceService: DeviceDetectorService,
     private readonly authService: AuthService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly toastrService: ToastrService
   ) {}
   ngOnInit(): void {
     this.userService.getCurrentUser().subscribe((user) => {
@@ -56,6 +58,15 @@ export class SettingsComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
+    this.userService.logout().subscribe({
+      next: (response) => {
+        this.authService.logout();
+      },
+      error: (error) => {
+        this.toastrService.warning(
+          'Sorry, we were unable to process your request'
+        );
+      },
+    });
   }
 }

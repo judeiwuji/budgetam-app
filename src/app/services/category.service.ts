@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { categories } from '../config/data/categories';
 import Category from '../models/Category';
+import { LinkManager } from '../models/LinkManager';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
-  private API_URL = '';
+  private api = LinkManager.baseUrl + '/api';
+
   constructor(
     private readonly dbService: NgxIndexedDBService,
     private readonly authService: AuthService,
@@ -20,7 +22,7 @@ export class CategoryService {
     if (this.authService.isGuest()) {
       return this.dbService.getAll<Category>('categories');
     }
-    return this.http.get<Category[]>(this.API_URL);
+    return this.http.get<Category[]>(`${this.api}/categories`);
   }
 
   getCategory(id: string | number) {
@@ -28,7 +30,7 @@ export class CategoryService {
       return this.dbService.getByID<Category>('categories', id);
     }
 
-    return this.http.get<Category>('');
+    return this.http.get<Category>(`${this.api}/categories/${id}`);
   }
 
   createGuestCategories() {

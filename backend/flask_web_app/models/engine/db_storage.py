@@ -74,14 +74,17 @@ class DBStorage:
                 return self.__session.query(cls).filter_by(**kwargs).first()
             except InvalidRequestError:
                 pass
-    
+
     def filter(self, cls=None, *args, **kwargs):
         """Filters the object"""
         if cls and kwargs and cls in classes:
             try:
-                return self.__session.query(cls).filter_by(**kwargs)
+                return self.__session.query(cls).filter_by(**kwargs).all()
             except InvalidRequestError:
-                pass
+                return None
+
+    def query(self, cls=None):
+        return self.__session.query(cls)
 
     def count(self, cls=None):
         """

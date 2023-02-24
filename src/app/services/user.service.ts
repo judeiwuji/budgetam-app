@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-import { map, switchMap } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
+import { SignupResponse } from '../models/Signup';
+import { LinkManager } from '../models/LinkManager';
+import { LoginRequest, LoginResponse } from '../models/Login';
 import User from '../models/User';
 import { AuthService } from './auth.service';
 
@@ -10,7 +13,8 @@ import { AuthService } from './auth.service';
 })
 export class UserService {
   private store = 'users';
-  private api = '';
+  private api = LinkManager.baseUrl + '/api';
+
   constructor(
     private readonly http: HttpClient,
     private readonly dbService: NgxIndexedDBService,
@@ -25,10 +29,23 @@ export class UserService {
       return this.getGuestUser();
     }
 
-    return this.http.get<User>(this.api);
+    return this.http.get<User>(`${this.api}/current/user`);
   }
 
-  createAccount() {}
+  signup(user: User) {
+    return this.http.post<SignupResponse>(`${this.api}/signup`, user);
+  }
+
+  login(request: LoginRequest) {
+    return this.http.post<LoginResponse>(`${this.api}/login`, request);
+  }
+
+  logout() {
+    if (this.authService.isGuest()) {
+      return of(true);
+    }
+    return this.http.get<any>(`${this.api}/logout`);
+  }
 
   updateAccount(user: User) {
     if (this.authService.isGuest()) {

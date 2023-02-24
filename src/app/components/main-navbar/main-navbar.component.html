@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top app-main-navbar">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top app-main-navbar" id="app-navbar">
     <div class="container-fluid">
         <a class="navbar-brand logo" routerLink="/">Budgetam</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav ms-auto align-items-md-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="#home">Home</a>
+                    <a class="nav-link active" href="#home">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#features">Features</a>
@@ -15,12 +15,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#our-team">Our Team</a>
                 </li>
-                <li class="nav-item">
-                    <div class="d-flex">
-                        <a class="btn btn-sm btn-full me-2" routerLink="/signup">Signup</a>
-                        <a class="btn btn-sm btn-full" routerLink="/login">Login</a>
-                    </div>
-                </li>
+                <ng-container *ngIf="!isAuthentic">
+                    <li class="nav-item">
+                        <div class="d-flex">
+                            <a class="btn btn-sm btn-full me-2" routerLink="/signup">Signup</a>
+                            <a class="btn btn-sm btn-full" routerLink="/login">Login</a>
+                        </div>
+                    </li>
+                </ng-container>
+                <ng-container *ngIf="isAuthentic">
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-full me-2" routerLink="/dashboard">Dashboard</a>
+                    </li>
+                </ng-container>
             </ul>
         </div>
     </div>

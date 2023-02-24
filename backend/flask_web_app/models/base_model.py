@@ -10,12 +10,13 @@ import uuid
 from werkzeug.security import generate_password_hash
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
-classes = ["Categories","Transactions","Users","Tokens"]
+classes = ["Categories", "Transactions", "Users", "Tokens"]
 
 if models.storage_t == "db":
     Base = declarative_base()
 else:
     Base = object
+
 
 class BaseModel:
     id = Column(String(60), primary_key=True)
@@ -48,8 +49,8 @@ class BaseModel:
         return "[{:s}] ({:s}) {}".format(
             self.__class__.__name__, self.id,
             self.__dict__
-            )
-    
+        )
+
     def save(self):
         """updates the attribute 'updated_at' with the current datetime"""
         self.updated_at = datetime.utcnow()
@@ -69,6 +70,17 @@ class BaseModel:
         if save_fs is None:
             if "password" in new_dict and '__class__' not in new_dict:
                 del new_dict["password"]
+        if new_dict.get('category', None):
+            new_dict['category'] = self.category.to_dict()
+
+        if new_dict.get('transactions', None):
+            new_dict['transactions'] = []
+            for transaction in self.transactions:
+                category = new_dict.copy()
+                del category['transactions']
+                transaction_dict = transaction.to_dict()
+                transaction_dict['category'] = category
+                new_dict['transactions'].append(transaction_dict)
         return new_dict
 
     def delete(self):

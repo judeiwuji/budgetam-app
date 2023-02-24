@@ -30,7 +30,8 @@ import { BalanceCardComponent } from './components/balance-card/balance-card.com
 import { BarChartComponent } from './charts/bar-chart/bar-chart.component';
 import { TransactionReportComponent } from './components/transaction-report/transaction-report.component';
 import { SettingsComponent } from './settings/settings.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './auth/token.interceptor';
 
 const dbConfig: DBConfig = {
   name: 'BudgetamDB',
@@ -51,10 +52,10 @@ const dbConfig: DBConfig = {
       storeSchema: [
         { name: 'amount', keypath: 'amount', options: { unique: false } },
         { name: 'note', keypath: 'note', options: { unique: false } },
-        { name: 'createdAt', keypath: 'createdAt', options: { unique: false } },
+        { name: 'date', keypath: 'date', options: { unique: false } },
         {
-          name: 'categoryId',
-          keypath: 'categoryId',
+          name: 'catId',
+          keypath: 'catId',
           options: { unique: false },
         },
         {
@@ -112,7 +113,14 @@ const dbConfig: DBConfig = {
     NgxIndexedDBModule.forRoot(dbConfig),
     HttpClientModule,
   ],
-  providers: [CookieService],
+  providers: [
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

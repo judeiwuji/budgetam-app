@@ -12,17 +12,21 @@ import TransactionProvider from 'src/app/providers/TransactionProvider';
 })
 export class CategoryTransactionsComponent implements OnInit {
   private transactionProvider = TransactionProvider.getInstance();
-
-  public transactions: Transaction[] = [];
-  public category?: Category;
+  @Input()
+  public category!: Category;
 
   constructor(private readonly activeModal: NgbActiveModal) {}
 
   ngOnInit(): void {
     this.transactionProvider.onDeleteTransaction((transaction: Transaction) => {
-      const index = this.transactions.findIndex((d) => d.id === transaction.id);
-      if (index !== -1) {
-        this.transactions.splice(index, 1);
+      if (this.category) {
+        console.log(transaction);
+        const index = this.category?.transactions?.findIndex(
+          (d) => d.id === transaction.id
+        );
+        if (index !== -1) {
+          this.category?.transactions?.splice(index as number, 1);
+        }
       }
     });
   }

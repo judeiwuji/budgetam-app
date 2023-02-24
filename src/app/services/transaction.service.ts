@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { AuthService } from './auth.service';
 import { map, Observable, switchMap } from 'rxjs';
@@ -9,11 +9,12 @@ import Category from '../models/Category';
 import { CategoryService } from './category.service';
 import * as moment from 'moment';
 import TransactionCategory from '../models/TransactionCategory';
+import { LinkManager } from '../models/LinkManager';
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
-  api = '';
+  api = LinkManager.baseUrl + '/api';
   store = 'transactions';
 
   constructor(
@@ -27,70 +28,60 @@ export class TransactionService {
     if (this.authService.isGuest()) {
       return this.getGuestBalance();
     }
-    return this.http.get<Balance>(this.api);
+    return this.http.get<Balance>(`${this.api}/balance`);
   }
 
   getDailyCategorizeTransactions() {
     if (this.authService.isGuest()) {
       return this.getGuestDailyCategorizeTransactions();
     }
-    return this.http.get<TransactionCategory[]>(this.api);
+    return this.http.get<TransactionCategory[]>(
+      `${this.api}/daily/transactions`
+    );
   }
 
   getWeeklyCategorizeTransactions() {
     if (this.authService.isGuest()) {
       return this.getGuestWeeklyCategorizeTransactions();
     }
-    return this.http.get<TransactionCategory[]>(this.api);
+    return this.http.get<TransactionCategory[]>(
+      `${this.api}/weekly/transactions`
+    );
   }
 
   getMonthlyCategorizeTransactions() {
     if (this.authService.isGuest()) {
       return this.getGuestMonthlyCategorizeTransactions();
     }
-    return this.http.get<TransactionCategory[]>(this.api);
+    return this.http.get<TransactionCategory[]>(
+      `${this.api}/monthly/transactions`
+    );
   }
-
-  // getDailyTransactions(categoryId: string | number) {
-  //   if (this.authService.isGuest()) {
-  //     return this.getGuestDailyTransactions(categoryId);
-  //   }
-  //   return this.http.get<Transaction[]>(this.api);
-  // }
-
-  // getWeeklyTransactions(categoryId: string | number) {
-  //   if (this.authService.isGuest()) {
-  //     return this.getGuestWeeklyTransactions(categoryId);
-  //   }
-  //   return this.http.get<Transaction[]>(this.api);
-  // }
-
-  // getMonthlyTransactions(categoryId: string | number) {
-  //   if (this.authService.isGuest()) {
-  //     return this.getGuestMonthlyTransactions(categoryId);
-  //   }
-  //   return this.http.get<Transaction[]>(this.api);
-  // }
 
   createTransaction(transaction: Transaction) {
     if (this.authService.isGuest()) {
       return this.createGuestTransaction(transaction);
     }
-    return this.http.post<Transaction>('', transaction);
+
+    return this.http.post<Transaction>(`${this.api}/transactions`, transaction);
   }
 
   updateTransaction(transaction: Transaction) {
     if (this.authService.isGuest()) {
       return this.updateGuestTransaction(transaction);
     }
-    return this.http.put<boolean>(this.api, transaction);
+    return this.http.put<boolean>(
+      `${this.api}/transactions/${transaction.id}`,
+      transaction
+    );
   }
 
   deleteTransaction(transaction: Transaction) {
     if (this.authService.isGuest()) {
       return this.deleteGuestTransaction(transaction);
     }
-    return this.http.delete(this.api);
+
+    return this.http.delete(`${this.api}/transactions/${transaction.id}`);
   }
 
   private getGuestBalance() {
@@ -116,7 +107,7 @@ export class TransactionService {
         return this.dbService.getByID<Transaction>(this.store, id);
       }),
       switchMap((transaction) => {
-        return this.categoryService.getCategory(transaction.categoryId).pipe(
+        return this.categoryService.getCategory(transaction.catId).pipe(
           map((category) => {
             transaction.category = category;
             return transaction;
@@ -133,7 +124,7 @@ export class TransactionService {
           map((categories) => {
             for (const transaction of transactions) {
               transaction.category = categories.find(
-                (d) => d.id === transaction.categoryId
+                (d) => d.id === transaction.catId
               ) as Category;
             }
             return transactions;
@@ -200,7 +191,7 @@ export class TransactionService {
 
         for (const transaction of data.transactions) {
           const category = data.categories.find(
-            (d) => d.id === transaction.categoryId
+            (d) => d.id === transaction.catId
           );
 
           if (category) {
