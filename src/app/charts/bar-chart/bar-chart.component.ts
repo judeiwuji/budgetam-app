@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-bar-chart',
@@ -12,11 +13,8 @@ export class BarChartComponent implements OnInit {
 
   @Input()
   public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [
-      { data: [6500, 5900, 8000, 810, 560, 5500, 400], label: 'Expenses' },
-      { data: [2800, 4800, 400, 1900, 860, 2700, 900], label: 'Income' },
-    ],
+    labels: [],
+    datasets: [],
   };
 
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {

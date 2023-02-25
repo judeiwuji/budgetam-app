@@ -1,0 +1,19 @@
+Endpoint returning status ok json showing that you
+are connected to the server
+---
+definitions:
+  Status:
+    type: string
+    properties:
+      status:
+        type: string
+        
+responses:
+  200:
+    get:
+      description: simple status ok
+      content: application/json
+      schema: 
+        status: OK
+      # examples:
+      #   status: OK

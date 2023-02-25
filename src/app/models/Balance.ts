@@ -1,4 +1,4 @@
 export default class Balance {
-  expenses!: number;
-  income!: number;
+  public expenses = 0;
+  public income = 0;
 }

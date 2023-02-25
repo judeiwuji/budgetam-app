@@ -5,9 +5,11 @@
     </button>
     <!-- Mobile -->
 
-    <!-- Title -->
-    <h5 class="mx-auto">Groceries</h5>
-    <!-- Title -->
+    <ng-container *ngIf="category">
+        <!-- Title -->
+        <h5 class="mx-auto text-capitalize">{{category.name}}</h5>
+        <!-- Title -->
+    </ng-container>
 
     <!-- Desktop -->
     <button class="btn d-none d-md-inline-block" (click)="close()">
@@ -17,7 +19,9 @@
 </div>
 
 <div class="modal-body">
-    <div class="mb-3">
-        <app-transaction></app-transaction>
-    </div>
+    <ng-container *ngFor="let transaction of category?.transactions">
+        <div class="mb-3">
+            <app-transaction [transaction]="transaction"></app-transaction>
+        </div>
+    </ng-container>
 </div>

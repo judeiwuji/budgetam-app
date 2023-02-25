@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import User from '../models/User';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -8,8 +12,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class SignupComponent implements OnInit {
   newAccount!: FormGroup;
+  processing = false;
 
-  constructor() {
+  constructor(
+    private readonly userService: UserService,
+    private readonly router: Router,
+    private readonly toastrService: ToastrService
+  ) {
     this.newAccount = new FormGroup({
       username: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -26,9 +35,31 @@ export class SignupComponent implements OnInit {
   }
 
   createAccount() {
+    if (this.processing) return;
+
+    this.processing = true;
     this.newAccount.markAllAsTouched();
     if (this.newAccount.valid) {
-      // submit form
+      const user = new User(this.formControls['username'].value);
+      user.email = this.formControls['email'].value;
+      user.password = this.formControls['password'].value;
+      this.userService.signup(user).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.toastrService.success('Account created!');
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.log(error);
+          this.processing = false;
+          this.toastrService.warning(
+            'Sorry, we were unable to process your request'
+          );
+        },
+        complete: () => {
+          this.processing = false;
+        },
+      });
     }
   }
 }

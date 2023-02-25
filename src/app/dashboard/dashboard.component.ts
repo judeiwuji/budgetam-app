@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { ProfileComponent } from '../modals/profile/profile.component';
 import { TransactionFormComponent } from '../modals/transaction-form/transaction-form.component';
 import { TransactionsComponent } from '../modals/transactions/transactions.component';
-import Transaction from '../models/Transaction';
 import User from '../models/User';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,27 +13,29 @@ import User from '../models/User';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  public user = new User('judoski');
-  public addTransactionSubject = new Subject<Transaction>();
-  public deleteTransactionSubject = new Subject<Transaction>();
+  public user = new User('');
 
-  constructor(private readonly modal: NgbModal) {}
+  constructor(
+    private readonly modal: NgbModal,
+    private readonly deviceService: DeviceDetectorService,
+    private readonly userService: UserService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userService.getCurrentUser().subscribe((user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+  }
 
   createTransaction() {
-    const modalInstance = this.modal.open(TransactionFormComponent, {
-      fullscreen: true,
+    this.modal.open(TransactionFormComponent, {
+      size: 'md',
+      fullscreen: this.deviceService.isMobile(),
+      scrollable: true,
+      centered: true,
       backdrop: 'static',
-    });
-
-    const newTransactionSubject = new Subject<Transaction>();
-    modalInstance.componentInstance.onCreate = newTransactionSubject;
-    modalInstance.result.then(() => {
-      newTransactionSubject.unsubscribe();
-    });
-    newTransactionSubject.subscribe((transaction) => {
-      this.addTransactionSubject.next(transaction);
     });
   }
 
@@ -43,8 +46,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.addTransactionSubject.unsubscribe();
-    this.deleteTransactionSubject.unsubscribe();
+  editProfile() {
+    const modalInstance = this.modal.open(ProfileComponent, {
+      size: 'md',
+      fullscreen: this.deviceService.isMobile(),
+      scrollable: true,
+      centered: true,
+      backdrop: 'static',
+    });
+
+    modalInstance.componentInstance.user = this.user;
+    modalInstance.result.then((user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
   }
+
+  ngOnDestroy(): void {}
 }

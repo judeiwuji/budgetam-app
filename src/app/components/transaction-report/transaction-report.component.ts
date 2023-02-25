@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TransactionReportViews } from 'src/app/models/enums/TransactionReportViews';
 import Transaction from 'src/app/models/Transaction';
 import TransactionCategory from 'src/app/models/TransactionCategory';
+import { ReportService } from 'src/app/services/report.service';
 import { TransactionSummaryView as TransactionViews } from '../../models/enums/TransactionView';
 
 @Component({
@@ -21,71 +22,18 @@ export class TransactionReportComponent implements OnInit {
     [TransactionReportViews.month]: TransactionCategory[];
     [TransactionReportViews.year]: TransactionCategory[];
   } = {
-    [TransactionReportViews.week]: [
-      {
-        count: 2,
-        amount: 5000,
-        category: { id: '1', name: 'Food', icon: '🥘', isExpense: true },
-      },
-      {
-        count: 5,
-        amount: 2000,
-        category: {
-          id: '2',
-          name: 'Airtime & Subscription',
-          icon: '📱',
-          isExpense: true,
-        },
-      },
-      {
-        count: 4,
-        amount: 10000,
-        category: {
-          id: '3',
-          name: 'Utility bills',
-          icon: '📜',
-          isExpense: true,
-        },
-      },
-      {
-        count: 4,
-        amount: 150000,
-        category: {
-          id: '4',
-          name: 'Income & Earnings',
-          icon: '💰',
-          isExpense: false,
-        },
-      },
-    ],
+    [TransactionReportViews.week]: [],
     [TransactionReportViews.month]: [],
     [TransactionReportViews.year]: [],
   };
 
-  @Input()
-  addTransaction?: Observable<Transaction>;
+  @Output()
+  onChangeView = new EventEmitter();
 
-  constructor() {}
+  constructor(private readonly reportService: ReportService) {}
 
   ngOnInit(): void {
     this.setView(TransactionReportViews.week);
-    if (this.addTransaction) {
-      this.addTransaction.subscribe((transaction) => {
-        const transactions = this.transactionDB[this.currentView];
-        let transactionCategory = transactions.find(
-          (d) => d.category.id === transaction.categoryId
-        );
-        if (transactionCategory) {
-          transactionCategory.count++;
-          transactionCategory.amount += transaction.amount;
-        } else {
-          transactionCategory = new TransactionCategory();
-          transactionCategory.amount = transaction.amount;
-          transactionCategory.count = 1;
-          transactionCategory.category = transaction.category;
-        }
-      });
-    }
   }
 
   setView(mode: TransactionReportViews) {
@@ -93,5 +41,38 @@ export class TransactionReportComponent implements OnInit {
     this.isWeekReport = mode === TransactionReportViews.week;
     this.isMonthReport = mode === TransactionReportViews.month;
     this.isYearReport = mode === TransactionReportViews.year;
+
+    this.getReports();
+  }
+
+  getReports() {
+    if (
+      !this.transactionDB[this.currentView] ||
+      this.transactionDB[this.currentView].length === 0
+    ) {
+      switch (this.currentView) {
+        case TransactionReportViews.week:
+          this.reportService.getWeeklyReport().subscribe((transactions) => {
+            this.transactionDB[this.currentView] = transactions;
+            this.onChangeView.emit({ transactions, mode: this.currentView });
+          });
+          break;
+        case TransactionReportViews.month:
+          this.reportService.getMonthlyReport().subscribe((transactions) => {
+            this.transactionDB[this.currentView] = transactions;
+            this.onChangeView.emit({ transactions, mode: this.currentView });
+          });
+          break;
+        case TransactionReportViews.year:
+          this.reportService.getYearlyReport().subscribe((transactions) => {
+            this.transactionDB[this.currentView] = transactions;
+            this.onChangeView.emit({ transactions, mode: this.currentView });
+          });
+          break;
+      }
+    } else {
+      const transactions = this.transactionDB[this.currentView];
+      this.onChangeView.emit({ transactions, mode: this.currentView });
+    }
   }
 }
