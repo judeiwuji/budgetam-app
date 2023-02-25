@@ -7,6 +7,7 @@ from flasgger.utils import swag_from
 from models import storage
 from api.v0.views import app_views, query_params
 from math import ceil
+from os import path
 
 
 def sub_create_update(data):
@@ -75,7 +76,7 @@ def view_category(category_id):
 
 
 @app_views.route('/categories', methods=['PUT'], strict_slashes=False)
-@swag_from('documentation/categories/create_category.yml', methods=['GET'])
+@swag_from(path.join('documentation', 'categories', 'create_category.yml'), methods=['GET'])
 @token_required
 def create_category(user_obj):
     

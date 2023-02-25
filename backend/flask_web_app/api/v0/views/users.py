@@ -160,8 +160,7 @@ def upload_file(user_data):
             makedirs(file_path, mode=777, exist_ok=True)
         file_path = path.join(file_path, filename)
         file.save(file_path)
-        user_data.avatar = path.join(
-            current_app.config['SERVER_NAME'], static_path, filename).replace('\\', '/')
+        user_data.avatar = path.join( static_path, filename).replace('\\', '/')
         user_data.save()
         return jsonify({"message": user_data.avatar})    
 

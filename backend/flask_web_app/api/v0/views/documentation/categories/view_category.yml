@@ -1,6 +1,7 @@
 view a specific category in the database
 ---
-
+tags:
+  - Category
 
 parameters:
   - name: category_id

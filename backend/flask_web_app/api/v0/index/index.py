@@ -36,11 +36,13 @@ def colors(palette):
 
     return jsonify(result)
 
-@index_views.route('/server/')
+@index_views.route('/server')
+@swag_from('documentation/index/server_name.yml', methods=['GET'])
 def server_name():
     return jsonify({'servername': current_app.config['SERVER_NAME']})
 
 @index_views.route('/media/<username>/<filename>', methods=['GET'], strict_slashes=True)
+@swag_from('documentation/index/media.yml', methods=['GET'])
 def media(username, filename):
     file_path = path.join(
         current_app.config['ROOT_PATH'],

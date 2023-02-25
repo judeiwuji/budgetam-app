@@ -13,7 +13,7 @@ from models.transactions import Transactions
 from flasgger.utils import swag_from
 from math import ceil
 from calendar import monthrange
-
+from os import path
 
 def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 
@@ -89,7 +89,7 @@ def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 
 
 @app_views.route('/transactions', methods=['GET'], strict_slashes=False)
-@swag_from('documentation\transactions\all_transactions.yml', methods=['GET'])
+@swag_from(path.join('documentation', 'transactions', 'all_transactions.yml'))
 @token_required
 def all_transactions(user_data):
     
