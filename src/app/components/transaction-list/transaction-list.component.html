@@ -19,7 +19,8 @@
     <div class="card-body">
         <ng-container *ngFor="let transaction of transactionDB[currentView]; last as last">
             <div [ngClass]="{'mb-3': !last}">
-                <app-transaction-category [transaction]="transaction"></app-transaction-category>
+                <app-transaction-category [transaction]="transaction"
+                    [currentView]="currentView"></app-transaction-category>
             </div>
         </ng-container>
 

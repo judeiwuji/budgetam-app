@@ -5,7 +5,7 @@ from os import environ
 from flasgger import Swagger
 from api.v0.index import index_views
 from api.v0.views import app_views
-
+from flask_cors import CORS
 
 def create_flask_app(config):
     from flask import Flask
@@ -15,7 +15,7 @@ def create_flask_app(config):
 
 # cors = CORS(app, resources={r"/*": {"origins": "*"}})
     Swagger(app)
-
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.register_blueprint(index_views, url_prefix='/')
     app.register_blueprint(app_views, url_prefix='/api')
     return app

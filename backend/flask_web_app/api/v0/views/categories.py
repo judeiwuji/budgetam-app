@@ -38,28 +38,30 @@ def sub_create_update(data):
 def all_categories():
    
     # if ?filter=(id='abc')
-    args = request.args
-    all_data = storage.all(Categories)
-    result = []
-    page = args.get('page', 1, type=int) - 1
-    perPage = args.get('perPage', 10, type=int)
-    filter = args.get('filter', None, type=str)
-    len_all_data = 0
-    if all_data:
-        try:
-            for iter in range(page*perPage, (page*perPage)+perPage):
-                result.append(all_data[iter].to_dict())
-        except IndexError:
-            pass
-        len_all_data = len(result)
+    # args = request.args
+    all_data = sorted(storage.all(Categories), key=lambda d: d.name)
+    # result = []
+    # page = args.get('page', 1, type=int) - 1
+    # perPage = args.get('perPage', 10, type=int)
+    # filter = args.get('filter', None, type=str)
+    # len_all_data = 0
+    # if all_data:
+    #     try:
+    #         for iter in range(page*perPage, (page*perPage)+perPage):
+    #             result.append(all_data[iter].to_dict())
+    #     except IndexError:
+    #         pass
+    #     len_all_data = len(result)
 
-    return jsonify({
-        "page": page+1,
-        "perPage": perPage,
-        "totalItems": len_all_data,
-        "totalPages": (1 if len_all_data < perPage else ceil(len_all_data/perPage)),
-        "items": result
-    })
+    # return jsonify({
+    #     "page": page+1,
+    #     "perPage": perPage,
+    #     "totalItems": len_all_data,
+    #     "totalPages": (1 if len_all_data < perPage else ceil(len_all_data/perPage)),
+    #     "items": result
+    # })
+
+    return jsonify([category.to_dict() for category in all_data])
 
 
 @app_views.route('/categories/<category_id>', methods=['GET'], strict_slashes=False)

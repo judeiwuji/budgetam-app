@@ -11,9 +11,11 @@ class Categories(BaseModel, Base):
     __tablename__ = 'categories'
     if storage_t == 'db':
         name = Column(String(30), nullable=False)
-        icon = Column(String(255), default='https://robohash.org/odioexpeditapraesentium.png?size=50x50&set=set1')
+        icon = Column(String(
+            255), default='https://robohash.org/odioexpeditapraesentium.png?size=50x50&set=set1')
         isExpense = Column(Boolean, default=False)
-        transactions = relationship('Transactions', backref='categories')
+        transactions = relationship(
+            'Transactions', back_populates='category')
     else:
         name = ""
 
