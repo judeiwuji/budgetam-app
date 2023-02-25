@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """ Index """
 from api.v0.index import index_views
-from flask import jsonify
+from flask import current_app, jsonify, send_file
 from flasgger.utils import swag_from
 import uuid
+from os import path
 
 
 @index_views.route('/', methods=['GET'], strict_slashes=False)
@@ -34,3 +35,19 @@ def colors(palette):
         result = {palette: all_colors.get(palette)}
 
     return jsonify(result)
+
+@index_views.route('/server/')
+def server_name():
+    return jsonify({'servername': current_app.config['SERVER_NAME']})
+
+@index_views.route('/media/<username>/<filename>', methods=['GET'], strict_slashes=True)
+def media(username, filename):
+    file_path = path.join(
+        current_app.config['ROOT_PATH'],
+        current_app.config['UPLOAD_FOLDER'],
+        username, filename
+    )
+    if not path.exists(file_path):
+        return jsonify({'error': 'sorry file does not exist'}), 400
+    return send_file(file_path)
+    

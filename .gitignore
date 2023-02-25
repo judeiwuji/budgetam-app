@@ -52,3 +52,4 @@ backend/flask_web_app/.coverage
 .pytest_cache/
 backend/flask_web_app/.pytest_cache
 backend/flask_web_app/.env
+backend/flask_web_app/api/v0/media/

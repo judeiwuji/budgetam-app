@@ -1,16 +1,18 @@
 #!/usr/bin/python3
 """handles all request to the user"""
-from flask import current_app, jsonify, request
-from api.v0.views import app_views
+from flask import current_app, flash, jsonify, redirect, request, url_for
+from api.v0.views import app_views, allowed_file
 from api import time
 from api.v0.auth.token_required import token_required
 from models.users import Users
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 from models import storage
 from email_validator import validate_email, EmailNotValidError
 from jwt import encode, decode
 from datetime import datetime, timedelta
 from flasgger.utils import swag_from
+from os import path, getcwd, makedirs
 
 
 @app_views.route('/signup', methods=['POST'], strict_slashes=False)
@@ -127,10 +129,63 @@ def refresh(user_data):
 def delete_user(user_data):
     """for deleting a user"""
     try:
-        user_data(**{'deleted': datetime.utcnow()})
+        user_data.deleted = datetime.utcnow()
     except:
         return jsonify({"error": "an error occured while deleting from the database"}), 500
     return jsonify({}), 201
+
+@app_views.route('/avatar', methods=['POST'])
+@token_required
+def upload_file(user_data):
+    # check if the post request has the file part
+    if 'avatar' not in request.files:
+        return jsonify({"error": "please upload a file"}), 400
+    file = request.files['avatar']
+    # If the user does not select a file, the browser submits an
+    # empty file without a filename.
+    if file.filename == '':
+        return jsonify({"error": "please try uploading a file with correct filename"}), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+
+        static_path = path.join(
+            current_app.config['UPLOAD_FOLDER'],
+            user_data.username)
+        
+        file_path = path.join(
+            current_app.config['ROOT_PATH'], static_path,
+            )
+        
+        if not path.exists(file_path):
+            makedirs(file_path, mode=777, exist_ok=True)
+        file_path = path.join(file_path, filename)
+        file.save(file_path)
+        user_data.avatar = path.join(
+            current_app.config['SERVER_NAME'], static_path, filename).replace('\\', '/')
+        user_data.save()
+        return jsonify({"message": user_data.avatar})    
+
+
+# @app_views.route('/avatar', methods=['POST'], strict_slashes=False)
+# @token_required
+# def avatar(user_data):
+#     """uploading personal avatar"""
+#     if request.method == 'POST':
+#         if 'file' not in request.files:
+#             flash('No file part')
+#             return jsonify({"error": "please upload a file"}), 400
+#         file = request.files['file']
+#         if file.filename == '':
+#             flash('No selected file')
+#             return jsonify({"error": "please try uploading a file with correct filename"}), 400
+#         if file and allowed_file(file.filename):
+#             filename = secure_filename(file.filename)
+#             file.save(path.join(getcwd(), f"/avatar/{user_data.username}", filename))
+#             user_data(**{'avatar': file.filename}).save()
+#             return jsonify({"message": url_for('download_file', name=filename)})
+        
+#     return jsonify({'message': 'allowed method is POST'}), 400
+    
 
 # let's use the profile link instead
 # @app_views.route('/current/user', methods=['GET'], strict_slashes=False)

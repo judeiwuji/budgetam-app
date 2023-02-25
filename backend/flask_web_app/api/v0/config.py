@@ -1,5 +1,9 @@
+from os import getcwd, path
 SECRET_KEY="zSO$$FiT26!2GvcVGUGga9*#p16Rp9L4*p9v3vYDdyVgdApaqh"
 DEBUG=False
+UPLOAD_FOLDER = 'media'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+SERVER_NAME = '192.168.1.2:5000'
 # SWAGGER={
     # 'title': 'Budgetam API Backend Infrastructure',
     # 'uiversion': '0.1.0',

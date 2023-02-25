@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Flask Application """
 from models import storage
-from os import environ
+from os import environ, path
 from flasgger import Swagger
 from api.v0.index import index_views
 from api.v0.views import app_views
@@ -12,6 +12,8 @@ def create_flask_app(config):
 
     app = Flask(__name__)
     app.config.from_pyfile(config)
+    app.config['ROOT_PATH'] = app.root_path
+    # app.config['UPLOAD_FOLDER'] = path.join(app.root_path, 'media')
 
 # cors = CORS(app, resources={r"/*": {"origins": "*"}})
     Swagger(app)
