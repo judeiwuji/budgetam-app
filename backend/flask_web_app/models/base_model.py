@@ -3,14 +3,13 @@
 Contains class BaseModel
 """
 import models
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, String, DateTime
 from datetime import datetime
 import uuid
-from werkzeug.security import generate_password_hash
+from api import time
 
-time = "%Y-%m-%dT%H:%M:%S.%f"
-classes = ["Categories", "Transactions", "Users", "Tokens"]
+classes = ["Categories","Transactions","Users","Tokens"]
 
 if models.storage_t == "db":
     Base = declarative_base()
@@ -20,6 +19,8 @@ else:
 
 class BaseModel:
     id = Column(String(60), primary_key=True)
+    created = Column(DateTime)
+    updated = Column(DateTime)
     deleted = Column(DateTime, default=None)
 
     def __init__(self, *args, **kwargs) -> None:
@@ -29,11 +30,11 @@ class BaseModel:
                     # if key == 'password':
                     #     value = generate_password_hash(value)
                     setattr(self, key, value)
-            if kwargs.get("created", None) and type(self.created_at) is str:
+            if kwargs.get("created", None) and type(self.created) is str:
                 self.created_at = datetime.strptime(kwargs["created_at"], time)
             else:
                 self.created_at = datetime.utcnow()
-            if kwargs.get("updated", None) and type(self.updated_at) is str:
+            if kwargs.get("updated", None) and type(self.updated) is str:
                 self.updated_at = datetime.strptime(kwargs["updated_at"], time)
             else:
                 self.updated_at = datetime.utcnow()

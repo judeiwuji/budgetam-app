@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import current_app, jsonify, request
 from jwt import decode, encode
-from api.v0.views import time
+from api import time
 from models import storage
 from models.users import Users
 from datetime import datetime, timedelta

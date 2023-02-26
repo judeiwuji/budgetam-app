@@ -13,7 +13,7 @@ from models.transactions import Transactions
 from flasgger.utils import swag_from
 from math import ceil
 from calendar import monthrange
-
+from os import path
 
 def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 
@@ -89,9 +89,10 @@ def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 
 
 @app_views.route('/transactions', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/users/all_transactions.yml', methods=['GET'])
+@swag_from(path.join('documentation', 'transactions', 'all_transactions.yml'))
 @token_required
 def all_transactions(user_data):
+    
     args = request.args
     all_data = storage.filter(Transactions, **{'userId': user_data.id})
     result = []
@@ -118,7 +119,7 @@ def all_transactions(user_data):
 
 
 @app_views.route('/transactions/<transac_id>', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/users/view_transactions.yml', methods=['GET'])
+# @swag_from('documentation/users/view_transactions.yml', methods=['GET'])
 @token_required
 def view_transaction(*user_data, **app_views_kwargs):
     """Retrieves the transaction of a given id"""
@@ -134,7 +135,7 @@ def view_transaction(*user_data, **app_views_kwargs):
 
 
 @app_views.route('/transactions', methods=['POST'], strict_slashes=False)
-@swag_from('documentation/users/create_transaction.yml', methods=['GET'])
+# @swag_from('documentation/users/create_transaction.yml', methods=['GET'])
 @token_required
 def create_transaction(user_data):
     """Creates a new transaction"""
@@ -190,7 +191,7 @@ def update_transaction(user_data, *_, **app_views_kwargs):
 
 
 @app_views.route('/transactions/<transac_id>', methods=['DELETE'], strict_slashes=False)
-@swag_from('documentation/users/delete_transactions.yml', methods=['GET'])
+# @swag_from('documentation/users/delete_transactions.yml', methods=['GET'])
 @token_required
 def delete_transaction(user_data, *_, **app_views_kwargs):
     """deletes a transaction"""
@@ -203,7 +204,7 @@ def delete_transaction(user_data, *_, **app_views_kwargs):
 
 
 @app_views.route('/balance', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/users/get_balance.yml', methods=['GET'])
+# @swag_from('documentation/users/get_balance.yml', methods=['GET'])
 @token_required
 def get_balance(user_data):
     # from sys import stdout

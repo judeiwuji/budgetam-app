@@ -1,4 +1,4 @@
-# BudgetamApp
+# BudgetamApp Frontend
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.4.
 
@@ -25,3 +25,24 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+
+
+# BudgetamApp Backend
+
+## Installing the necessary packages
+`pip install -u pip && pip install -r backend\flask_web_app\requirements.txt`
+## Running the backend
+By default the server will run on `0.0.0.0:5000` but if you want to run it on a different port and host set in the environment variable the `HOST` and `PORT`.
+### In the terminal
+`python -m api.v0.entrypoint`
+
+## Running tests
+
+
+### In the terminal
+`python -m pytest -v`
+
+### Using coverage
+`coverage run -m pytest -v && coverage report -m`

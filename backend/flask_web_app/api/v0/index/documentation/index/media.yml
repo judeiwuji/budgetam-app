@@ -1,0 +1,23 @@
+view media files like pictures and videos
+---
+tags:
+  - Index
+parameters:
+  - name: username
+    description: the username of the user
+    in: query
+    required: true
+    default: null
+  
+  - name: filename
+    description: the filename of the media
+    in: query
+    required: true
+    default: null
+
+
+responses:
+  '200':
+    description: media found successfully and displayed
+  '400':
+    description: username, filename or file does not exist
