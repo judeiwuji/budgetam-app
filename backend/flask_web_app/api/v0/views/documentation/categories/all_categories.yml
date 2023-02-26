@@ -1,6 +1,65 @@
 get all categories in the database
 ---
 tags:
-  - Categories
+  - Category
+  
+parameters:
+  - name: filter
+    description: the filters to apply on the result
+    in: query
+    type: string
+    required: false
+    default: null
 
+  - name: perPage
+    description: The number of items in one page
+    in: query
+    type: integer
+    required: false
+    default: 10
+
+  - name: page
+    description: the page you presently are in
+    in: query
+    type: integer
+    required: false
+    default: 1
     
+# definitions:
+#   Categories: 
+#     type: object
+#     properties:
+#       categories_items:
+#         type: array
+#         items: 
+#           $ref: '#/definitions/Filter'
+          
+#   Filter:
+#     type: string
+#   PerPage:
+#     type: integer
+#   Page:
+#     type: integer
+responses:
+  '200':
+    description: list successful
+    content: 
+      application/json:
+        schema:
+          type: string
+          examples: 
+            success: hello
+
+
+    # examples:
+    #   All_Categories:
+    #     perPage: 10
+    #     page: 1
+    #     totalItems: 258
+    #     totalPages: 26
+    #     items: 
+    #       name: House
+    #       icon: 'https://robohash.org/odioexpeditapraesentium.png?size=50x50&set=set1'
+    #       isExpense: false
+    # schema:
+    #   $ref: '#/definitions/Categories'
