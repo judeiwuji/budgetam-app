@@ -32,6 +32,7 @@ import { TransactionReportComponent } from './components/transaction-report/tran
 import { SettingsComponent } from './settings/settings.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
+import { DemoComponent } from './demo/demo.component';
 
 const dbConfig: DBConfig = {
   name: 'BudgetamDB',
@@ -100,6 +101,7 @@ const dbConfig: DBConfig = {
     BarChartComponent,
     TransactionReportComponent,
     SettingsComponent,
+    DemoComponent,
   ],
   imports: [
     BrowserModule,

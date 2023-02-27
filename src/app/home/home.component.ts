@@ -12,25 +12,7 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userService: UserService,
-    private readonly categoryService: CategoryService,
-    private readonly router: Router
-  ) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    console.log(this.authService.isGuest());
-  }
-
-  tryDemo() {
-    // this.authService.logout();
-    this.userService.createGuestUser().subscribe((user) => {
-      const token = `${Date.now()}.${Math.floor(Math.random() * 1000)}|guest|${
-        user.id
-      }`;
-      this.authService.login(token);
-      this.categoryService.createGuestCategories();
-    });
-  }
+  ngOnInit(): void {}
 }
