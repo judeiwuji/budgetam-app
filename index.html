@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expense tracking made easy, effortless and seamless.">
+    <meta name="og:title" content="Budgetam">
+    <meta name="og:description" content="Expense tracking made easy, effortless and seamless.">
     <title>Budgetam</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,11 +15,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Titan+One&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="resources/css/main.css">
+    <link rel="icon" type="image/x-icon" href="resources/icon/logo.png">
 </head>
 
 <body>
+    <nav>
+        <div class="brand">
+            <img src="resources/icon/logo.png" alt="Budgetam Logo" class="logo">
+        </div>
+
+        <ul class="navbar">
+            <li>
+                <a href="#home">Home</a>
+            </li>
+            <li>
+                <a href="#dashboard">Features</a>
+            </li>
+            <li>
+                <a href="#about">About</a>
+            </li>
+            <li>
+                <a href="#team">Team</a>
+            </li>
+        </ul>
+    </nav>
     <!-- Header Section -->
-    <header class="container">
+    <header class="container" id="home">
         <div class="hero-text">
             <h1>
                 Expense tracking made easy, effortless and seamless.
@@ -44,7 +68,7 @@
     <!-- Header Section -->
 
     <!-- Features Section -->
-    <section class="container dashboard-section">
+    <section class="container dashboard-section" id="dashboard">
         <div class="img-wrapper">
             <img src="resources/imgs/app_dashboard.png" alt="Budgetam Dashboard" loading="lazy" draggable="false">
         </div>
@@ -61,7 +85,7 @@
     <!-- Features Section -->
 
     <!-- Report Section -->
-    <section class="container report-section">
+    <section class="container report-section" id="report">
         <div class="hero-text">
             <h2>Data visualization</h2>
             <p>
@@ -77,8 +101,24 @@
     </section>
     <!-- Report Section -->
 
+    <!-- About Section -->
+    <section class="container about-section" id="about">
+        <div>
+            <div class="heading">
+                <h2>About</h2>
+            </div>
+            <p>
+                This app was built to enable people who find it difficult to manage their income and expenses
+                efficiently. We started by considering the question "What is the best way to keep track of
+                transactions?". In other to solve this problem we created Budgetam, an app that will enable the user to
+                track cash in & out flow with ease.
+            </p>
+        </div>
+    </section>
+    <!-- About Section -->
+
     <!-- Team Section -->
-    <section class="container team-section">
+    <section class="container team-section" id="team">
         <div class="heading">
             <h2>Our Team</h2>
             <p>
@@ -134,7 +174,7 @@
     <!-- Team Section -->
 
     <!-- Footer -->
-    <footer>
+    <footer id="footer">
         <p>
             <span id="__year"></span> @ Budgetam. All copyrights reserved
         </p>
