@@ -341,4 +341,13 @@ nav {
   .team-card + .team-card {
     margin: 0;
   }
+
+  header {
+    min-height: 100vh;
+  }
+
+  .container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
 }
