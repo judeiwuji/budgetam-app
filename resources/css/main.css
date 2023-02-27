@@ -4,11 +4,16 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #fdfdfd;
   font-size: 16px;
   text-rendering: optimizeLegibility;
   font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
+  scroll-behavior: smooth;
 }
 
 /* Container */
@@ -23,12 +28,12 @@ body {
 
 /* Header */
 header {
-  height: 100vh;
   width: 100%;
   background-color: #000000;
   color: #ffffff;
   justify-content: space-between;
   align-items: center;
+  padding-top: 5rem !important;
 }
 
 img {
@@ -174,7 +179,7 @@ footer {
 }
 
 .team-card {
-  border: 1px solid #9b9b9b;
+  box-shadow: 0 0 0.35rem #c9c9c9;
   border-radius: 10px;
   width: 20em;
   padding: 0.85rem;
@@ -183,8 +188,9 @@ footer {
 }
 
 .team-card + .team-card {
-  margin: 0 0.75rem;
+  margin: 0 0.95rem;
 }
+
 .team-card h3 {
   font-size: 1.65rem;
   margin-bottom: 0.55rem;
@@ -238,6 +244,54 @@ footer {
   text-decoration: none;
 }
 
+/* Navbar */
+.logo {
+  height: 3em;
+  width: 5em;
+  padding: 0.3rem;
+}
+
+nav,
+.navbar {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+}
+
+nav {
+  width: 100%;
+  justify-content: space-between;
+  background-color: transparent;
+  position: fixed;
+  background-color: #000000;
+  z-index: 1040;
+}
+
+.navbar {
+  list-style: none;
+  align-items: center;
+}
+
+.navbar li a {
+  padding: 0.75rem;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 0.8rem;
+}
+/* Navbar */
+
+/* About */
+.about-section {
+  background-color: #ffffff;
+  justify-content: center;
+  text-align: center;
+}
+
+.about-section .hero-text {
+  width: 100%;
+  text-align: center;
+}
+/* About */
 @media screen and (max-width: 730px) {
   .container {
     flex-wrap: wrap;
@@ -286,5 +340,14 @@ footer {
 
   .team-card + .team-card {
     margin: 0;
+  }
+
+  header {
+    min-height: 100vh;
+  }
+
+  .container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 }
