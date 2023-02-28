@@ -152,7 +152,7 @@ def create_transaction(user_data):
 
     date, catId, userId, amount, note, _ = result_sub
     transac_data = Transactions(**{
-        "date": date,
+        "date": datetime.strptime("{}T00:00:00".format(date), "%Y-%m-%dT%H:%M:%S"),
         "catId": catId,
         "userId": userId,
         "amount": amount,
@@ -315,7 +315,7 @@ def yearly_transactions(user_data):
     all_data = storage.query(Categories).join(Categories.transactions).filter(
         Transactions.userId == user_data.id).order_by(Categories.name).all()
 
-    categories = categorize_transactions(all_data, 
+    categories = categorize_transactions(all_data,
                                          lambda date: date >= lastTwoYears and
                                          date <= today)
     return jsonify([item.to_dict() for item in categories])

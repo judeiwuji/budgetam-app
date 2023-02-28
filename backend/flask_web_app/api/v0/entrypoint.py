@@ -21,6 +21,10 @@ def create_flask_app(config):
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.register_blueprint(index_views, url_prefix='/')
     app.register_blueprint(app_views, url_prefix='/api')
+
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        storage.close()
     return app
 
 
