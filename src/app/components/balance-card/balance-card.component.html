@@ -22,10 +22,18 @@
 
         <div class="text-center py-4">
             <h4 class="balance-currency text-muted">{{currency}}</h4>
-            <p class="balance-amount">
-                <span *ngIf="!isIncomeView">{{balance.expenses | number}}</span>
-                <span *ngIf="isIncomeView">{{balance.income | number}}</span>
-            </p>
+            <ng-container *ngIf="!isLoading">
+                <p class="balance-amount">
+                    <span *ngIf="!isIncomeView">{{balance.expenses | number}}</span>
+                    <span *ngIf="isIncomeView">{{balance.income | number}}</span>
+                </p>
+            </ng-container>
+
+            <ng-container *ngIf="isLoading">
+                <div class="text-center">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>

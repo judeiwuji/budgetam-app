@@ -15,7 +15,7 @@ class Transactions(BaseModel, Base):
         userId = Column(String(60), ForeignKey('users.id'), nullable=False)
         amount = Column(Integer)
         note = Column(Text)
-        category = relationship("Categories", back_populates="transactions")
+        category = relationship("Categories", lazy="joined")
     else:
         title = ""
 

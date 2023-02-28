@@ -29,7 +29,7 @@ export class UserService {
       return this.getGuestUser();
     }
 
-    return this.http.get<User>(`${this.api}/current/user`);
+    return this.http.get<User>(`${this.api}/profile`);
   }
 
   signup(user: User) {

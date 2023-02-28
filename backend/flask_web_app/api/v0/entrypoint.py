@@ -7,6 +7,7 @@ from api.v0.index import index_views
 from api.v0.views import app_views
 from flask_cors import CORS
 
+
 def create_flask_app(config):
     from flask import Flask
 
@@ -30,6 +31,6 @@ if __name__ == '__main__':
     app.run(
         debug=True,
         host=(host if host else '0.0.0.0'),
-        port=(port if port else '5000'), 
+        port=(port if port else '5000'),
         threaded=True)
     storage.close()

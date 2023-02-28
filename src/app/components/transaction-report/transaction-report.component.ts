@@ -26,6 +26,7 @@ export class TransactionReportComponent implements OnInit {
     [TransactionReportViews.month]: [],
     [TransactionReportViews.year]: [],
   };
+  public isLoading = true;
 
   @Output()
   onChangeView = new EventEmitter();
@@ -46,27 +47,43 @@ export class TransactionReportComponent implements OnInit {
   }
 
   getReports() {
+    this.isLoading = true;
     if (
       !this.transactionDB[this.currentView] ||
       this.transactionDB[this.currentView].length === 0
     ) {
       switch (this.currentView) {
         case TransactionReportViews.week:
-          this.reportService.getWeeklyReport().subscribe((transactions) => {
-            this.transactionDB[this.currentView] = transactions;
-            this.onChangeView.emit({ transactions, mode: this.currentView });
+          this.reportService.getWeeklyReport().subscribe({
+            next: (transactions) => {
+              this.transactionDB[this.currentView] = transactions;
+              this.onChangeView.emit({ transactions, mode: this.currentView });
+            },
+            complete: () => {
+              this.isLoading = false;
+            },
           });
           break;
         case TransactionReportViews.month:
-          this.reportService.getMonthlyReport().subscribe((transactions) => {
-            this.transactionDB[this.currentView] = transactions;
-            this.onChangeView.emit({ transactions, mode: this.currentView });
+          this.reportService.getMonthlyReport().subscribe({
+            next: (transactions) => {
+              this.transactionDB[this.currentView] = transactions;
+              this.onChangeView.emit({ transactions, mode: this.currentView });
+            },
+            complete: () => {
+              this.isLoading = false;
+            },
           });
           break;
         case TransactionReportViews.year:
-          this.reportService.getYearlyReport().subscribe((transactions) => {
-            this.transactionDB[this.currentView] = transactions;
-            this.onChangeView.emit({ transactions, mode: this.currentView });
+          this.reportService.getYearlyReport().subscribe({
+            next: (transactions) => {
+              this.transactionDB[this.currentView] = transactions;
+              this.onChangeView.emit({ transactions, mode: this.currentView });
+            },
+            complete: () => {
+              this.isLoading = false;
+            },
           });
           break;
       }

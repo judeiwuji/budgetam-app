@@ -15,6 +15,7 @@ from math import ceil
 from calendar import monthrange
 from os import path
 
+
 def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 
     # check if data was sent through json
@@ -92,7 +93,7 @@ def sub_delete_update(data: dict, transac_id: str, userId_obj: str):
 @swag_from(path.join('documentation', 'transactions', 'all_transactions.yml'))
 @token_required
 def all_transactions(user_data):
-    
+
     args = request.args
     all_data = storage.filter(Transactions, **{'userId': user_data.id})
     result = []
@@ -223,7 +224,6 @@ def get_balance(user_data):
 
     if transactions is not None:
         for item in transactions:
-            # print(item, file=stdout)
             if item.category.isExpense:
                 expenses += item.amount
             else:
@@ -234,9 +234,14 @@ def get_balance(user_data):
     })
 
 
-def categorize_transactions(all_data):
+def categorize_transactions(all_data, filter):
     categories = []
     for category in all_data:
+        transactions = []
+        for transaction in category.transactions:
+            if filter(transaction.date):
+                transactions.append(transaction)
+        category.transactions = transactions
         amount = sum(
             [transaction.amount for transaction in category.transactions])
         count = len(category.transactions)
@@ -249,25 +254,36 @@ def categorize_transactions(all_data):
 @app_views.route('/daily/transactions', methods=['GET'], strict_slashes=False)
 @token_required
 def daily_transactions(user_data):
-    today = date.today()
-    all_data = storage.query(Categories).join(Transactions).filter(
-        Transactions.userId == user_data.id,
-        Transactions.date == today).order_by(Categories.name).all()
-    categories = categorize_transactions(all_data)
+    now = datetime.today()
+    today = datetime(year=now.year, month=now.month,
+                     day=now.day, hour=0, minute=0, second=0)
+    query = storage.query(Categories).\
+        join(Transactions).\
+        filter(Transactions.userId == user_data.id,
+               Transactions.date == today).\
+        order_by(Categories.name)
+    all_data = query.all()
+    from sys import stdout
+    categories = categorize_transactions(all_data, lambda date: date == today)
+
+    print(query, file=stdout)
+    print(today, file=stdout)
     return jsonify([item.to_dict() for item in categories])
 
 
 @app_views.route('/weekly/transactions', methods=['GET'], strict_slashes=False)
 @token_required
 def weekly_transactions(user_data):
-    today = date.today()
+    today = datetime.today()
     weekstart = today - timedelta(days=today.weekday())
     weekend = weekstart + timedelta(days=6)
 
-    all_data = storage.query(Categories).join(Transactions).filter(
-        Transactions.userId == user_data.id, Transactions.date >= weekstart,
-        Transactions.date <= weekend).order_by(Categories.name).all()
-    categories = categorize_transactions(all_data)
+    all_data = storage.query(Categories).\
+        join(Transactions).\
+        filter(
+        Transactions.userId == user_data.id).order_by(Categories.name).all()
+    categories = categorize_transactions(all_data,
+                                         lambda date: date >= weekstart and date <= weekend)
     return jsonify([item.to_dict() for item in categories])
 
 
@@ -279,23 +295,27 @@ def monthly_transactions(user_data):
     firstDayOfMonth = datetime(year=now.year, month=now.month, day=1)
     lastDayOfMonth = datetime(year=now.year, month=now.month, day=totalDays)
 
-    all_data = storage.query(Categories).join(Transactions).filter(
-        Transactions.userId == user_data.id, Transactions.date >= firstDayOfMonth,
-        Transactions.date <= lastDayOfMonth).order_by(Categories.name).all()
+    all_data = storage.query(Categories).\
+        join(Transactions).\
+        filter(
+        Transactions.userId == user_data.id).\
+        order_by(Categories.name).all()
 
-    categories = categorize_transactions(all_data)
+    categories = categorize_transactions(all_data,
+                                         lambda date: date >= firstDayOfMonth and date <= lastDayOfMonth)
     return jsonify([item.to_dict() for item in categories])
 
 
 @app_views.route('/yearly/transactions', methods=['GET'], strict_slashes=False)
 @token_required
 def yearly_transactions(user_data):
-    today = date.today()
-    lastTwoYears = date(year=today.year - 2, month=1, day=1)
+    today = datetime.today()
+    lastTwoYears = datetime(year=today.year - 2, month=1, day=1)
 
-    all_data = storage.query(Categories).join(Transactions).filter(
-        Transactions.userId == user_data.id, Transactions.date >= lastTwoYears,
-        Transactions.date <= today).order_by(Categories.name).all()
+    all_data = storage.query(Categories).join(Categories.transactions).filter(
+        Transactions.userId == user_data.id).order_by(Categories.name).all()
 
-    categories = categorize_transactions(all_data)
+    categories = categorize_transactions(all_data, 
+                                         lambda date: date >= lastTwoYears and
+                                         date <= today)
     return jsonify([item.to_dict() for item in categories])
