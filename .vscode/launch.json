@@ -3,6 +3,32 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python: Flask",
+      "type": "python",
+      "request": "launch",
+      "module": "flask",
+      "env": {
+        "FLASK_APP": "C:\\Users\\Ifiok_Ekott\\Programming\\ALX\\budgetam-app\\backend\\flask_web_app\\api\\v0\\entrypoint.py",
+        "FLASK_DEBUG": "1",
+        "MYSQL_USER": "budgetam_backend_user",
+        "MYSQL_PWD": "helloworld2024",
+        "MYSQL_HOST": "127.0.0.1",
+        "MYSQL_DB": "budgetam_db",
+        "TYPE_STORAGE": "db",
+        "MAIL_PASSWORD": "LpGtE9BROTh0SykI",
+        "SIB_API_KEY": "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",
+        "SIB_USERNAME": "ekottifiok@gmail.com"
+      },
+      "args": [
+        "run",
+        "--no-debugger",
+        "--no-reload"
+      ],
+      "jinja": true,
+      // "justMyCode": true
+      "console": "integratedTerminal"
+    },
+    {
       "name": "ng serve",
       "type": "pwa-chrome",
       "request": "launch",
