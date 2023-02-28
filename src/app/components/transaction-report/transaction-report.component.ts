@@ -47,11 +47,11 @@ export class TransactionReportComponent implements OnInit {
   }
 
   getReports() {
-    this.isLoading = true;
     if (
       !this.transactionDB[this.currentView] ||
       this.transactionDB[this.currentView].length === 0
     ) {
+      this.isLoading = true;
       switch (this.currentView) {
         case TransactionReportViews.week:
           this.reportService.getWeeklyReport().subscribe({

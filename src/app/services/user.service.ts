@@ -57,12 +57,14 @@ export class UserService {
 
   uploadAvatar(user: User, image: File) {
     if (this.authService.isGuest()) {
-      return this.updateGuest(user);
+      return this.updateGuest(user).pipe(
+        map(() => ({ image: user.avatar as string }))
+      );
     }
 
     const formData = new FormData();
     formData.append('avatar', image);
-    return this.http.post<boolean>(this.api, formData);
+    return this.http.post<{ image: string }>(`${this.api}/avatar`, formData);
   }
 
   createGuestUser() {

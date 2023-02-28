@@ -134,7 +134,7 @@ def delete_user(user_data):
         return jsonify({"error": "an error occured while deleting from the database"}), 500
     return jsonify({}), 201
 
-@app_views.route('/avatar', methods=['POST'])
+@app_views.route('/avatar', methods=['POST'], strict_slashes=True)
 @token_required
 def upload_file(user_data):
     # check if the post request has the file part
@@ -162,7 +162,7 @@ def upload_file(user_data):
         file.save(file_path)
         user_data.avatar = path.join( static_path, filename).replace('\\', '/')
         user_data.save()
-        return jsonify({"message": user_data.avatar})    
+        return jsonify({"image": user_data.avatar})    
 
 
 # @app_views.route('/avatar', methods=['POST'], strict_slashes=False)
@@ -184,12 +184,3 @@ def upload_file(user_data):
 #             return jsonify({"message": url_for('download_file', name=filename)})
         
 #     return jsonify({'message': 'allowed method is POST'}), 400
-    
-
-# let's use the profile link instead
-# @app_views.route('/current/user', methods=['GET'], strict_slashes=False)
-# @token_required
-# def current_user(user_data):
-#     """returns the current logged in user"""
-
-#     return jsonify(user_data.to_dict()), 200

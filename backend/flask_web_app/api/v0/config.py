@@ -1,13 +1,13 @@
 from os import getcwd, path
-SECRET_KEY="zSO$$FiT26!2GvcVGUGga9*#p16Rp9L4*p9v3vYDdyVgdApaqh"
-DEBUG=False
-UPLOAD_FOLDER = 'media'
+SECRET_KEY = "zSO$$FiT26!2GvcVGUGga9*#p16Rp9L4*p9v3vYDdyVgdApaqh"
+DEBUG = False
+UPLOAD_FOLDER = '/static/media'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 # SERVER_NAME = '192.168.1.2:5000'
 # SWAGGER={
-    # 'title': 'Budgetam API Backend Infrastructure',
-    # 'uiversion': '0.1.0',
-    # 'openapi': '3.0.0'
+# 'title': 'Budgetam API Backend Infrastructure',
+# 'uiversion': '0.1.0',
+# 'openapi': '3.0.0'
 # }
 # swagger_config = {
 #     "headers": [
@@ -22,6 +22,6 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 #     ],
 #     "static_url_path": "/flasgger_static",
 #     # "static_folder": "static",  # must be set by user
-#     
+#
 #     "specs_route": "/apidocs/"
 # }
