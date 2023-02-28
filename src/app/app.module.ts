@@ -33,6 +33,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
 import { DemoComponent } from './demo/demo.component';
+import { ResetPasswordComponent } from './modals/reset-password/reset-password.component';
 
 const dbConfig: DBConfig = {
   name: 'BudgetamDB',
@@ -102,6 +103,7 @@ const dbConfig: DBConfig = {
     TransactionReportComponent,
     SettingsComponent,
     DemoComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

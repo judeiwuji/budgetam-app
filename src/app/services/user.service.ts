@@ -7,6 +7,9 @@ import { LinkManager } from '../models/LinkManager';
 import { LoginRequest, LoginResponse } from '../models/Login';
 import User from '../models/User';
 import { AuthService } from './auth.service';
+import { ChangePasswordRequest } from '../models/ChangePassword';
+import { VerifyUserRequest } from '../models/ResetPassword';
+import Feedback from '../models/Feedback';
 
 @Injectable({
   providedIn: 'root',
@@ -65,6 +68,38 @@ export class UserService {
     const formData = new FormData();
     formData.append('avatar', image);
     return this.http.post<{ image: string }>(`${this.api}/avatar`, formData);
+  }
+
+  changePassword(request: ChangePasswordRequest) {
+    if (this.authService.isGuest()) {
+      const response = new Feedback();
+      response.message = 'Feature only available to real users';
+      response.success = false;
+      return of(response);
+    }
+    return this.http.post<Feedback>(`${this.api}/change_password`, request);
+  }
+
+  resetPassword(password: string, token: string) {
+    if (this.authService.isGuest()) {
+      const response = new Feedback();
+      response.message = 'Feature only available to real users';
+      response.success = false;
+      return of(response);
+    }
+    return this.http.post<Feedback>(`${this.api}/verify/${token}`, {
+      password,
+    });
+  }
+
+  verifyUser(request: VerifyUserRequest) {
+    if (this.authService.isGuest()) {
+      const response = new Feedback();
+      response.message = 'Feature only available to real users';
+      response.success = false;
+      return of(response);
+    }
+    return this.http.post<Feedback>(`${this.api}/forgotten_password`, request);
   }
 
   createGuestUser() {
