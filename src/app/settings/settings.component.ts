@@ -5,6 +5,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ToastrService } from 'ngx-toastr';
 import { ChangePasswordComponent } from '../modals/change-password/change-password.component';
 import { ProfileComponent } from '../modals/profile/profile.component';
+import { LinkManager } from '../models/LinkManager';
 import User from '../models/User';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
@@ -16,6 +17,7 @@ import { UserService } from '../services/user.service';
 })
 export class SettingsComponent implements OnInit {
   public user: User = new User('');
+  public baseUrl = LinkManager.baseUrl;
 
   constructor(
     private readonly modal: NgbModal,

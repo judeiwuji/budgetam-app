@@ -2,7 +2,7 @@
 """ holds class users"""
 from models import storage_t
 from models.base_model import Base, BaseModel
-from sqlalchemy import Column, String
+from sqlalchemy import Boolean, Column, String
 
 
 class Users(BaseModel, Base):
@@ -14,6 +14,7 @@ class Users(BaseModel, Base):
         email = Column(String(255), nullable=False, unique=True)
         password = Column(String(255), nullable=False)
         token = Column(String(255), unique=True)
+        verified = Column(Boolean, default=False)
     else:
         username = ""
         email = ""

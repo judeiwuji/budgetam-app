@@ -4,6 +4,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ProfileComponent } from '../modals/profile/profile.component';
 import { TransactionFormComponent } from '../modals/transaction-form/transaction-form.component';
 import { TransactionsComponent } from '../modals/transactions/transactions.component';
+import { LinkManager } from '../models/LinkManager';
 import User from '../models/User';
 import { UserService } from '../services/user.service';
 
@@ -14,6 +15,7 @@ import { UserService } from '../services/user.service';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public user = new User('');
+  public baseUrl = LinkManager.baseUrl;
 
   constructor(
     private readonly modal: NgbModal,

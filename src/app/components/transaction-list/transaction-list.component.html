@@ -24,7 +24,13 @@
             </div>
         </ng-container>
 
-        <ng-container *ngIf="transactionDB[currentView].length === 0">
+        <ng-container *ngIf="isLoading">
+            <div class="text-center">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="transactionDB[currentView].length === 0 && !isLoading">
             <div class="py-4 text-center">
                 <p class="text-muted mb-0">Oops, you have no transactions</p>
             </div>

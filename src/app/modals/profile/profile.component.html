@@ -27,7 +27,7 @@
                     </ng-container>
 
                     <ng-container *ngIf="!avatarPreview">
-                        <img [src]="user.avatar? user.avatar : '/assets/imgs/avatar.svg'" alt="avatar">
+                        <img [src]="user.avatar? baseUrl + user.avatar : '/assets/imgs/avatar.svg'" alt="avatar">
                     </ng-container>
                 </span>
                 <span class="static-align-bottom-right">

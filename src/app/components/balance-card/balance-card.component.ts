@@ -20,6 +20,7 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
   private editTransactionSubscription!: Subscription;
   private deleteTransactionSubscription!: Subscription;
   public isIncomeView = false;
+  isLoading = false;
 
   constructor(
     private readonly transactionService: TransactionService,
@@ -60,6 +61,9 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
   }
 
   getBalance() {
+    if (this.isLoading) return;
+
+    this.isLoading = true;
     this.transactionService.getBalance().subscribe({
       next: (balance) => {
         if (balance) {
@@ -70,6 +74,9 @@ export class BalanceCardComponent implements OnInit, OnDestroy {
         this.toastrService.warning(
           'Sorry, we were unable to complete your request'
         );
+      },
+      complete: () => {
+        this.isLoading = false;
       },
     });
   }

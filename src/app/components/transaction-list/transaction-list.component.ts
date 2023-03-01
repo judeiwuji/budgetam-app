@@ -28,8 +28,8 @@ export class TransactionListComponent implements OnInit, OnDestroy {
   private createTransactionSubscription!: Subscription;
   private editTransactionSubscription!: Subscription;
   private deleteTransactionSubscription!: Subscription;
-
   private transactionProvider = TransactionProvider.getInstance();
+  public isLoading = false;
 
   constructor(private readonly transactionService: TransactionService) {}
   ngOnDestroy(): void {
@@ -125,8 +125,12 @@ export class TransactionListComponent implements OnInit, OnDestroy {
   }
 
   getTransactions() {
+    if (this.isLoading || this.transactionDB[this.currentView].length > 0) {
+      return;
+    }
     let transactionSub: Subscription;
 
+    this.isLoading = true;
     switch (this.currentView) {
       case TransactionViews.daily:
         transactionSub = this.transactionService
@@ -136,8 +140,9 @@ export class TransactionListComponent implements OnInit, OnDestroy {
               this.transactionDB[this.currentView] = transactions;
             },
             error: (err) => {},
-            complete() {
+            complete: () => {
               transactionSub.unsubscribe();
+              this.isLoading = false;
             },
           });
         break;
@@ -149,8 +154,9 @@ export class TransactionListComponent implements OnInit, OnDestroy {
               this.transactionDB[this.currentView] = transactions;
             },
             error: (err) => {},
-            complete() {
+            complete: () => {
               transactionSub.unsubscribe();
+              this.isLoading = false;
             },
           });
         break;
@@ -162,8 +168,9 @@ export class TransactionListComponent implements OnInit, OnDestroy {
               this.transactionDB[this.currentView] = transactions;
             },
             error: (err) => {},
-            complete() {
+            complete: () => {
               transactionSub.unsubscribe();
+              this.isLoading = false;
             },
           });
         break;

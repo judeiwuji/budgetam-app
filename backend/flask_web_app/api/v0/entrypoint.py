@@ -2,32 +2,41 @@
 """ Flask Application """
 from models import storage
 from os import environ
-from flasgger import Swagger
-from api.v0.index import index_views
-from api.v0.views import app_views
-from flask_cors import CORS
+from api.v0 import create_app
+from flask import jsonify, render_template
 
-def create_flask_app(config):
-    from flask import Flask
-
-    app = Flask(__name__)
-    app.config.from_pyfile(config)
-
-# cors = CORS(app, resources={r"/*": {"origins": "*"}})
-    Swagger(app)
-    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-    app.register_blueprint(index_views, url_prefix='/')
-    app.register_blueprint(app_views, url_prefix='/api')
-    return app
+app = create_app()
 
 
-if __name__ == '__main__':
-    host = environ.get('API_HOST')
-    port = environ.get('API_PORT')
-    app = create_flask_app('config.py')
-    app.run(
-        debug=True,
-        host=(host if host else '0.0.0.0'),
-        port=(port if port else '5000'), 
-        threaded=True)
+@app.route('/', methods=['GET'], strict_slashes=False)
+@app.route('/<path:u_path>')
+def root(u_path):
+    """Index of API"""
+    return render_template('index.html')
+
+
+@app.teardown_appcontext
+def close_db(error):
+    """ Close Storage """
     storage.close()
+
+
+@app.errorhandler(404)
+def not_found(error):
+    """ 404 Error
+    ---
+    responses:
+      404:
+        description: a resource was not found
+    """
+    return jsonify({'error': "Not found"}), 404
+
+
+host = environ.get('API_HOST')
+port = environ.get('API_PORT')
+app.run(
+    debug=True,
+    host=(host if host else '0.0.0.0'),
+    port=(port if port else '5000'),
+    threaded=True)
+storage.close()

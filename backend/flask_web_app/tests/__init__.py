@@ -1,3 +1,4 @@
-from api.v0.entrypoint import create_flask_app
+from api.v0 import create_app
+from api.v0.config import ConfigTests
 
-flask_app = create_flask_app('config_test.py')
+flask_app = create_app(ConfigTests)

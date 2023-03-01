@@ -1,6 +1,8 @@
 Endpoint returning a message that says welcome home
     in the root url
 ---
+tags:
+  - Index
 responses:
   200:
     get:
