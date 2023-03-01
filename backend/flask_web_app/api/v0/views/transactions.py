@@ -182,7 +182,7 @@ def update_transaction(user_data, *_, **app_views_kwargs):
         return jsonify({"error": "sorry something failed"}), 401
     try:
         for key, value in {
-                "date": date, "catId": catId, "userId": userId,
+                "date": datetime.strptime("{}T00:00:00".format(date), "%Y-%m-%dT%H:%M:%S"), "catId": catId, "userId": userId,
                 "amount": amount, "note": note}.items():
             setattr(transac_obj, key, value)
         storage.save()

@@ -162,21 +162,15 @@ def upload_file(user_data):
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
 
-        static_path = path.join(
-            current_app.config['UPLOAD_FOLDER'],
-            user_data.username)
-
-        file_path = path.join(
-            current_app.config['ROOT_PATH'], static_path,
-        )
+        file_path = path.join(current_app.config['UPLOAD_FOLDER'], user_data.username)
 
         if not path.exists(file_path):
             makedirs(file_path, mode=777, exist_ok=True)
-        file_path = path.join(file_path, filename)
-        file.save(file_path)
-        user_data.avatar = path.join(static_path, filename).replace('\\', '/')
+        file.save(path.join(file_path, filename))
+        user_data.avatar = path.join('media', user_data.username, filename)
         user_data.save()
         return jsonify({"image": user_data.avatar})
+    return jsonify({'error': 'no file found'}), 400
 
 
 # @app_views.route('/avatar', methods=['POST'], strict_slashes=False)
@@ -198,7 +192,7 @@ def upload_file(user_data):
 #             return jsonify({"message": url_for('download_file', name=filename)})
 
 #     return jsonify({'message': 'allowed method is POST'}), 400
-        return jsonify({"message": user_data.avatar})
+        # return jsonify({"message": user_data.avatar})
 
 
 @app_views.route('/change_password', methods=['POST'], strict_slashes=False)
