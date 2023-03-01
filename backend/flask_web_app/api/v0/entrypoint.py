@@ -3,9 +3,16 @@
 from models import storage
 from os import environ
 from api.v0 import create_app
-from flask import jsonify
+from flask import jsonify, render_template
 
 app = create_app()
+
+
+@app.route('/', methods=['GET'], strict_slashes=False)
+@app.route('/<path:u_path>')
+def root(u_path):
+    """Index of API"""
+    return render_template('index.html')
 
 
 @app.teardown_appcontext

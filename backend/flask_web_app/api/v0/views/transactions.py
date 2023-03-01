@@ -278,10 +278,15 @@ def weekly_transactions(user_data):
     weekstart = today - timedelta(days=today.weekday())
     weekend = weekstart + timedelta(days=6)
 
+    from sys import stdout
+    print(weekstart, file=stdout)
     all_data = storage.query(Categories).\
         join(Transactions).\
         filter(
-        Transactions.userId == user_data.id).order_by(Categories.name).all()
+        Transactions.userId == user_data.id,
+        Transactions.date >= weekstart,
+        Transactions.date <= weekend).\
+        order_by(Categories.name).all()
     categories = categorize_transactions(all_data,
                                          lambda date: date >= weekstart and date <= weekend)
     return jsonify([item.to_dict() for item in categories])
@@ -298,7 +303,9 @@ def monthly_transactions(user_data):
     all_data = storage.query(Categories).\
         join(Transactions).\
         filter(
-        Transactions.userId == user_data.id).\
+        Transactions.userId == user_data.id,
+        Transactions.date >= firstDayOfMonth,
+        Transactions.date <= lastDayOfMonth).\
         order_by(Categories.name).all()
 
     categories = categorize_transactions(all_data,
