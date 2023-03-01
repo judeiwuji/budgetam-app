@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { LinkManager } from 'src/app/models/LinkManager';
 import User from 'src/app/models/User';
 import { UserService } from 'src/app/services/user.service';
 
@@ -16,6 +17,7 @@ export class ProfileComponent implements OnInit {
   public username = '';
   public saving = false;
   public uploading = false;
+  public baseUrl = LinkManager.baseUrl;
 
   constructor(
     private readonly activeModal: NgbActiveModal,
@@ -72,9 +74,10 @@ export class ProfileComponent implements OnInit {
     user.avatar = this.avatarPreview;
     this.userService
       .uploadAvatar(user, this.imageFile as File)
-      .subscribe((success) => {
+      .subscribe((response) => {
         this.uploading = false;
-        if (success) {
+        if (response) {
+          user.avatar = response.image;
           this.user = user;
           this.cancel();
           this.toastrService.success('success');
