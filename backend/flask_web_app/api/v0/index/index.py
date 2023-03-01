@@ -8,13 +8,21 @@ from os import path
 from api import v0
 from email_validator import validate_email, EmailNotValidError
 from flask_mail import Message
+from flask import Flask, render_template
 
 
-@index_views.route('/', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/index/root.yml', methods=['GET'])
-def root():
-    """Index of API"""
-    return jsonify({"message": "welcome home {}".format(uuid.uuid4())})
+# @index_views.route('/', methods=['GET'], strict_slashes=False)
+# @swag_from('documentation/index/root.yml', methods=['GET'])
+# def root():
+#     """Index of API"""
+#     return render_template('index.html')
+
+
+# @index_views.route('/static', methods=['GET'], strict_slashes=False, defaults={'u_path': ''})
+# @index_views.route('/static/<path:u_path>')
+# def static(u_path):
+#     """Index of API"""
+#     return render_template('index.html')
 
 
 @index_views.route('/status', methods=['GET'], strict_slashes=False)

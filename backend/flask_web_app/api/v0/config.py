@@ -8,7 +8,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = "zSO$$FiT26!2GvcVGUGga9*#p16Rp9L4*p9v3vYDdyVgdApaqh"
     DEBUG = False
-    UPLOAD_FOLDER = 'media'
+    UPLOAD_FOLDER = '/static/media'
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
     MAIL_SERVER = 'sandbox.smtp.mailtrap.io'
     MAIL_PORT = 2525
@@ -16,7 +16,7 @@ class Config:
     MAIL_PASSWORD = '51f04cec61695e'
     MAIL_USE_SSL = False
     MAIL_DEFAULT_SENDER = ('admin', 'admin@budgetam.tech')
-    SERVER_NAME = '127.0.0.1:5000'
+    SERVER_NAME = '127.0.0.1:5002'
     SWAGGER = {
         'title': 'Budgetam API Backend Infrastructure',
         'uiversion': 3,

@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReportComponent } from './report/report.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AuthGuard } from './services/auth.guard';
+import { DemoComponent } from './demo/demo.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     component: LoginComponent,
   },
   { path: 'signup', component: SignupComponent },
+  { path: 'demo', component: DemoComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,

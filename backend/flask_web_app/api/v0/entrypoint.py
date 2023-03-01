@@ -3,9 +3,16 @@
 from models import storage
 from os import environ
 from api.v0 import create_app
-from flask import jsonify
+from flask import jsonify, render_template
 
 app = create_app()
+
+
+@app.route('/', methods=['GET'], strict_slashes=False)
+@app.route('/<path:u_path>')
+def root(u_path):
+    """Index of API"""
+    return render_template('index.html')
 
 
 @app.teardown_appcontext
@@ -30,6 +37,6 @@ port = environ.get('API_PORT')
 app.run(
     debug=True,
     host=(host if host else '0.0.0.0'),
-    port=(port if port else '5000'), 
+    port=(port if port else '5000'),
     threaded=True)
 storage.close()

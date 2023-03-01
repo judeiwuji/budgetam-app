@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { ToastrService } from 'ngx-toastr';
+import { ResetPasswordComponent } from '../modals/reset-password/reset-password.component';
 import { LoginRequest } from '../models/Login';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
@@ -17,7 +20,9 @@ export class LoginComponent implements OnInit {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
-    private readonly toastrService: ToastrService
+    private readonly toastrService: ToastrService,
+    private readonly modal: NgbModal,
+    private readonly deviceService: DeviceDetectorService
   ) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -59,5 +64,15 @@ export class LoginComponent implements OnInit {
         },
       });
     }
+  }
+
+  resetPassword() {
+    this.modal.open(ResetPasswordComponent, {
+      size: 'md',
+      fullscreen: this.deviceService.isMobile(),
+      scrollable: true,
+      centered: true,
+      backdrop: 'static',
+    });
   }
 }

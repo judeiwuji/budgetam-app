@@ -1,112 +1,138 @@
 <app-main-navbar></app-main-navbar>
 
 <div data-bs-spy="scroll" data-bs-target="#app-navbar" data-bs-offset="0" tabindex="0">
-    <!-- Header -->
-    <header id="home">
-        <div class="hero-textbox">
+    <!-- Header Section -->
+    <header class="wrapper" id="home">
+        <div class="hero-text">
             <h1>
-                Smart savings requires a smart app. Efforlessly keep track of your cash in/out flow using Budgetam.
+                Expense tracking made easy, effortless and seamless.
             </h1>
-            <button class="btn btn-full" (click)="tryDemo()">
-                Try Demo
-            </button>
+            <p>
+                Expense tracker app that gives you the insight on your cash in & out flows. A tool that helps you save
+                smartly.
+            </p>
+
+            <div>
+                <a routerLink="/signup" class="btn btn-full">
+                    Get started
+                </a>
+
+                <a routerLink="/demo" class="btn btn-outline">
+                    Try demo
+                </a>
+            </div>
         </div>
 
-        <div>
-            <img src="/assets/imgs/expense_tracker.svg" alt="person tracking their expenses" draggable="false">
+        <div class="img-wrapper">
+            <img src="assets/imgs/app_anime.gif" alt="Budgetam Dashboard" loading="lazy" draggable="false">
         </div>
     </header>
-    <!-- Header -->
+    <!-- Header Section -->
 
-    <!-- Features -->
-    <div class="section-features" id="features">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    <div class="feature-content">
-                        <div class="feature-icon">
-                            <i class="fa fa-shield"></i>
-                        </div>
-                        <h2 class="feature-header">
-                            Secured
-                        </h2>
-                        <p class="feature-body">
-                            Your transaction data won’t be sold to any third party and they are 100% secured.
-                        </p>
-                    </div>
+    <!-- Features Section -->
+    <section class="wrapper dashboard-section" id="dashboard">
+        <div class="img-wrapper">
+            <img src="assets/imgs/app_dashboard.png" alt="Budgetam Dashboard" loading="lazy" draggable="false">
+        </div>
+
+        <div class="hero-text">
+            <h2>User friendly</h2>
+            <p>
+                Budgetam was built with the users in mind, we ensured that our app gives the user an intuitive
+                experience. View your balance by a single tap on the switch and all transactions are categorized for
+                easy tracking.
+            </p>
+        </div>
+    </section>
+    <!-- Features Section -->
+
+    <!-- Report Section -->
+    <section class="wrapper report-section" id="report">
+        <div class="hero-text">
+            <h2>Data visualization</h2>
+            <p>
+                We know how important it is for our users to have an insight into their the cash in & out flow, so we
+                provided a report generating feature that gives them the power to see their transaction history
+                effortlessly.
+            </p>
+        </div>
+
+        <figure class="img-wrapper">
+            <img src="assets/imgs/app_report.png" alt="Budgetam Dashboard" loading="lazy" draggable="false">
+        </figure>
+    </section>
+    <!-- Report Section -->
+
+    <!-- About Section -->
+    <section class="wrapper about-section" id="about">
+        <div>
+            <div class="heading">
+                <h2>About</h2>
+            </div>
+            <p>
+                This app was built to enable people who find it difficult to manage their income and expenses
+                efficiently. We started by considering the question "What is the best way to keep track of
+                transactions?". In other to solve this problem we created Budgetam, an app that will enable the user to
+                track cash in & out flow with ease.
+            </p>
+        </div>
+    </section>
+    <!-- About Section -->
+
+    <!-- Team Section -->
+    <section class="wrapper team-section" id="team">
+        <div class="heading">
+            <h2>Our Team</h2>
+            <p>
+                Meet our team of engineers that used their creativity to present to you Budgetam
+            </p>
+        </div>
+
+        <div class="team-wrapper">
+            <div class="team-card">
+                <div class="team-avatar">
+                    <img src="assets/imgs/team/jude-iwuji-software-engineer.jpg" alt="Jude Iwuji Software Engineer">
                 </div>
-                <div class="col-12 col-md-4">
-                    <div class="feature-content">
-                        <div class="feature-icon">
-                            <i class="fas fa-puzzle-piece"></i>
-                        </div>
-                        <h2 class="feature-header">
-                            User Friendly
-                        </h2>
-                        <p class="feature-body">
-                            Budgetam is user friendly and it provides straight-forward features that the user can find
-                            easy
-                            to interact with.
-                        </p>
-                    </div>
+                <h3>Jude Iwuji</h3>
+                <h4>Software Engineer</h4>
+                <p>Frontend Developer</p>
+
+                <div class="social">
+                    <a href="https://github.com/judeiwuji" target="_blank">
+                        <img src="assets/imgs/github.svg" alt="Jude Iwuji on Github">
+                    </a>
+                    <a href="https://www.linkedin.com/in/jude-iwuji-7218b0194" target="_blank">
+                        <img src="assets/imgs/linkedin.svg" alt="Jude Iwuji on LinkedIn">
+                    </a>
+                    <a href="https://twitter.com/_judeiwuji_" target="_blank">
+                        <img src="assets/imgs/twitter.svg" alt="Jude Iwuji on Twitter">
+                    </a>
                 </div>
-                <div class="col-12 col-md-4">
-                    <div class="feature-content">
-                        <div class="feature-icon">
-                            <i class="fa fa-cloud"></i>
-                        </div>
-                        <h2 class="feature-header">
-                            Portable
-                        </h2>
-                        <p class="feature-body">
-                            Use our app from anywhere at anytime either with your <strong>phone</strong>,
-                            <strong>tablet</strong>, <strong>laptop</strong> or
-                            <strong>desktop</strong>.
-                        </p>
-                    </div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">
+                    <img src="assets/imgs/team/ifiok-ekott-software-engineer.jpg" alt="Ifiok Ekott Software Engineer">
+                </div>
+                <h3>Ifiok Ekott</h3>
+                <h4>Software Engineer</h4>
+                <p>Backend Developer</p>
+
+                <div class="social">
+                    <a href="https://github.com/ekottifiok" target="_blank">
+                        <img src="assets/imgs/github.svg" alt="Ifiok Ekott on Github">
+                    </a>
+                    <a href="" target="_blank">
+                        <img src="assets/imgs/linkedin.svg" alt="Ifiok Ekott on LinkedIn">
+                    </a>
+                    <a href="">
+                        <img src="assets/imgs/twitter.svg" alt="Ifiok Ekott on Twitter">
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Features -->
-
-    <!-- Teams -->
-    <div class="section-teams" id="our-team">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-sm-0 mx-auto">
-                    <div class="card team-card">
-                        <div class="card-body">
-                            <div class="text-center">
-                                <span class="team-avatar"></span>
-                            </div>
-                            <h3 class="team-title">Jude Iwuji</h3>
-                            <p class="team-role">Fontend Developer</p>
-                            <button type="button" class="btn btn-full">
-                                Hire Me
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mx-auto">
-                    <div class="card team-card">
-                        <div class="card-body">
-                            <div class="text-center">
-                                <span class="team-avatar"></span>
-                            </div>
-                            <h3 class="team-title">Ifiok Ekot</h3>
-                            <p class="team-role">Backend Developer</p>
-                            <button type="button" class="btn btn-full">
-                                Hire Me
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Teams -->
+    </section>
+    <!-- Team Section -->
 </div>
 
 <app-main-footer></app-main-footer>

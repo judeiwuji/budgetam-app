@@ -148,7 +148,7 @@ def delete_user(user_data):
     return jsonify({}), 201
 
 
-@app_views.route('/avatar', methods=['POST'])
+@app_views.route('/avatar', methods=['POST'], strict_slashes=True)
 @token_required
 def upload_file(user_data):
     # check if the post request has the file part
@@ -176,6 +176,28 @@ def upload_file(user_data):
         file.save(file_path)
         user_data.avatar = path.join(static_path, filename).replace('\\', '/')
         user_data.save()
+        return jsonify({"image": user_data.avatar})
+
+
+# @app_views.route('/avatar', methods=['POST'], strict_slashes=False)
+# @token_required
+# def avatar(user_data):
+#     """uploading personal avatar"""
+#     if request.method == 'POST':
+#         if 'file' not in request.files:
+#             flash('No file part')
+#             return jsonify({"error": "please upload a file"}), 400
+#         file = request.files['file']
+#         if file.filename == '':
+#             flash('No selected file')
+#             return jsonify({"error": "please try uploading a file with correct filename"}), 400
+#         if file and allowed_file(file.filename):
+#             filename = secure_filename(file.filename)
+#             file.save(path.join(getcwd(), f"/avatar/{user_data.username}", filename))
+#             user_data(**{'avatar': file.filename}).save()
+#             return jsonify({"message": url_for('download_file', name=filename)})
+
+#     return jsonify({'message': 'allowed method is POST'}), 400
         return jsonify({"message": user_data.avatar})
 
 
@@ -185,21 +207,21 @@ def upload_file(user_data):
 def change_password(user_data):
     data = request.get_json(silent=True)
     if not data:
-        return jsonify({"error": "not a json"}), 401
+        return jsonify({"error": "not a json"}), 400
     if len(data) != 2:
-        return jsonify({"error": "data incomplete"}), 401
+        return jsonify({"error": "data incomplete"}), 400
     password, old_password = data.get('password'), data.get('oldPassword')
 
     if not password:
-        return jsonify({'error': 'sorry there was no password in the data sent'}), 401
+        return jsonify({'success': False, 'message': 'sorry there was no password in the data sent'})
     if not old_password:
-        return jsonify({'error': 'sorry there was no old password in the data sent'}), 401
+        return jsonify({'success': False, 'message': 'sorry there was no old password in the data sent'})
 
     if not check_password_hash(user_data.password, old_password):
-        return jsonify({'error': 'your old password is incorrect'}), 401
+        return jsonify({'success': False, 'message': 'your old password is incorrect'})
     user_data.password = generate_password_hash(password)
     user_data.save()
-    return jsonify({'message': 'password changed successfully'}), 201
+    return jsonify({'success': True, 'message': 'password changed successfully'})
 
 
 @app_views.route('/forgotten_password', methods=['POST'], strict_slashes=False)
@@ -207,9 +229,9 @@ def change_password(user_data):
 def forgotten_password():
     data = request.get_json(silent=True)
     if not data:
-        return jsonify({"error": "not a json"}), 401
+        return jsonify({"error": "not a json"}), 400
     if len(data) != 1:
-        return jsonify({"error": "data incomplete"}), 401
+        return jsonify({"error": "data incomplete"}), 400
 
     email_address = data.get('email')
     if not email_address:
@@ -224,7 +246,7 @@ def forgotten_password():
 
     user_data = storage.get_param(Users, **{'email': email_address})
     if not user_data:
-        return jsonify({"error": "Sorry user does not exist"}), 400
+        return jsonify({"error": "Sorry user does not exist"}), 404
     expires = datetime.utcnow() + timedelta(minutes=15)         # expires in 15 minutes
 
     unique_token = encode({
@@ -271,8 +293,8 @@ def forgotten_password():
     try:
         current_app.config['MAIL'].send(msg)
     except gaierror:
-        return jsonify({'error': 'sorry there was a problem in the network'}), 400
-    return jsonify({'message': 'please check your email address'}), 201
+        return jsonify({'success': False, 'message': 'sorry there was a problem in the network'})
+    return jsonify({'success': True, 'message': 'please check your email address'})
 
 
 @app_views.route('/verify/<token>', methods=['POST'], strict_slashes=False)
