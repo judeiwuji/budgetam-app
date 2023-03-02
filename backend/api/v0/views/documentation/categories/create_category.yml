@@ -1,0 +1,25 @@
+create a new category 
+---
+tags:
+  - Category
+parameters:
+  - name: name
+    description: the name of the new category to be created
+    in: body
+    type: string
+    required: true
+ 
+  - name: icon
+    description: the icon you want to give to the new category
+    in: body
+    type: string
+    required: false
+    default: https://robohash.org/odioexpeditapraesentium.png?size=50x50&set=set1
+
+  - name: is_expense
+    description: whether the category is an expense or not
+    in: body
+    type: string
+    required: false
+    default: false
+    

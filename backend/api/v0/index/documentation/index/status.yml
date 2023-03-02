@@ -1,0 +1,21 @@
+Shows the server name
+---
+description: Endpoint returning status ok json showing that you are connected to the server
+tags:
+  - Index
+definitions:
+  Status:
+    type: string
+    properties:
+      status:
+        type: string
+        
+responses:
+  200:
+    description: simple status ok
+    content: application/json
+    schema: 
+      status: 
+        type: string
+        examples: 
+          status: 'OK'

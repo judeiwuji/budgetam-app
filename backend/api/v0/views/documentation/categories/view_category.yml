@@ -1,0 +1,21 @@
+view a specific category in the database
+---
+tags:
+  - Category
+
+parameters:
+  - name: category_id
+    description: the id for the category you want to see more about
+    in: query
+    required: true
+    default: null
+    schema:
+      type: string
+      format: uuid4
+
+definitions:
+  Category:
+    type: object
+    properties:
+      palette_name:
+        type: string

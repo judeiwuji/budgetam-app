@@ -1,0 +1,14 @@
+verify jwt links sent from change password
+---
+
+tags:
+  - Users
+
+description: >
+  verifies the token recieved from the change password links
+  decodes it and compares it with what is in the database.
+
+parameters:
+  - name: token
+    in: query
+    required: true

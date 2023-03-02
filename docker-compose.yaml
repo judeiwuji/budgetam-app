@@ -1,0 +1,47 @@
+version: '3.9'
+
+secrets:
+  mysql_user:
+    file: ./.secrets/mysql_user
+  mysql_password:
+    file: ./.secrets/mysql_pwd
+  mysql_root_password:
+    file: ./.secrets/mysql_pwd
+
+services:
+  budgetam_flask:
+    restart: always
+    build:
+      context: backend
+    command: bash -c "python3 -m api.v0.entrypoint"
+    environment:
+      - MYSQL_USER=budgetam_backend_user
+      - MYSQL_PWD=helloworld2023
+      - MYSQL_HOST=budgetam_mysql_db
+      - MYSQL_DB=budgetam_db
+      - TYPE_STORAGE=db
+      - API_PORT=5000
+    depends_on:
+      - budgetam_mysql_db
+    ports:
+      - 5000:5000
+    secrets:
+      - mysql_user
+      - mysql_password
+
+  budgetam_mysql_db:
+    image: mysql:5.7-debian
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=helloworld2023
+      - MYSQL_DATABASE=budgetam_db
+      - MYSQL_USER=budgetam_backend_user
+      - MYSQL_PASSWORD=helloworld2023
+    ports:
+      - 3306:3306
+    secrets:
+      - mysql_root_password
+      - mysql_password
+      - mysql_user
+    volumes:
+      - ./sql_compose/budgetam_db.sql:/docker-entrypoint-initdb.d/budgetam_db.sql

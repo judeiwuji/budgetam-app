@@ -1,0 +1,42 @@
+signup a user by collecting credentials and saving it to the database
+---
+tags:
+  - Users
+
+parameters:
+  - name: username
+    in: body
+    required: true
+    description: unique username for the user
+    schema:
+      type: string
+      format: text
+      example: hello_world
+
+  - name: email
+    in: body
+    required: true
+    description: unique email for the user
+    schema:
+      type: string
+      format: email 
+      example: name@example.com
+
+  - name: password
+    in: body
+    required: true
+    description: unique email for the user
+    schema: 
+      type: string
+      format: password
+      example: '**********'
+    
+
+responses:
+  201:
+    description: request executed successfully
+
+  
+  401:
+    description: either username or email has being used before
+    
