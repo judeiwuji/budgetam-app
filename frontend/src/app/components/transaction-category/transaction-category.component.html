@@ -1,0 +1,27 @@
+<button class="btn-transaction" (click)="showTransactions()">
+    <div class="d-flex align-items-center w-100">
+        <!-- Icon -->
+        <div class="me-3">
+            <span class="category-icon">
+                {{transaction.category.icon}}
+            </span>
+        </div>
+        <!-- Icon -->
+
+        <!-- Details -->
+        <div class="text-start">
+            <h5 class="title">{{transaction.category.name}}</h5>
+            <p class="small text-muted">
+                {{transaction.count | number}} items
+            </p>
+        </div>
+        <!-- Details -->
+    </div>
+
+    <!-- Amount -->
+    <span class="fw-bold text-success" [ngClass]="{'text-danger': transaction.category.isExpense}">
+        <span>&#8358;</span>
+        <span>{{transaction.amount | number}}</span>
+    </span>
+    <!-- Amount -->
+</button>

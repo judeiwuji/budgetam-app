@@ -1,4 +1,4 @@
-export API_PORT=6000 \
+export API_PORT=4567 \
     MYSQL_USER=budgetam_backend_user \
     MYSQL_PWD=helloworld2024 \
     MYSQL_HOST=localhost \

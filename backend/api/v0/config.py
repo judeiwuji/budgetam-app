@@ -12,7 +12,7 @@ class Config:
     MAIL_DEFAULT_SENDER = ('admin', 'admin@budgetam.tech')
     ROOT_PATH = getcwd()
     UPLOAD_FOLDER = path.join(ROOT_PATH, 'api', 'v0', 'static', 'media')
-    SERVER_NAME = '127.0.0.1:6000'
+    # SERVER_NAME = '127.0.0.1:6000'
     SWAGGER = {
         'title': 'Budgetam API Backend Infrastructure',
         'uiversion': 3,

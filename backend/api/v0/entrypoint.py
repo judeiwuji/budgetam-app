@@ -34,7 +34,6 @@ def not_found(error):
 host = environ.get('API_HOST')
 port = environ.get('API_PORT')
 app.run(
-    debug=True,
     host=(host if host else '0.0.0.0'),
     port=(port if port else '6000'),
     threaded=True)
