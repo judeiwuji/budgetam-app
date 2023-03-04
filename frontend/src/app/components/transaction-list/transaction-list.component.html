@@ -1,0 +1,39 @@
+<!-- Transaction Filters -->
+<div class="pb-3 d-flex justify-content-around">
+    <button class="btn btn-sm btn-sized" (click)="setView(0)"
+        [ngClass]="{'btn-full': isDailyTransactions, 'btn-light': !isDailyTransactions}">
+        Daily
+    </button>
+    <button class="btn btn-sm btn-light btn-sized" (click)="setView(1)"
+        [ngClass]="{'btn-full': isWeeklyTransactions, 'btn-light': !isWeeklyTransactions}">
+        Weekly
+    </button>
+    <button class="btn btn-sm btn-light btn-sized" (click)="setView(2)"
+        [ngClass]="{'btn-full': isMonthlyTransactions, 'btn-light': !isMonthlyTransactions}">
+        Monthly
+    </button>
+</div>
+<!-- Transaction Filters -->
+
+<div class="card transaction-card">
+    <div class="card-body">
+        <ng-container *ngFor="let transaction of transactionDB[currentView]; last as last">
+            <div [ngClass]="{'mb-3': !last}">
+                <app-transaction-category [transaction]="transaction"
+                    [currentView]="currentView"></app-transaction-category>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="isLoading">
+            <div class="text-center">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="transactionDB[currentView].length === 0 && !isLoading">
+            <div class="py-4 text-center">
+                <p class="text-muted mb-0">Oops, you have no transactions</p>
+            </div>
+        </ng-container>
+    </div>
+</div>

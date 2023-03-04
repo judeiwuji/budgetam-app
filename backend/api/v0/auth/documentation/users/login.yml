@@ -1,0 +1,32 @@
+log in a user
+---
+tags:
+  - Users
+
+description: >
+  get the user credentials.
+  Compares them with what is in the database.
+
+parameters:
+  - name: email
+    in: body
+    required: true
+    description: unique email for the user
+    schema:
+      type: string
+      format: email 
+      example: name@example.com
+
+  - name: password
+    in: body
+    required: true
+    description: unique email for the user
+    schema: 
+      type: string
+      format: password
+      example: '**********'
+
+responses:
+  200: 
+    description: The user was successfully logged in
+      

@@ -1,0 +1,42 @@
+<div class="container-fluid py-2">
+    <div class="d-flex justify-content-between">
+        <h1 class="username-text">hi {{user.username}}</h1>
+
+        <button class="btn" (click)="editProfile()">
+            <span class="user-avatar">
+                <img [src]="user.avatar? baseUrl + user.avatar : '/assets/imgs/avatar.svg'" alt="avatar">
+            </span>
+        </button>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Balance -->
+    <div class="mb-5">
+        <app-balance-card></app-balance-card>
+    </div>
+    <!-- Balance -->
+
+    <!-- Transactions -->
+    <div class="transaction-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="title-text">Transactions</h4>
+
+            <button (click)="allTransactions()" class="btn btn-sm">see all</button>
+        </div>
+    </div>
+
+    <app-transaction-list></app-transaction-list>
+    <!-- Transactions -->
+</div>
+
+<!-- Add Transaction -->
+<div class="add-transaction-wrapper">
+    <button type="button" aria-roledescription="Create new transaction" class="btn btn-full"
+        (click)="createTransaction()">
+        <i class="fas fa-plus"></i>
+    </button>
+</div>
+<!-- Add Transaction -->
+
+<app-auth-navbar [currentPage]="'home'"></app-auth-navbar>

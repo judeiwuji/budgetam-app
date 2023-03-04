@@ -1,0 +1,44 @@
+.settings-nav {
+  list-style: none;
+  padding: 0rem;
+}
+.settings-nav li {
+  padding: 0.2rem 0;
+}
+
+.settings-icon,
+.settings-nav button {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  align-items: center;
+}
+
+.settings-nav button {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background-color: inherit;
+  border-radius: 10px;
+  transition: all 0.3s ease-in;
+  padding: 0.5rem 0.75rem;
+}
+
+.settings-nav button:hover {
+  background-color: #ffffff;
+}
+
+.settings-nav h5 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.settings-icon {
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  background-color: 2px solid #ffffff;
+  font-size: 1rem;
+  padding: 0.2rem;
+}
