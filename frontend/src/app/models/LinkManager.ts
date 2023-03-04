@@ -5,6 +5,6 @@ export class LinkManager {
     if (environment.production) {
       return '';
     }
-    return 'http://127.0.0.1:5002';
+    return 'http://127.0.0.1:4567';
   }
 }
