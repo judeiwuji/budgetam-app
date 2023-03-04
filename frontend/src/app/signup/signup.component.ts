@@ -49,12 +49,9 @@ export class SignupComponent implements OnInit {
           this.toastrService.success('Account created!');
           this.router.navigate(['/login']);
         },
-        error: (error) => {
-          console.log(error);
+        error: (reason) => {
           this.processing = false;
-          this.toastrService.warning(
-            'Sorry, we were unable to process your request'
-          );
+          this.toastrService.warning(reason.error.error);
         },
         complete: () => {
           this.processing = false;

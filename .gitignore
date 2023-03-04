@@ -1,13 +1,13 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+dist/
+tmp/
+out-tsc/
+bazel-out/
 
 # Node
-/node_modules
+node_modules/
 npm-debug.log
 yarn-error.log
 
@@ -29,7 +29,8 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+.angular/cache/*
+/frontend/.angular/cache
 .sass-cache/
 /connect.lock
 /coverage
@@ -42,7 +43,7 @@ testem.log
 Thumbs.db
 
 
-backend/__pycache__/
+backend/__pycache__/*
 backend/*/__pycache__/
 backend/*/*/__pycache__/
 backend/*/*/*/__pycache__/
@@ -50,13 +51,10 @@ backend/*/*/*/__pycache__/
 backend/.env
 backend/.coverage
 .pytest_cache/
-<<<<<<< HEAD
 backend/.pytest_cache
 backend/api/v0/media/
-=======
 backend/flask_web_app/.pytest_cache
 backend/flask_web_app/.env
 backend/flask_web_app/api/v0/media/
 backend/api/v0/media/
 backend/flask_web_app/api/v0/static/media/
->>>>>>> main
