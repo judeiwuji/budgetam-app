@@ -162,7 +162,8 @@ def upload_file(user_data):
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
 
-        file_path = path.join(current_app.config['UPLOAD_FOLDER'], user_data.username)
+        file_path = path.join(
+            current_app.config['UPLOAD_FOLDER'], user_data.username)
 
         if not path.exists(file_path):
             makedirs(file_path, mode=777, exist_ok=True)
@@ -192,7 +193,7 @@ def upload_file(user_data):
 #             return jsonify({"message": url_for('download_file', name=filename)})
 
 #     return jsonify({'message': 'allowed method is POST'}), 400
-        # return jsonify({"message": user_data.avatar})
+    # return jsonify({"message": user_data.avatar})
 
 
 @app_views.route('/change_password', methods=['POST'], strict_slashes=False)
@@ -288,7 +289,9 @@ def forgotten_password():
         current_app.config['MAIL'].send(msg)
     except gaierror:
         return jsonify({'success': False, 'message': 'sorry there was a problem in the network'})
-    return jsonify({'success': True, 'message': 'please check your email address'})
+    return jsonify({'success': True,
+                    'message': 'A reset password link was sent to {}'.
+                    format(email_address)})
 
 
 @app_views.route('/verify/<token>', methods=['POST'], strict_slashes=False)
