@@ -24,11 +24,11 @@ services:
     depends_on:
       - budgetam_mysql_db
     ports:
-      - 5000:5000
+      - 80:5000
     secrets:
       - mysql_user
       - mysql_password
-
+ 
   budgetam_mysql_db:
     image: mysql:5.7-debian
     restart: always
