@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: budgetam_db
 -- ------------------------------------------------------
--- Server version       5.7.41
+-- Server version	5.7.41
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -35,6 +35,16 @@ CREATE TABLE `categories` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES ('Gift','',1,'10782500-c509-4ae3-bde7-de26255a835f',NULL,NULL,NULL),('Utility bills','',1,'2b7a16c6-c970-44c8-a14c-69b1d2ddf74e',NULL,NULL,NULL),('Shopping','',1,'873aeae4-d225-4b17-918f-39b59fb1821c',NULL,NULL,NULL),('Medicare','',1,'976d3eee-c20d-4b8e-8ec4-f622a9f7d4b6',NULL,NULL,NULL),('Airtime & Subscription','',1,'ac4d9584-f8be-412c-baa5-18e758ba973b',NULL,NULL,NULL),('School','',1,'bdd6ce54-595c-4dbe-9dcb-6201e26969f0',NULL,NULL,NULL),('Income & Earnings','',0,'c6650608-b838-4fb2-ae89-4c77f5030397',NULL,NULL,NULL),('Fuel','',1,'d99a5245-5e09-4fe8-8352-7f628e723c09',NULL,NULL,NULL),('Cinema','',1,'e1ccc037-7e40-4f97-aa58-53fe3ec3782c',NULL,NULL,NULL),('Food','',1,'efa5b490-f95d-4fef-9a7f-08a51c81bcb6',NULL,NULL,NULL);
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `transactions`
 --
 
@@ -60,6 +70,15 @@ CREATE TABLE `transactions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `transactions`
+--
+
+LOCK TABLES `transactions` WRITE;
+/*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -83,8 +102,17 @@ CREATE TABLE `users` (
   UNIQUE KEY `token` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES ('fortune.imaosehp',NULL,'fortune@gmail.com','pbkdf2:sha256:260000$OlvqgvrpOu2KMgI5$03f2bc9b29c032a11096de3ad72c75bacd502248e4126293d8a64e1b65e62785','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ0MDczNWMwLTUwYWMtNDMyOC1hZTUxLThmZGQwNGI1M2RiNiIsImV4cGlyZUF0IjoiMjAyMy0wMy0wNFQxOToyODo1OC42MzM1OTgifQ.YiTb-3swTvECklR6E0CPvJ1xCq1A0NaHZhtq2C-i03g',0,'440735c0-50ac-4328-ae51-8fdd04b53db6',NULL,NULL,NULL),('judoski','media/judoski/avatar-plotterwave-com.png','judeiwuji@gmail.com','pbkdf2:sha256:260000$4vJDGdiddEYYrVsr$b135cb63c0de7ad6f36f21649adf7322ca18cedf58fb647994c08a0e66663219',NULL,0,'59b14621-f105-4ab2-b2cd-fe14681c2ec3',NULL,NULL,NULL),('ifiokekott',NULL,'ekottifiok@gmail.com','pbkdf2:sha256:260000$ryHbo47oj5FXm38a$8933abc912dd26bedeb6fe6cd99986784614ebb7cc0fad8b5fbf363db13def75','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTkwMTZjLTFlZDUtNDhmZS1iNDk5LTY2OWI0M2NkYjMwOCIsImV4cGlyZUF0IjoiMjAyMy0wMy0wM1QyMDozNjozNi43MjYxNjgifQ.VVCIgvvj3lcr-wAT9zXHyUCOfwWPiNqMJUkBKnw92wQ',0,'6359016c-1ed5-48fe-b499-669b43cdb308',NULL,NULL,NULL);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -94,20 +122,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-
---
--- Dumping data for table `categories`
---
-​
-INSERT INTO `categories` (`name`, `icon`, `isExpense`, `id`, `deleted`) VALUES
-('Gift', '🎁', 1, '10782500-c509-4ae3-bde7-de26255a835f', NULL),
-('Utility bills', '📜', 1, '2b7a16c6-c970-44c8-a14c-69b1d2ddf74e', NULL),
-('Shopping', '🛒', 1, '873aeae4-d225-4b17-918f-39b59fb1821c', NULL),
-('Medicare', '💉', 1, '976d3eee-c20d-4b8e-8ec4-f622a9f7d4b6', NULL),
-('Airtime & Subscription', '📱', 1, 'ac4d9584-f8be-412c-baa5-18e758ba973b', NULL),
-('School', '🎓', 1, 'bdd6ce54-595c-4dbe-9dcb-6201e26969f0', NULL),
-('Income & Earnings', '💰', 0, 'c6650608-b838-4fb2-ae89-4c77f5030397', NULL),
-('Fuel', '⛽️', 1, 'd99a5245-5e09-4fe8-8352-7f628e723c09', NULL),
-('Cinema', '🎬', 1, 'e1ccc037-7e40-4f97-aa58-53fe3ec3782c', NULL),
-('Food', '🥘', 1, 'efa5b490-f95d-4fef-9a7f-08a51c81bcb6', NULL);
-​
+-- Dump completed on 2023-03-07 12:09:01
