@@ -57,3 +57,4 @@ backend/flask_web_app/.env
 backend/flask_web_app/api/v0/media/
 backend/api/v0/media/
 backend/flask_web_app/api/v0/static/media/
+*.zip
