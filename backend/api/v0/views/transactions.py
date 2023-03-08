@@ -126,12 +126,12 @@ def view_transaction(*user_data, **app_views_kwargs):
     """Retrieves the transaction of a given id"""
     args = request.args
     if not args:
-        return jsonify({"error": "error in args"}), 401
+        return jsonify({"error": "error in args"}), 400
     data = storage.get(Transactions, app_views_kwargs['transac_id'])
     if not data:
-        return jsonify({"error": "data retrieval failed, please try again"}), 401
+        return jsonify({"error": "data retrieval failed, please try again"}), 400
     if user_data.username != data.username:
-        return jsonify({"error": "you can only access your data"})
+        return jsonify({"error": "you can only access your data"}), 401
     return jsonify(data)
 
 
