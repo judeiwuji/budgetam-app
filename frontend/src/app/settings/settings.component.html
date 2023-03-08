@@ -11,7 +11,8 @@
         <li>
             <button (click)="editProfile()">
                 <span class="user-avatar me-2">
-                    <img [src]="user.avatar? baseUrl + user.avatar : '/assets/imgs/avatar.svg'" alt="avatar">
+                    <img [src]="user.avatar? baseUrl + '/static/' + user.avatar : 'assets/imgs/avatar.svg'"
+                        alt="avatar">
                 </span>
                 <h5>{{user.username}}</h5>
             </button>

@@ -72,9 +72,8 @@ export class ProfileComponent implements OnInit {
 
     const user = JSON.parse(JSON.stringify(this.user));
     user.avatar = this.avatarPreview;
-    this.userService
-      .uploadAvatar(user, this.imageFile as File)
-      .subscribe((response) => {
+    this.userService.uploadAvatar(user, this.imageFile as File).subscribe({
+      next: (response) => {
         this.uploading = false;
         if (response) {
           user.avatar = response.image;
@@ -82,6 +81,11 @@ export class ProfileComponent implements OnInit {
           this.cancel();
           this.toastrService.success('success');
         }
-      });
+      },
+      error: (reason) => {
+        this.uploading = false;
+        this.toastrService.warning(reason.error.error);
+      },
+    });
   }
 }

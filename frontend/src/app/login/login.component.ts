@@ -53,11 +53,9 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           this.authService.login(response.token as string);
         },
-        error: (error) => {
+        error: (reason) => {
           this.processing = false;
-          this.toastrService.warning(
-            'Sorry, we were unable to process your request'
-          );
+          this.toastrService.warning(reason.error.error);
         },
         complete: () => {
           this.processing = false;

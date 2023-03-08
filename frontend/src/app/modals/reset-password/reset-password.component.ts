@@ -67,14 +67,15 @@ export class ResetPasswordComponent implements OnInit {
         next: (response) => {
           if (response.success) {
             this.toastrService.success(response.message);
-            this.setView(ResetPasswordViews.reset);
+            // this.setView(ResetPasswordViews.reset);
+            this.close();
           } else {
             this.toastrService.warning(response.message);
           }
         },
         error: (reason) => {
           this.processing = false;
-          this.toastrService.success(reason.error);
+          this.toastrService.warning(reason.error.error);
         },
         complete: () => {
           this.processing = false;
