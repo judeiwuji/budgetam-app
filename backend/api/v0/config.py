@@ -1,14 +1,14 @@
 class Config:
-    from os import environ, getcwd, path
+    from os import getcwd, path
 
     SECRET_KEY = "zSO$$FiT26!2GvcVGUGga9*#p16Rp9L4*p9v3vYDdyVgdApaqh"
     DEBUG = False
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-    MAIL_SERVER = 'sandbox.smtp.mailtrap.io'
-    MAIL_PORT = 2525
-    MAIL_USERNAME = '6e147f179cf94f'
-    MAIL_PASSWORD = '51f04cec61695e'
-    MAIL_USE_SSL = False
+    MAIL_SERVER = 'us2.smtp.mailhostbox.com'
+    MAIL_PORT = 587
+    MAIL_USERNAME = 'admin@budgetam.tech'
+    MAIL_PASSWORD = 'o^)RTOz6'
+    MAIL_USE_SSL = True
     MAIL_DEFAULT_SENDER = ('admin', 'admin@budgetam.tech')
     ROOT_PATH = getcwd()
     UPLOAD_FOLDER = path.join(ROOT_PATH, 'api', 'v0', 'static', 'media')

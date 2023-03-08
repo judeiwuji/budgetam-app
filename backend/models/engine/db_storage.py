@@ -8,6 +8,7 @@ from models.base_model import Base
 from models.engine import classes
 from os import getenv
 from sqlalchemy import create_engine
+from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import InvalidRequestError
 
@@ -19,13 +20,16 @@ class DBStorage:
 
     def __init__(self):
         """Instantiate a DBStorage object"""
-
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-            getenv('MYSQL_USER'),
-            getenv('MYSQL_PWD'),
-            getenv('MYSQL_HOST'),
-            getenv('MYSQL_DB')
-        ))
+        db_url = {
+            'database': getenv('MYSQL_DB'),
+            'drivername': 'mysql',
+            'username': getenv('MYSQL_USER'),
+            'password': getenv('MYSQL_PWD'),
+            'host': getenv('MYSQL_HOST'),
+            'port': 3306,
+            'query': {'charset': 'utf8mb4'},  # the key-point setting
+        }
+        self.__engine = create_engine(URL(**db_url))
 
     def all(self, cls=None) -> dict:
         """query on the current database session"""
