@@ -5,8 +5,7 @@ from api.v0.auth.token_required import token_required
 from models.categories import Categories
 from flasgger.utils import swag_from
 from models import storage
-from api.v0.views import app_views, query_params
-from math import ceil
+from api.v0.views import app_views
 from os import path
 
 
@@ -35,9 +34,8 @@ def sub_create_update(data):
 @app_views.route('/categories', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/categories/all_categories.yml', methods=['GET'])
 def all_categories():
-
     return jsonify(
-        [category.to_dict() for sorted(storage.all(Categories), key=lambda d: d.name) in all_data]
+        [category.to_dict() for category in sorted(storage.all(Categories), key=lambda d: d.name)]
         )
 
 
