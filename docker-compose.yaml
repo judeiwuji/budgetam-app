@@ -1,15 +1,5 @@
 version: '3.9'
 
-secrets:
-  mysql_user:
-    file: ./.secrets/mysql_user
-  mysql_password:
-    file: ./.secrets/mysql_pwd
-  mysql_root_password:
-    file: ./.secrets/mysql_pwd
-  mysql_db:
-    file: ./.secrets/mysql_db
-
 services:
   budgetam_flask:
     restart: always
@@ -27,35 +17,17 @@ services:
       - budgetam_mysql_db
     ports:
       - 80:5000
-    secrets:
-      - mysql_user
-      - mysql_password
  
   budgetam_mysql_db:
     image: mysql:5.7-debian
     restart: always
+    container_name: budgetam_sql
     environment:
-      - MYSQL_ROOT_PASSWORD=/run/secrets/mysql_root_password
+      - MYSQL_ROOT_PASSWORD=helloworld2023
       - MYSQL_DATABASE=budgetam_db
       - MYSQL_USER=budgetam_backend_user
       - MYSQL_PASSWORD=helloworld2023
     ports:
       - 3306:3306
-    secrets:
-      - mysql_root_password
-      - mysql_password
-      - mysql_user
-    volumes:
-      - ./sql_compose/budgetam_db.sql:/docker-entrypoint-initdb.d/budgetam_db.sql
-
-  budgetam_mysql_db_test:
-    image: mysql:5.7-debian
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=/run/secrets/mysql_root_password
-      - MYSQL_DATABASE=/run/secrets/mysql_db
-    secrets:
-      - mysql_root_password
-      - mysql_db
     volumes:
       - ./sql_compose/budgetam_db.sql:/docker-entrypoint-initdb.d/budgetam_db.sql
