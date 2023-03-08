@@ -7,7 +7,7 @@
 /bazel-out
 
 # Node
-/node_modules
+node_modules/
 npm-debug.log
 yarn-error.log
 
@@ -29,7 +29,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+.angular/
 .sass-cache/
 /connect.lock
 /coverage
@@ -50,13 +50,10 @@ backend/*/*/*/__pycache__/
 backend/.env
 backend/.coverage
 .pytest_cache/
-<<<<<<< HEAD
 backend/.pytest_cache
 backend/api/v0/media/
-=======
 backend/flask_web_app/.pytest_cache
 backend/flask_web_app/.env
 backend/flask_web_app/api/v0/media/
 backend/api/v0/media/
 backend/flask_web_app/api/v0/static/media/
->>>>>>> main
