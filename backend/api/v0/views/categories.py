@@ -12,57 +12,33 @@ from os import path
 
 def sub_create_update(data):
     if not data:
-        return jsonify({"error": "not a json"}), 401
+        return jsonify({"error": "not a json"}), 400
     if len(data) < 1 or len(data) > 3:
-        return jsonify({"error", "sorry the data passed is incomplete"}), 401
+        return jsonify({"error", "sorry the data passed is incomplete"}), 400
     name, icon, is_expense = data.get('name'), \
         data.get('icon'), data.get('isExpense')
     if not name:
-        return jsonify({"error": "sorry keyword name not found in the data"}), 401
+        return jsonify({"error": "sorry keyword name not found in the data"}), 400
     if len(name) > 30:
-        return jsonify({"error": "sorry the length of name exceeds 30"}), 401
+        return jsonify({"error": "sorry the length of name exceeds 30"}), 400
     if icon:
         if len(icon) > 255:
-            return jsonify({"error": "sorry the length of icon exceeds 30"}), 401
+            return jsonify({"error": "sorry the length of icon exceeds 30"}), 400
     if is_expense:
         try:
             is_expense = eval(is_expense)
         except NameError:
-            jsonify({"error": "isExpense is not a boolean"}), 401
+            jsonify({"error": "isExpense is not a boolean"}), 400
     return name, icon, is_expense
-
-# @swagger.validate('Product')
 
 
 @app_views.route('/categories', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/categories/all_categories.yml', methods=['GET'])
 def all_categories():
-   
-    # if ?filter=(id='abc')
-    # args = request.args
-    all_data = sorted(storage.all(Categories), key=lambda d: d.name)
-    # result = []
-    # page = args.get('page', 1, type=int) - 1
-    # perPage = args.get('perPage', 10, type=int)
-    # filter = args.get('filter', None, type=str)
-    # len_all_data = 0
-    # if all_data:
-    #     try:
-    #         for iter in range(page*perPage, (page*perPage)+perPage):
-    #             result.append(all_data[iter].to_dict())
-    #     except IndexError:
-    #         pass
-    #     len_all_data = len(result)
 
-    # return jsonify({
-    #     "page": page+1,
-    #     "perPage": perPage,
-    #     "totalItems": len_all_data,
-    #     "totalPages": (1 if len_all_data < perPage else ceil(len_all_data/perPage)),
-    #     "items": result
-    # })
-
-    return jsonify([category.to_dict() for category in all_data])
+    return jsonify(
+        [category.to_dict() for sorted(storage.all(Categories), key=lambda d: d.name) in all_data]
+        )
 
 
 @app_views.route('/categories/<category_id>', methods=['GET'], strict_slashes=False)
@@ -113,16 +89,18 @@ def update_category(*_, **app_views_kwargs):
     except:
         return jsonify({"error": "an error occured while reading the database"}), 500
     if not instance:
-        return jsonify({"error": "sorry the transaction ID is not in the database"}), 401
+        return jsonify({"error": "sorry the transaction ID is not in the database"}), 400
     try:
         for key, value in {
             "name": name,
             "icon": (icon if icon else instance.icon),
-                "isExpense": (is_expense if is_expense else instance.isExpense)}.items():
+            "isExpense": (is_expense if is_expense else instance.isExpense)}.items():
             setattr(instance, key, value)
         storage.save()
-    except:
-        return jsonify({"error": "error occured while saving data in database"}), 501
+    except Exception as error:
+        return jsonify({
+            "error": "error occured while saving data in database",
+            "message": str(error)}), 501
     return jsonify(instance.to_dict()), 201
 
 
@@ -135,7 +113,7 @@ def delete_category(*_, **app_views_kwargs):
         return jsonify({"error": "an error occured while reading the database"}), 500
 
     if not instance:
-        return jsonify({"error": "sorry the category does not exists"}), 401
+        return jsonify({"error": "sorry the category does not exists"}), 400
 
     try:
         storage.delete(instance)

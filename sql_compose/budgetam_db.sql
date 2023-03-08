@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+SET NAMES utf8;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -31,7 +31,7 @@ CREATE TABLE `categories` (
   `updated` datetime DEFAULT NULL,
   `deleted` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES ('Gift','',1,'10782500-c509-4ae3-bde7-de26255a835f',NULL,NULL,NULL),('Utility bills','',1,'2b7a16c6-c970-44c8-a14c-69b1d2ddf74e',NULL,NULL,NULL),('Shopping','',1,'873aeae4-d225-4b17-918f-39b59fb1821c',NULL,NULL,NULL),('Medicare','',1,'976d3eee-c20d-4b8e-8ec4-f622a9f7d4b6',NULL,NULL,NULL),('Airtime & Subscription','',1,'ac4d9584-f8be-412c-baa5-18e758ba973b',NULL,NULL,NULL),('School','',1,'bdd6ce54-595c-4dbe-9dcb-6201e26969f0',NULL,NULL,NULL),('Income & Earnings','',0,'c6650608-b838-4fb2-ae89-4c77f5030397',NULL,NULL,NULL),('Fuel','',1,'d99a5245-5e09-4fe8-8352-7f628e723c09',NULL,NULL,NULL),('Cinema','',1,'e1ccc037-7e40-4f97-aa58-53fe3ec3782c',NULL,NULL,NULL),('Food','',1,'efa5b490-f95d-4fef-9a7f-08a51c81bcb6',NULL,NULL,NULL);
+-- INSERT INTO `categories` VALUES ('Gift','',1,'10782500-c509-4ae3-bde7-de26255a835f',NULL,NULL,NULL),('Utility bills','',1,'2b7a16c6-c970-44c8-a14c-69b1d2ddf74e',NULL,NULL,NULL),('Shopping','',1,'873aeae4-d225-4b17-918f-39b59fb1821c',NULL,NULL,NULL),('Medicare','',1,'976d3eee-c20d-4b8e-8ec4-f622a9f7d4b6',NULL,NULL,NULL),('Airtime & Subscription','',1,'ac4d9584-f8be-412c-baa5-18e758ba973b',NULL,NULL,NULL),('School','',1,'bdd6ce54-595c-4dbe-9dcb-6201e26969f0',NULL,NULL,NULL),('Income & Earnings','',0,'c6650608-b838-4fb2-ae89-4c77f5030397',NULL,NULL,NULL),('Fuel','',1,'d99a5245-5e09-4fe8-8352-7f628e723c09',NULL,NULL,NULL),('Cinema','',1,'e1ccc037-7e40-4f97-aa58-53fe3ec3782c',NULL,NULL,NULL),('Food','',1,'efa5b490-f95d-4fef-9a7f-08a51c81bcb6',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,7 +66,7 @@ CREATE TABLE `transactions` (
   KEY `userId` (`userId`),
   CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`catId`) REFERENCES `categories` (`id`),
   CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +100,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `token` (`token`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
