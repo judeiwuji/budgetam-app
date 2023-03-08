@@ -326,3 +326,22 @@ def yearly_transactions(user_data):
                                          lambda date: date >= lastTwoYears and
                                          date <= today)
     return jsonify([item.to_dict() for item in categories])
+
+
+@app_views.route('/current/year/transactions', methods=['GET'], strict_slashes=False)
+@token_required
+def current_year_transactions(user_data):
+    now = datetime.today()
+    firstDayOfYear = datetime(year=now.year, month=1, day=1)
+
+    all_data = storage.query(Categories).\
+        join(Transactions).\
+        filter(
+        Transactions.userId == user_data.id,
+        Transactions.date >= firstDayOfYear,
+        Transactions.date <= now).\
+        order_by(Categories.name).all()
+
+    categories = categorize_transactions(all_data,
+                                         lambda date: date >= firstDayOfYear and date <= now)
+    return jsonify([item.to_dict() for item in categories])

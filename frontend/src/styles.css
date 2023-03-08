@@ -1,0 +1,265 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  background-color: #fdfdfd;
+}
+
+/* Logo */
+.logo {
+  font-family: "Titan One", cursive;
+}
+/* Logo */
+
+/* Btn */
+.btn-full,
+.btn-rounded {
+  border-radius: 10px;
+}
+
+.btn-full {
+  background-color: #eb2f06;
+  color: #ffffff;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-full:disabled {
+  opacity: 0.8;
+}
+
+.btn-full:focus,
+.btn-full:hover {
+  background-color: #eb2f06 !important;
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+.btn-circle {
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000b6;
+  color: #ffffff;
+  padding: 0;
+  cursor: pointer;
+}
+/* Btn */
+
+.app-wrapper {
+  min-height: 80vh;
+}
+
+/* Account Form */
+.account-form-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.account-form-card {
+  width: 30em;
+  border-radius: 10px;
+}
+/* Account form */
+
+/* Error Border */
+input.error {
+  border-color: red !important;
+}
+/* Error Border */
+
+.dark-nav {
+  background-color: #000000 !important;
+}
+
+/* Switch slider */
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 3em;
+  height: 1.4em;
+  margin: 0 !important;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cccccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.2em;
+  width: 1.2em;
+  left: 1px;
+  bottom: 1.5px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #28eb93;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #28eb93;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(1.67em);
+  -ms-transform: translateX(1.67em);
+  transform: translateX(1.67em);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+/* Switch slider */
+
+/* Text */
+.title-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+/* Text */
+
+.link {
+  text-decoration: none;
+  color: #404040;
+}
+
+.link:hover {
+  color: #404040;
+}
+
+/* Transaction Btn */
+.btn-transaction {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  justify-content: space-between;
+  border: none;
+  outline: 0;
+  background-color: transparent;
+  width: 100%;
+}
+
+.btn-transaction .title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+/* Transaction Btn */
+
+.category-icon {
+  display: inline-block;
+  width: 1.8em;
+  height: 1.8em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f3f3;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  padding: 0.95rem;
+}
+/* Account Form */
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+/* Alignment */
+.static-align-bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+/* Alignment */
+
+/* Sized Btn */
+.btn-sized {
+  min-width: 5em;
+  border-radius: 10px;
+}
+/* Sized Btn */
+
+/* Icon */
+.icon {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0.75rem;
+  font: 0.8rem;
+  background-color: #f3f3f3;
+  border-radius: 50%;
+}
+/* Icon */
+
+/* Avatar */
+.user-avatar {
+  width: 3em;
+  height: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid #404040;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.user-avatar img {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+}
+/* Avatar */
+
+/* Media Queries */
+@media screen and (max-width: 767px) {
+  .account-form-wrapper > div {
+    width: 100%;
+  }
+
+  .account-form-wrapper {
+    display: block;
+    padding: 1em 0;
+  }
+
+  .form-text-content {
+    margin-bottom: 3.5em;
+  }
+}
+/* Media Queries */

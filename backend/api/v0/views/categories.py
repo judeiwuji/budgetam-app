@@ -37,7 +37,7 @@ def sub_create_update(data):
 def all_categories():
 
     return jsonify(
-        [category.to_dict() for sorted(storage.all(Categories), key=lambda d: d.name) in all_data]
+        [category.to_dict() for category in sorted(storage.all(Categories), key=lambda d: d.name)]
         )
 
 
