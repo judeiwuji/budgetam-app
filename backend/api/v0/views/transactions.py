@@ -239,7 +239,7 @@ def categorize_transactions(all_data, filter):
     for category in all_data:
         transactions = []
         for transaction in category.transactions:
-            if filter(transaction.date):
+            if filter(transaction.date, transaction.userId):
                 transactions.append(transaction)
         category.transactions = transactions
         amount = sum(
@@ -264,7 +264,7 @@ def daily_transactions(user_data):
         order_by(Categories.name)
     all_data = query.all()
     from sys import stdout
-    categories = categorize_transactions(all_data, lambda date: date == today)
+    categories = categorize_transactions(all_data, lambda date, userid: date == today and userid==user_data.id)
 
     print(query, file=stdout)
     print(today, file=stdout)
@@ -288,7 +288,7 @@ def weekly_transactions(user_data):
         Transactions.date <= weekend).\
         order_by(Categories.name).all()
     categories = categorize_transactions(all_data,
-                                         lambda date: date >= weekstart and date <= weekend)
+                                         lambda date, userid: date >= weekstart and date <= weekend and userid==user_data.id)
     return jsonify([item.to_dict() for item in categories])
 
 
@@ -309,7 +309,7 @@ def monthly_transactions(user_data):
         order_by(Categories.name).all()
 
     categories = categorize_transactions(all_data,
-                                         lambda date: date >= firstDayOfMonth and date <= lastDayOfMonth)
+                                         lambda date, userid: date >= firstDayOfMonth and date <= lastDayOfMonth and userid==user_data.id)
     return jsonify([item.to_dict() for item in categories])
 
 
@@ -323,8 +323,8 @@ def yearly_transactions(user_data):
         Transactions.userId == user_data.id).order_by(Categories.name).all()
 
     categories = categorize_transactions(all_data,
-                                         lambda date: date >= lastTwoYears and
-                                         date <= today)
+                                         lambda date, userid: date >= lastTwoYears and
+                                         date <= today and userid==user_data.id)
     return jsonify([item.to_dict() for item in categories])
 
 
@@ -343,5 +343,5 @@ def current_year_transactions(user_data):
         order_by(Categories.name).all()
 
     categories = categorize_transactions(all_data,
-                                         lambda date: date >= firstDayOfYear and date <= now)
+                                         lambda date, userid: date >= firstDayOfYear and date <= now and userid==user_data.id)
     return jsonify([item.to_dict() for item in categories])
