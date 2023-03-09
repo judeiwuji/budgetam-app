@@ -29,8 +29,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-.angular/cache/*
-/frontend/.angular/cache
+.angular/
 .sass-cache/
 /connect.lock
 /coverage
@@ -59,4 +58,4 @@ backend/flask_web_app/.env
 backend/flask_web_app/api/v0/media/
 backend/api/v0/media/
 backend/flask_web_app/api/v0/static/media/
-docker-compose.yml
+*.zip

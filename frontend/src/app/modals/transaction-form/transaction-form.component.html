@@ -1,0 +1,102 @@
+<div class="modal-header">
+    <!-- Mobile -->
+    <button class="btn d-md-none" (click)="close()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <!-- Mobile -->
+
+    <!-- Title -->
+    <h5 class="mx-auto">Transaction</h5>
+    <!-- Title -->
+
+    <!-- Desktop -->
+    <button class="btn d-none d-md-inline-block" (click)="close()">
+        <i class="fas fa-times"></i>
+    </button>
+    <!-- Desktop -->
+</div>
+<div class="modal-body">
+    <form [formGroup]="transactionForm" (ngSubmit)="save()" class="transaction-form">
+        <!-- Amount -->
+        <div class="amount-container">
+            <label for="amount" class="text-muted">
+                &#8358;
+            </label>
+            <input type="text" id="amount" value="0" autofocus="true" formControlName="amount" autocomplete="off"
+                (click)="selectAll($event)">
+        </div>
+        <!-- Amount -->
+
+        <!-- Categories -->
+        <div class="transaction-form-group">
+            <label for="category" class="small text-muted">
+                Category
+            </label>
+            <div class="d-flex align-items-center">
+                <div class="me-2">
+                    <span class="category-icon">
+                        <ng-container *ngIf="selectedCategory">
+                            {{selectedCategory.icon}}
+                        </ng-container>
+                    </span>
+                </div>
+                <div ngbDropdown class="w-100">
+                    <button type="button" class="btn btn-light category-btn" ngbDropdownToggle>
+                        <ng-container *ngIf="selectedCategory">
+                            {{selectedCategory.name}}
+                        </ng-container>
+                    </button>
+
+                    <!-- Categories -->
+                    <ul ngbDropdownMenu>
+                        <ng-container *ngFor="let category of categories">
+                            <li>
+                                <button type="button" ngbDropdownItem (click)="selectCategory(category)">
+                                    <div class="d-flex align-items-center">
+                                        <span class="icon me-2">
+                                            {{category.icon}}
+                                        </span>
+                                        <span class="small text-muted">
+                                            {{category.name}}
+                                        </span>
+                                    </div>
+                                </button>
+                            </li>
+                        </ng-container>
+                    </ul>
+                    <!-- Categories -->
+                </div>
+            </div>
+        </div>
+        <!-- Categories -->
+
+        <!-- Note -->
+        <div class="transaction-form-group">
+            <label for="note" class="small text-muted">
+                Note
+            </label>
+
+            <textarea id="note" class="form-control" rows="3" placeholder="Write a note"
+                formControlName="note"></textarea>
+        </div>
+        <!-- Note -->
+
+        <!-- Date -->
+        <div class="transaction-form-group">
+            <label for="date" class="small text-muted">
+                Date
+            </label>
+            <input type="button" (click)="d.toggle()" [value]="dateFormat()"
+                class="btn btn-light transaction-date-picker-btn">
+            <input id="date" class="form-control transaction-date-picker" ngbDatepicker #d="ngbDatepicker"
+                formControlName="date" readonly>
+        </div>
+        <!-- Date -->
+
+        <div class="text-center">
+            <button class="btn btn-full w-100" type="submit" aria-label="save transaction" [disabled]="processing">
+                Save
+            </button>
+        </div>
+    </form>
+</div>

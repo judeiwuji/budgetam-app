@@ -1,0 +1,58 @@
+<div class="d-flex">
+    <button class="btn-transaction">
+        <div class="d-flex align-items-center">
+            <!-- Icon -->
+            <div class="me-3">
+                <span class="category-icon">
+                    {{transaction.category.icon}}
+                </span>
+            </div>
+            <!-- Icon -->
+
+            <!-- Details -->
+            <div class="text-start">
+                <p>
+                    <ng-container *ngIf="transaction.note">
+                        {{transaction.note}}
+                    </ng-container>
+                    <ng-container *ngIf="!transaction.note">
+                        {{transaction.category.name}}
+                    </ng-container>
+                </p>
+                <p class="small text-muted">
+                    {{dateFormat()}}
+                </p>
+            </div>
+            <!-- Details -->
+        </div>
+
+        <!-- Amount -->
+        <span class="fw-bold text-success" [ngClass]="{'text-danger': transaction.category.isExpense}">
+            {{transaction.amount | number}}
+        </span>
+        <!-- Amount -->
+    </button>
+
+    <!-- Hamburger Menu -->
+    <div class="align-self-start ms-2" ngbDropdown placement="bottom-right">
+        <button class="btn btn-sm p-0" ngbDropdownToggle>
+            <i class="fas fa-ellipsis-h"></i>
+        </button>
+
+        <ul ngbDropdownMenu class="dropdown-right">
+            <li>
+                <button ngbDropdownItem (click)="editTransaction()">
+                    <i class="fas fa-edit me-2"></i>
+                    <span>Edit</span>
+                </button>
+            </li>
+            <li>
+                <button ngbDropdownItem (click)="deleteTransaction()">
+                    <i class="fas fa-trash-alt me-2"></i>
+                    <span>Delete</span>
+                </button>
+            </li>
+        </ul>
+    </div>
+    <!-- Hamburger Menu -->
+</div>

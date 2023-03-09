@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  budgetam_flask:
+    restart: always
+    build:
+      context: backend
+    command: bash -c "python3 -m api.v0.entrypoint"
+    environment:
+      - MYSQL_USER=budgetam_backend_user
+      - MYSQL_PWD=helloworld2023
+      - MYSQL_HOST=budgetam_mysql_db
+      - MYSQL_DB=budgetam_db
+      - TYPE_STORAGE=db
+      - API_PORT=5000
+    depends_on:
+      - budgetam_mysql_db
+    ports:
+      - 80:5000
+ 
+  budgetam_mysql_db:
+    image: mysql:5.7-debian
+    restart: always
+    container_name: budgetam_sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=helloworld2023
+      - MYSQL_DATABASE=budgetam_db
+      - MYSQL_USER=budgetam_backend_user
+      - MYSQL_PASSWORD=helloworld2023
+    ports:
+      - 3306:3306
+    volumes:
+      - ./sql_compose/budgetam_db.sql:/docker-entrypoint-initdb.d/budgetam_db.sql

@@ -1,0 +1,40 @@
+<!-- Balance -->
+<div class="card balance-card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <!-- Expenses -->
+            <ng-container *ngIf="!isIncomeView">
+                <h4 class="balance-title">Expenses</h4>
+            </ng-container>
+            <!-- Expenses -->
+
+            <!-- Income -->
+            <ng-container *ngIf="isIncomeView">
+                <h4 class="balance-title">Income</h4>
+            </ng-container>
+            <!-- Income -->
+
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="isIncomeView">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="text-center py-4">
+            <h4 class="balance-currency text-muted">{{currency}}</h4>
+            <ng-container *ngIf="!isLoading">
+                <p class="balance-amount">
+                    <span *ngIf="!isIncomeView">{{balance.expenses | number}}</span>
+                    <span *ngIf="isIncomeView">{{balance.income | number}}</span>
+                </p>
+            </ng-container>
+
+            <ng-container *ngIf="isLoading">
+                <div class="text-center">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+<!-- Balance -->
